@@ -6,6 +6,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.ModelUser;
 import event.PublicEvent;
+import java.awt.Image;
+import java.util.Base64;
+import javax.swing.ImageIcon;
+import service.Client;
 
 public class ItemPeople extends javax.swing.JPanel {
     private ModelUser user;
@@ -14,6 +18,16 @@ public class ItemPeople extends javax.swing.JPanel {
         this.user = user;
         initComponents();
         lb.setText(user.getUserName());
+        
+        //        Decode
+        try {
+            byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+            avatar1.setIcon(new ImageIcon(image));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(user.isStatus()) {
             status.setBgColor(new Color(0,204,0));
         } else {
@@ -74,7 +88,7 @@ public class ItemPeople extends javax.swing.JPanel {
         avatar1.setForeground(new java.awt.Color(204, 204, 255));
         avatar1.setBorderColor(new java.awt.Color(204, 204, 255));
         avatar1.setBorderSize(1);
-        avatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user_45.png"))); // NOI18N
+        avatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar2-50.png"))); // NOI18N
 
         lb.setBackground(new java.awt.Color(51, 51, 51));
         lb.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N

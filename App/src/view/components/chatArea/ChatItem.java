@@ -17,7 +17,6 @@ public class ChatItem extends javax.swing.JLayeredPane {
         txt.setEditable(false);
         txt.setBackground(new Color(0,0,0,0));
         txt.setOpaque(false);
-
     }
 
     public void setTextLeft(String text, LocalDateTime time) {
@@ -32,13 +31,6 @@ public class ChatItem extends javax.swing.JLayeredPane {
         setBackground(new Color(153,153,255));
     }
     
-    public void setUserName(String userName){
-        txtTime.setVisible(false);
-        txt.setFont(new Font("Segoe UI", 0, 12));
-        txt.setBorder(new EmptyBorder(5, 12, 0, 0));
-        txt.setText(userName);
-        setBackground(new Color(0,0,0,0));
-    }
     @SuppressWarnings("unchecked")
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -52,6 +44,7 @@ public class ChatItem extends javax.swing.JLayeredPane {
 
         txt.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 4, 10));
         txt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt.setText("1");
         txt.setOpaque(false);
         txt.setSelectionColor(new java.awt.Color(92, 188, 255));
         add(txt);

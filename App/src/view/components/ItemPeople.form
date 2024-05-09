@@ -77,7 +77,7 @@
             </Property>
             <Property name="borderSize" type="int" value="1"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icon/user_45.png"/>
+              <Image iconType="3" name="/icon/avatar2-50.png"/>
             </Property>
           </Properties>
 

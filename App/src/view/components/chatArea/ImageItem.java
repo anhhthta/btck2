@@ -1,6 +1,5 @@
 package view.components.chatArea;
 
-import controller.ControllerChat;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import javax.swing.Icon;
@@ -27,7 +26,6 @@ public class ImageItem extends javax.swing.JPanel {
     }
     
     private Dimension getAutoSize(Icon image, int w, int h) {
-        event = new ControllerChat(this, image);
         
         int iw = image.getIconWidth();
         int ih = image.getIconHeight();

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.ModelSendMessage;
 import model.ModelUser;
+import utilites.UserAction;
 
 public class MesageDAO {
     private final Connection con;
@@ -22,7 +23,7 @@ public class MesageDAO {
     }
     
     public void insertMessage(ModelSendMessage data) throws SQLException {
-        String sql = "insert into `mesage` (`from`, `time`, `content`, `to`) VALUES (?, ?, ?, ?);";
+        String sql = "insert into `message` (`fromUser`, `time`, `text`, `toUser`) VALUES (?, ?, ?, ?);";
     
         PreparedStatement pst = con.prepareStatement(sql);
         pst.setInt(1, data.getUser().getUserID());
@@ -38,9 +39,9 @@ public class MesageDAO {
     public List<ModelSendMessage> getMessage() throws SQLException{
         List<ModelSendMessage> list = new ArrayList<>();
         
-        String sql = "select u.name, m.`from`, m.content, m.time , m.to " +
-                    "from mesage m " +
-                    "join users u on u.id = m.`from` "+
+        String sql = "select u.name, m.`fromUser`, m.text, m.time , m.toUser " +
+                    "from message m " +
+                    "join users u on u.id = m.`fromUser` "+
                     "order by m.time;";
         PreparedStatement pst = con.prepareStatement(sql);
         
@@ -54,7 +55,8 @@ public class MesageDAO {
                     user,
                     rs.getString(3),
                     rs.getTimestamp(4).toLocalDateTime(),
-                    rs.getInt(5)
+                    rs.getInt(5),
+                    UserAction.SEND_RECEIVE
             ));
         }
         return list;

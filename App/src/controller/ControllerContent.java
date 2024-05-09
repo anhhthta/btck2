@@ -3,7 +3,10 @@ package controller;
 import event.EventContent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import model.ModelUser;
+import swing.Avatar;
 import view.MainSystem;
 import view.components.Content;
 
@@ -11,10 +14,20 @@ public class ControllerContent implements ActionListener, EventContent{
 
     private Content content;
     private MainSystem main;
+    private Avatar btnAvatar;
     
-    public ControllerContent(MainSystem main, Content content) {
+    public ControllerContent(MainSystem main, Content content, Avatar btnAvatar) {
         this.main = main;
         this.content = content;
+        this.btnAvatar = btnAvatar;
+        
+        btnAvatar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                content.openInfo();
+                main.isBack(true);
+            }            
+        });
     }
     
     @Override

@@ -27,7 +27,7 @@ public class DTBCS {
         try {
             System.out.println("1");
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            String url = "jdbc:mySQL://localhost:3306/chatApp";
+            String url = "jdbc:mySQL://localhost:3306/chat";
             String userName = "root";
             String pass = "123456789";
             

@@ -77,7 +77,7 @@ public class UserDAO {
         ModelMessage msg = new ModelMessage();
         msg.setSuccess(false);
 
-        String sql = "select id, name, email, gender, imageString from `users` where BINARY(email)= ? and BINARY(`password`)= ? and status = '1' limit 1";
+        String sql = "select id, name, email, gender, image from `users` where BINARY(email)= ? and BINARY(`password`)= ? and status = '1' limit 1";
         PreparedStatement pst = con.prepareStatement(sql);
         
         pst.setString(1, login.getEmail());
@@ -96,10 +96,9 @@ public class UserDAO {
         return msg;
     }
     
-    
     public ModelUser getUser(ModelUser u) throws SQLException {
         ModelUser user = null;
-        String sql = "select id, name, email, gender, imageString from users where status = '1' and email = ?;";
+        String sql = "select id, name, email, gender, image from users where status = '1' and email = ?;";
         PreparedStatement pst = con.prepareStatement(sql);
         pst.setString(1, u.getEmail());
         ResultSet rs = pst.executeQuery();
@@ -108,9 +107,9 @@ public class UserDAO {
             String userName = rs.getString(2);
             String email = rs.getString(3);
             String gender = rs.getString(4);
-            String imageString = rs.getString(5);
+            String image = rs.getString(5);
             
-            user = new ModelUser(userID, userName, email, gender, imageString, true);
+            user = new ModelUser(userID, userName, email, gender, image, true);
         }
         
         rs.close();
@@ -121,7 +120,7 @@ public class UserDAO {
     public List<ModelUser> getUsers(String exitUser) throws SQLException {
         System.out.println("exit: " +exitUser);
         List<ModelUser> list = new ArrayList<>();
-        String sql = "select id, name, email, gender, imageString from users where status = '1' and id <> ?;";
+        String sql = "select id, name, email, gender, image from users where status = '1' and id <> ?;";
         PreparedStatement pst = con.prepareStatement(sql);
         pst.setString(1, exitUser);
         ResultSet rs = pst.executeQuery();
@@ -130,9 +129,9 @@ public class UserDAO {
             String userName = rs.getString(2);
             String email = rs.getString(3);
             String gender = rs.getString(4);
-            String imageString = rs.getString(5);
+            String image = rs.getString(5);
             
-            list.add(new ModelUser(userID, userName, email, gender, imageString, true));
+            list.add(new ModelUser(userID, userName, email, gender, image, true));
         }
         
         rs.close();
@@ -156,6 +155,19 @@ public class UserDAO {
         rs.close();
         pst.close();
         return gmail;
+    }
+    
+    public void updatePass(ModelUser user) throws SQLException {
+        System.out.println("update pass ne");
+        
+        String sql = "update `users` set `password` = ? where id = ? limit 1";
+        PreparedStatement pst = con.prepareStatement(sql);
+        
+        pst.setString(1, user.getPassword());        
+        pst.setInt(2, user.getUserID());
+        
+        pst.executeUpdate();
+        pst.close();
     }
 }
 

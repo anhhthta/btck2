@@ -44,30 +44,30 @@ public class Body extends javax.swing.JPanel {
 //        ::x is max 
         body.repaint();
         body.revalidate();
-        refresh();
         scrollToBottom();
+        refresh();
     }
     
     public void addGroupItem(ModelSendMessage data, Icon... images) {
-        ChatItem user = new ChatItem();
-        user.setUserName(data.getUser().getUserName());
+//        ChatItem user = new ChatItem();
+//        user.setUserName(data.getUser().getUserName());
         
-        body.add(user, "wrap, w ::75%");
+//        body.add(user, "wrap, w ::75%");
         for(Icon img : images) {
             ImageItem imageItem = new ImageItem();
             imageItem.addImage(img);
             body.add(imageItem, "wrap, w ::75%");
         }
-        ChatItem item = new ChatItem();
         
-        item.setTextLeft(data.getText(), data.getTime());
+        ItemChatLeft item = new ItemChatLeft();
+        item.setData(data);
         
         body.add(item, "wrap, w ::75%");
 //        ::x is max 
         body.repaint();
         body.revalidate();
-        refresh();
         scrollToBottom();
+        refresh();
     }
     
     public void addEvent(ActionListener event){

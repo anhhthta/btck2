@@ -2,228 +2,161 @@
 package DAO;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import connection.DTBCS;
-import java.util.ArrayList;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.persistence.Query;
+import javax.swing.ImageIcon;
 import model.ModelMessage;
 import model.ModelUser;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import utilites.HibernateUtil;
 
 public class UserDAO {
     
-    private final Connection con;
 
-    
     public UserDAO() {
-        this.con = DTBCS.getInstance().getConnection();
     }
-    
-    public synchronized ModelMessage register(ModelUser user) {
+
+    public synchronized ModelMessage insert(ModelUser user) {
+        Transaction tr = null;
         ModelMessage message = new ModelMessage();
-        try {
-            String sql;
-            PreparedStatement pst;
-            int id;
-            
-            boolean isExist = checkGmail(user.getEmail());
-            
-            if(!isExist) {
-                con.setAutoCommit(false);
+
+        boolean isExist = checkEmail(user.getEmail());
+        
+        if(!isExist) {
+            try(Session session = HibernateUtil.getSessionFactory().openSession()){
+                tr = session.beginTransaction();
+//                ENCODE
+                String imgString = "";
                 
-                sql = "insert into `users` (name, email, `password`) values (?,?,?)" ;
+                Image avatar = new ImageIcon(getClass().getResource("/icon/avatar2-50.png")).getImage();
+                BufferedImage bufferedImage = new BufferedImage(avatar.getWidth(null), avatar.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                bufferedImage.getGraphics().drawImage(avatar, 0, 0, null);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream(10000);
+                ImageIO.write(bufferedImage, "png", baos);
+                byte[] imageInByte = baos.toByteArray();
+                imgString = Base64.getEncoder().encodeToString(imageInByte);
                 
-                pst = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                pst.setString(1, user.getUserName());
-                pst.setString(2, user.getEmail());
-                pst.setString(3, user.getPassword());
+                user.setImage(imgString);
                 
-                pst.execute();
-                ResultSet rs2 = pst.getGeneratedKeys();
+                user.setStatus(true);
+                user.setDate(LocalDate.now());
+                user.setGender("Other");
+                session.save(user);
+                tr.commit();
                 
-                rs2.first();
-                int userID = rs2.getInt(1);
-                rs2.close();
-                pst.close();
-                user.setUserID(userID);
-                con.commit();
-                con.setAutoCommit(true);
                 message.setSuccess(true);
                 message.setMessage("Sign Up Success");
-                message.setData(new ModelUser(userID, user.getUserName(), user.getEmail() , "", "", true));
-            } else {
-                message.setSuccess(false);
-                message.setMessage("User Already Exist");
-            }
-        } catch (SQLException ex) {
-            message.setMessage("Server Error");
-            message.setSuccess(false);
-            try {
-                if(con.getAutoCommit()== false) {
-                    con.rollback();
-                    con.setAutoCommit(true);
+                message.setData(user);
+                session.close();
+            } catch(Exception e){
+                if(tr != null) {
+                    tr.rollback();
                 }
-            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            message.setSuccess(false);
+            message.setMessage("User Already Exist");
         }
+        
         return message;
     }
     
-    public ModelMessage login(ModelUser login) throws SQLException{        
-        ModelUser data = null;
+    public boolean checkEmail(String email){
+        Transaction tr = null;
+        boolean c = false;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            tr = session.beginTransaction();
+            String hql = "select u.userID from ModelUser u where u.email = :e";
+            
+            Query query = session.createQuery(hql);
+            query.setParameter("e", email);
+            List results = query.getResultList();
+            
+            if(!results.isEmpty()) {
+                c = true;
+            }
+            tr.commit();
+            session.close();
+        } catch(Exception e) {
+           e.printStackTrace();
+        }
+        
+        return c;
+    }
+//    
+    public ModelMessage login(ModelUser login){
+        Transaction tr = null;
+
         ModelMessage msg = new ModelMessage();
         msg.setSuccess(false);
 
-        String sql = "select id, name, email, gender, imageString from `users` where BINARY(email)= ? and BINARY(`password`)= ? and status = '1' limit 1";
-        PreparedStatement pst = con.prepareStatement(sql);
-        
-        pst.setString(1, login.getEmail());
-        pst.setString(2, login.getPassword());
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tr = session.beginTransaction();
+            String hql = "from ModelUser u where u.email = :e and u.password = :p and status = 1";
+            
+            Query query = session.createQuery(hql);
+            query.setParameter("e", login.getEmail());
+            query.setParameter("p", login.getPassword());
 
-        ResultSet rs = pst.executeQuery();
-        if(rs.next()){
-            int userID = rs.getInt(1);
-            String userName = rs.getString(2);
-            String email = rs.getString(3);
-            msg.setSuccess(true);
-            msg.setData(new ModelUser(userID, userName, email));
+
+            List results = query.getResultList();
+            if(results != null && !results.isEmpty()) {
+                login = (ModelUser) results.get(0);
+                msg.setSuccess(true);
+                msg.setData(login);
+            }
+            
+            tr.commit();
+
+            session.close();
+        } catch (Exception e) {
+            if(tr != null) {
+                tr.rollback();
+            }
+            e.printStackTrace();
         }
-        rs.close();
-        pst.close();
+        
         return msg;
     }
     
-    
-    public ModelUser getUser(ModelUser u) throws SQLException {
-        ModelUser user = null;
-        String sql = "select id, name, email, gender, imageString from users where status = '1' and email = ?;";
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setString(1, u.getEmail());
-        ResultSet rs = pst.executeQuery();
-        if(rs.next()) {
-            int userID = rs.getInt(1);
-            String userName = rs.getString(2);
-            String email = rs.getString(3);
-            String gender = rs.getString(4);
-            String imageString = rs.getString(5);
-            
-            user = new ModelUser(userID, userName, email, gender, imageString, true);
+    public List<ModelUser> getUsers(String exitUser) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            return session.createQuery("from ModelUser", ModelUser.class).list();
         }
-        
-        rs.close();
-        pst.close();
-        return user;
     }
-    
-    public List<ModelUser> getUsers(String exitUser) throws SQLException {
-        System.out.println("exit: " +exitUser);
-        List<ModelUser> list = new ArrayList<>();
-        String sql = "select id, name, email, gender, imageString from users where status = '1' and id <> ?;";
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setString(1, exitUser);
-        ResultSet rs = pst.executeQuery();
-        while(rs.next()) {
-            int userID = rs.getInt(1);
-            String userName = rs.getString(2);
-            String email = rs.getString(3);
-            String gender = rs.getString(4);
-            String imageString = rs.getString(5);
-            
-            list.add(new ModelUser(userID, userName, email, gender, imageString, true));
-        }
-        
-        rs.close();
-        pst.close();
-        return list;
-    }
-    
-    public boolean checkGmail(String email) throws SQLException {
-        boolean gmail = false;
-        
-        String sql = "select id from `users` where BINARY(email)= ? limit 1";
-        PreparedStatement pst = con.prepareStatement(sql);
-        
-        pst.setString(1, email);
+     
+    public void update(ModelUser user){
+        Transaction tr = null;
 
-        ResultSet rs = pst.executeQuery();
-        if(rs.next()){
-            gmail = true;
+        ModelMessage msg = new ModelMessage();
+        msg.setSuccess(false);
+
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tr = session.beginTransaction();
+            
+            session.saveOrUpdate(user);
+//            String hql = "update ModelUser set password = :p where id = :i";
+//            
+//            Query query = session.createQuery(hql);
+//            query.setParameter("p", user.getPassword());
+//            query.setParameter("i", user.getUserID());
+//            
+//            query.executeUpdate();
+            tr.commit();
+            session.close();
+        } catch (Exception e) {
+            if(tr != null) {
+                tr.rollback();
+            }
+            e.printStackTrace();
         }
-        System.out.println(gmail);
-        rs.close();
-        pst.close();
-        return gmail;
     }
 }
-
-////    
-//    public void updatePass(String email, String pass) throws SQLException {
-////        
-////        con = DTBCS.getConnection();
-////        
-////        String sql = "UPDATE `users` SET `password` = ? WHERE (BINARY(email)= ?) limit 1";
-////        PreparedStatement pst = con.prepareStatement(sql);
-////        
-////        pst.setString(1, pass);        
-////        pst.setString(2, email);
-////        
-////        pst.executeUpdate();
-////        pst.close();
-////        DTBCS.closeConnection(con);        
-//    }
-//    
-
-
-
-
-
-//        
-//    
-//    
-//    public boolean checkGmail(String email) throws SQLException {
-//        boolean gmail = false;
-//        
-////        con = DTBCS.getConnection();
-////        
-////        String sql = "select id from `users` where BINARY(email)= ? limit 1";
-////        PreparedStatement pst = con.prepareStatement(sql);
-////        
-////        pst.setString(1, email);
-////
-////        ResultSet rs = pst.executeQuery();
-////        if(rs.next()){
-////            gmail = true;
-////        }
-////        rs.close();
-////        pst.close();
-////        DTBCS.closeConnection(con);
-//        return gmail;
-//    }
-//    
-//    public ArrayList<ModelUser> getIdName(int id) throws SQLException {
-////        con = DTBCS.getConnection();
-//        
-//        ArrayList<ModelUser> user = new ArrayList<>();
-////        
-////        String sql = "select id, name from users where businessId = ?";
-////        PreparedStatement pst = con.prepareStatement(sql);
-////        
-////        pst.setInt(1, id);
-////
-////        ResultSet rs = pst.executeQuery();
-////        while(rs.next()){
-////            user.add(
-////                    new ModelUser(
-////                        rs.getInt(1),
-////                        rs.getString(2)
-////                    )
-////            );
-////        }
-////        rs.close();
-////        pst.close();
-////        DTBCS.closeConnection(con);
-//        return user;
-//    }

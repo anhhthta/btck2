@@ -4,7 +4,6 @@ package view.components;
 import controller.ControllerChat;
 import event.EventChat;
 import event.PublicEvent;
-import java.awt.event.ActionListener;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
 import view.components.chatArea.Body;
@@ -15,12 +14,14 @@ public class Chat extends javax.swing.JPanel {
     private Header header;
     private Body body;
     private Bottom bottom;
+//    private ControllerAction event;
     private ControllerChat event;
     
     public Chat() {
         initComponents();
         init();
     }
+    
     
     private void init() {
         setLayout(new MigLayout("fillx", "0[fill]0" , "0[]0[100%, b]0[shrink 0]0"));
@@ -30,19 +31,19 @@ public class Chat extends javax.swing.JPanel {
         add(header, "wrap");
         add(body, "wrap");
         add(bottom, "h ::30%");
+        
         event = new ControllerChat(header, body, bottom);
         PublicEvent.getInstance().addEventChat((EventChat) event);
+
         body.addEvent(event);
         bottom.addEvent(event);
     }
-    
         
     public void setUser(ModelUser user) {
         header.setName(user);
         bottom.setUser(user);
         body.clearChat();
-        event.initHistory();
-
+        event.setHistory();
     }
     
     public void updateUser(ModelUser user) {

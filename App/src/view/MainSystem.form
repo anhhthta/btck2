@@ -189,7 +189,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="userName" min="-2" pref="163" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="avatar1" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="btnAvatar" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -198,7 +198,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="userName" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
-                              <Component id="avatar1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnAvatar" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -211,10 +211,10 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Container class="swing.Avatar" name="avatar1">
+                <Container class="swing.Avatar" name="btnAvatar">
                   <Properties>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="cc" green="cc" red="ff" type="rgb"/>
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -222,7 +222,7 @@
                     </Property>
                     <Property name="borderSize" type="int" value="1"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icon/user_32.png"/>
+                      <Image iconType="3" name="/icon/avatar2-50.png"/>
                     </Property>
                   </Properties>
 

@@ -1,18 +1,19 @@
-
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
-public class ModelUser  implements Serializable{
+public class ModelUser  implements Serializable{  
     private int userID;
     private String userName;
+    private LocalDate date;
     private String email;
-    private String password;
-    private String repassword;
-    private String veridyCode;
     private String gender;
     private String image;
+    private String password;
+    private String repassword;
     private boolean status;
+    private String veridyCode;
 
     public ModelUser(int userID, String userName, String email, String gender, String image, boolean status) {
         this.userID = userID;
@@ -21,48 +22,26 @@ public class ModelUser  implements Serializable{
         this.gender = gender;
         this.image = image;
         this.status = status;
-    }   
-        
-    public ModelUser(int userID, String userName, String email, String password, String image) {
-        this.userID = userID;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.image = image;
     }
-    
-    
-    public ModelUser(int userID, String userName, String email, String password, String repassword, String veridyCode) {
+
+    public ModelUser(int userID, String userName, String email, String password, String repassword) {
         this.userID = userID;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.repassword = repassword;
-        this.veridyCode = veridyCode;
     }
 
-    public ModelUser(int userID, String userName, String email, String password) {
-        this.userID = userID;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-    }
-    
-    public ModelUser(int userID, String userName, String email) {
-        this.userID = userID;
-        this.userName = userName;
-        this.email = email;
-    }
-    
     public ModelUser(String email, String password, String repassword) {
         this.email = email;
         this.password = password;
         this.repassword = repassword;
     }
-    
-    public ModelUser(int userId, String userName) {
-        this.userID = userId;
+
+    public ModelUser(int userID, String userName, String email) {
+        this.userID = userID;
         this.userName = userName;
+        this.email = email;
     }
 
     public ModelUser(String email, String password) {
@@ -72,7 +51,7 @@ public class ModelUser  implements Serializable{
     
     public ModelUser() {
     }
-    
+
     public int getUserID() {
         return userID;
     }
@@ -97,34 +76,6 @@ public class ModelUser  implements Serializable{
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getVeridyCode() {
-        return veridyCode;
-    }
-
-    public void setVeridyCode(String veridyCode) {
-        this.veridyCode = veridyCode;
-    }
-
-    public String getRepassword() {
-        return repassword;
-    }
-
-    public void setRepassword(String repassword) {
-        this.repassword = repassword;
-    }
-    
-    public boolean comparePass() {
-        return this.password.equals(this.repassword);
-    }
-    
     public String getGender() {
         return gender;
     }
@@ -141,6 +92,22 @@ public class ModelUser  implements Serializable{
         this.image = image;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRepassword() {
+        return repassword;
+    }
+
+    public void setRepassword(String repassword) {
+        this.repassword = repassword;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -149,8 +116,24 @@ public class ModelUser  implements Serializable{
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return userName;
+    public String getVeridyCode() {
+        return veridyCode;
+    }
+
+    public void setVeridyCode(String veridyCode) {
+        this.veridyCode = veridyCode;
+    }
+
+    
+    public boolean comparePass() {
+        return this.password.equals(this.repassword);
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

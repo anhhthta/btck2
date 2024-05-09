@@ -2,6 +2,8 @@
 package view.login;
 
 import controller.ControllerLogin;
+import controller.Encrypt;
+import event.PublicEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -27,6 +29,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void init() throws IOException {
+        PublicEvent.getInstance().addEventEncrypt(new Encrypt());
         layout = new MigLayout("fill, insets 0");
         verify = new PanelVerify();
         loginAndRegister = new PanelLoginAndRegister();
@@ -107,7 +110,6 @@ public class Login extends javax.swing.JFrame {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

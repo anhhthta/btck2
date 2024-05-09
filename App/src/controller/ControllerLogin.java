@@ -146,8 +146,7 @@ public class ControllerLogin implements ActionListener{
                             login.dispose();
                             
                             Client.getInstance().setHistory(history);
-                            MainSystem main = new MainSystem();
-                            main.setVisible(true);
+                            new MainSystem().setVisible(true);
                         } else {                            
                             showMessage(Notification.MessageType.ERROR, response.getMessage());
                         }

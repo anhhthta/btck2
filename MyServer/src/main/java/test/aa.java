@@ -4,6 +4,10 @@
  */
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
+import model.ModelUser;
+
 /**
  *
  * @author anhth
@@ -15,6 +19,9 @@ public class aa {
         
         System.out.println(a.matches("\\d+"));
         System.out.println(b.matches("\\d+"));
+        
+        List<ModelUser> user = new ArrayList<>();
+                
 
     }
 }

@@ -1,13 +1,17 @@
-
 package view;
 
 import controller.ControllerContent;
 import event.EventContent;
+import event.EventUpdate;
 import event.PublicEvent;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.util.Base64;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import model.ModelUser;
 import service.Client;
 import swing.ComponentResizer;
 
@@ -16,32 +20,74 @@ import swing.ComponentResizer;
  * @author anhth
  */
 public class MainSystem extends javax.swing.JFrame {
+
     private int pX, pY;
+    public static String groupImage;
+
     public MainSystem() {
+        Image image = new ImageIcon(getClass().getResource("/icon/avatarG-50.png")).getImage();
+        groupImage = PublicEvent.getInstance().getEventEncrypt().encodeImage(image, "png");
+
         initComponents();
         init();
         btnBack.setVisible(false);
     }
-    
-    private void init() {      
-        btnClose.setHover(new Color(255,51,51));
-        btnMinimize.setHover(new Color(72,72,72));        
+
+    private void init() {
+        btnClose.setHover(new Color(255, 51, 51));
+        btnMinimize.setHover(new Color(72, 72, 72));
         ComponentResizer com = new ComponentResizer();
         com.registerComponent(this);
-        com.setMinimumSize(new Dimension(323, 543));
-        com.setMaximumSize(new Dimension(323, 543));
+        com.setMinimumSize(new Dimension(340, 543));
+        com.setMaximumSize(new Dimension(340, 543));
         com.setSnapSize(new Dimension(10, 10));
-        userName.setText(Client.getInstance().getUser().getUserName());
-        ActionListener event = new ControllerContent(this, content);
+        ModelUser user = Client.getInstance().getUser();
+
+        userName.setText(user.getUserName());
+//        Decode
+        try {
+            byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+            btnAvatar.setIcon(new ImageIcon(image));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ActionListener event = new ControllerContent(this, content, btnAvatar);
         btnBack.addActionListener(event);
-        
+
         PublicEvent.getInstance().addEventContent((EventContent) event);
-        
+
+        PublicEvent.getInstance().addEventUpdate(new EventUpdate() {
+            @Override
+            public void updateHeader() {
+                ModelUser user = Client.getInstance().getUser();
+                userName.setText(user.getUserName());
+
+                try {
+                    byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+                    Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+                    btnAvatar.setIcon(new ImageIcon(image));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                revalidate();
+            }
+
+            @Override
+            public void updateMenu() {
+                System.out.println("setMenu");
+                content.setMenu();
+            }
+
+        });
     }
-    
+
     public void isBack(boolean c) {
         btnBack.setVisible(c);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,7 +100,7 @@ public class MainSystem extends javax.swing.JFrame {
         body = new javax.swing.JLayeredPane();
         content = new view.components.Content();
         jPanel1 = new javax.swing.JPanel();
-        avatar1 = new swing.Avatar();
+        btnAvatar = new swing.Avatar();
         userName = new javax.swing.JLabel();
         btnBack = new swing.Button();
 
@@ -117,11 +163,11 @@ public class MainSystem extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        avatar1.setForeground(new java.awt.Color(255, 204, 204));
-        avatar1.setToolTipText("");
-        avatar1.setBorderColor(new java.awt.Color(255, 204, 204));
-        avatar1.setBorderSize(1);
-        avatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/user_32.png"))); // NOI18N
+        btnAvatar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAvatar.setToolTipText("");
+        btnAvatar.setBorderColor(new java.awt.Color(255, 204, 204));
+        btnAvatar.setBorderSize(1);
+        btnAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar2-50.png"))); // NOI18N
 
         userName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         userName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -142,14 +188,14 @@ public class MainSystem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(userName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(avatar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAvatar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -165,7 +211,7 @@ public class MainSystem extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                    .addComponent(body, javax.swing.GroupLayout.PREFERRED_SIZE, 319, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -213,16 +259,16 @@ public class MainSystem extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void titleMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMouseDragged
-        this.setLocation(this.getLocation().x + evt.getX() - pX,this.getLocation().y + evt.getY() - pY);
+        this.setLocation(this.getLocation().x + evt.getX() - pX, this.getLocation().y + evt.getY() - pY);
     }//GEN-LAST:event_titleMouseDragged
 
     private void titleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleMousePressed
         pX = evt.getX();
-        pY = evt.getY(); 
+        pY = evt.getY();
     }//GEN-LAST:event_titleMousePressed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
@@ -231,10 +277,10 @@ public class MainSystem extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.Avatar avatar1;
     private javax.swing.JPanel background;
     private javax.swing.JLayeredPane body;
     private javax.swing.JPanel border;
+    private swing.Avatar btnAvatar;
     private swing.Button btnBack;
     private swing.Button btnClose;
     private swing.Button btnMinimize;

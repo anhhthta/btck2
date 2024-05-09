@@ -1,7 +1,5 @@
 package view.components;
 
-
-import event.EventMenuLeft;
 import event.PublicEvent;
 import java.awt.Component;
 import java.util.ArrayList;
@@ -10,16 +8,19 @@ import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
 import swing.ScrollBar;
+import event.EventMenu;
+import view.MainSystem;
 
 /**
  *
  * @author anhth
  */
-public class MenuLeft extends javax.swing.JPanel {
+public class Menu extends javax.swing.JPanel {
+
     private List<ModelUser> listUser;
     private ModelUser user;
-    
-    public MenuLeft() {
+
+    public Menu() {
         initComponents();
         init();
     }
@@ -33,11 +34,11 @@ public class MenuLeft extends javax.swing.JPanel {
         listUser = new ArrayList<>();
         user = Client.getInstance().getUser();
 
-        PublicEvent.getInstance().addEventMenuLef(new EventMenuLeft() {
+        PublicEvent.getInstance().addEventMenu(new EventMenu() {
             @Override
             public void newUser(List<ModelUser> users) {
-                for(ModelUser us : users)  {
-                    if(user.getUserID() != us.getUserID()){
+                for (ModelUser us : users) {
+                    if (user.getUserID() != us.getUserID()) {
                         listUser.add(us);
                         menuList.add(new ItemPeople(us), "wrap");
                         refreshMenuList();
@@ -47,17 +48,17 @@ public class MenuLeft extends javax.swing.JPanel {
 
             @Override
             public void userConnect(int userId) {
-                for(ModelUser u : listUser) {
-                    if(u.getUserID() == userId){
+                for (ModelUser u : listUser) {
+                    if (u.getUserID() == userId) {
                         u.setStatus(true);
                         PublicEvent.getInstance().getEventContent().updateUser(u);
                         break;
                     }
                 }
-                
-                for(Component com : menuList.getComponents()) {
-                    ItemPeople item  = (ItemPeople) com;
-                    if(item.getUser().getUserID() == userId) {
+
+                for (Component com : menuList.getComponents()) {
+                    ItemPeople item = (ItemPeople) com;
+                    if (item.getUser().getUserID() == userId) {
                         item.updateStatus();
                         break;
                     }
@@ -66,47 +67,47 @@ public class MenuLeft extends javax.swing.JPanel {
 
             @Override
             public void userDisconnect(int userId) {
-                for(ModelUser u : listUser) {
-                    if(u.getUserID() == userId){
+                for (ModelUser u : listUser) {
+                    if (u.getUserID() == userId) {
                         u.setStatus(false);
                         PublicEvent.getInstance().getEventContent().updateUser(u);
                         break;
                     }
                 }
-                
-                for(Component com : menuList.getComponents()) {
-                    ItemPeople item  = (ItemPeople) com;
-                    if(item.getUser().getUserID() == userId) {
+
+                for (Component com : menuList.getComponents()) {
+                    ItemPeople item = (ItemPeople) com;
+                    if (item.getUser().getUserID() == userId) {
                         item.updateStatus();
                         break;
                     }
                 }
             }
         });
+
+        setPeople();
+    }
+
+     public void setPeople() {
         listUser = Client.getInstance().getUsers();
-        if(listUser == null) {
+        if (listUser == null) {
             listUser = new ArrayList<>();
         }
-        
-        showPoeple();
-    }
-    
-    private void showPoeple() {
         menuList.removeAll();
-        menuList.add(new ItemPeople(new ModelUser(-1, "Group","","","",true)), "wrap");
-        for(ModelUser us : listUser) {
-            if(user.getUserID() != us.getUserID()) {
+        menuList.add(new ItemPeople(new ModelUser(-1, "Group", "", "", MainSystem.groupImage, true)), "wrap");
+        for (ModelUser us : listUser) {
+            if (user.getUserID() != us.getUserID()) {
                 menuList.add(new ItemPeople(us), "wrap");
-            } 
+                System.out.println("new User" +us.getUserName());
+            }
         }
         refreshMenuList();
     }
-    
+
     private void refreshMenuList() {
         menuList.repaint();
         menuList.revalidate();
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
