@@ -9,7 +9,6 @@ import event.PublicEvent;
 import java.awt.Image;
 import java.util.Base64;
 import javax.swing.ImageIcon;
-import service.Client;
 
 public class ItemPeople extends javax.swing.JPanel {
     private ModelUser user;
@@ -28,11 +27,7 @@ public class ItemPeople extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(user.isStatus()) {
-            status.setBgColor(new Color(0,204,0));
-        } else {
-            status.setBgColor(new Color(255,153,51,0));
-        }
+        
         init();
     }
     
@@ -64,15 +59,6 @@ public class ItemPeople extends javax.swing.JPanel {
         return user;
     }
     
-    public void updateStatus() {
-        if(user.isStatus()) {
-            status.setBgColor(new Color(0,204,0));
-        } else {
-            status.setBgColor(new Color(255,153,51,0));
-            
-        }
-        revalidate();
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -80,7 +66,6 @@ public class ItemPeople extends javax.swing.JPanel {
         bg = new swing.radius.PanelRadius();
         avatar1 = new swing.Avatar();
         lb = new javax.swing.JLabel();
-        status = new swing.radius.PanelRadius();
 
         setBackground(new java.awt.Color(255, 204, 204));
         setOpaque(false);
@@ -94,20 +79,6 @@ public class ItemPeople extends javax.swing.JPanel {
         lb.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb.setForeground(new java.awt.Color(51, 51, 51));
 
-        status.setBackground(new java.awt.Color(204, 255, 204));
-        status.setBgColor(new java.awt.Color(0, 204, 0));
-
-        javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
-        status.setLayout(statusLayout);
-        statusLayout.setHorizontalGroup(
-            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 6, Short.MAX_VALUE)
-        );
-        statusLayout.setVerticalGroup(
-            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 6, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -116,20 +87,15 @@ public class ItemPeople extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lb))
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addComponent(lb)
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(lb)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lb)
                     .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
@@ -151,6 +117,5 @@ public class ItemPeople extends javax.swing.JPanel {
     private swing.Avatar avatar1;
     private swing.radius.PanelRadius bg;
     private javax.swing.JLabel lb;
-    private swing.radius.PanelRadius status;
     // End of variables declaration//GEN-END:variables
 }

@@ -37,6 +37,12 @@
   <SubComponents>
     <Container class="swing.shadow.PanelShadow" name="panelShadow1">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="20" green="20" red="20" type="rgb"/>
+        </Property>
+        <Property name="bgColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="28" green="28" red="28" type="rgb"/>
+        </Property>
         <Property name="shadowOpacity" type="float" value="0.1"/>
         <Property name="shadowSize" type="int" value="2"/>
       </Properties>
@@ -49,7 +55,7 @@
                   <Component id="avatar1" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="layer" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="287" max="32767" attributes="0"/>
+                  <EmptySpace pref="348" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -80,6 +86,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="15" style="1"/>
                 </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ba" green="ba" red="ba" type="rgb"/>
+                </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="txtStatus">
@@ -87,7 +96,6 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="ff" red="33" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Active Now"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -6,6 +6,7 @@ import event.EventChat;
 import event.PublicEvent;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
+import swing.BackgroundImage;
 import view.components.chatArea.Body;
 import view.components.chatArea.Bottom;
 import view.components.chatArea.Header;

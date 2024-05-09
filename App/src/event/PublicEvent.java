@@ -7,9 +7,9 @@ public class PublicEvent {
     private EventToServer eventToServer;
     private EventContent eventItemPeople;
     private EventChat eventChat;
-    private EventMenu eventMenu;
-    public EventEncrypt eventEncrypt;
-    public EventUpdate eventUpdate;
+    private EventEncrypt eventEncrypt;
+    private EventUpdate eventUpdate;
+    private EventNotificate eventNotificate;
 
     public static PublicEvent getInstance() {
         if (instance == null) {
@@ -34,16 +34,16 @@ public class PublicEvent {
         this.eventChat = event;
     }
     
-    public void addEventMenu(EventMenu event) {
-        this.eventMenu = event;
-    }
-    
     public void addEventEncrypt(EventEncrypt event) {
         this.eventEncrypt = event;
     }
     
     public void addEventUpdate(EventUpdate event) {
         this.eventUpdate = event;
+    }
+    
+    public void addEventNotificate(EventNotificate event) {
+        this.eventNotificate = event;
     }
 
     public EventToServer getEventToServer() {
@@ -63,11 +63,6 @@ public class PublicEvent {
     public EventChat getEventChat() {
         return this.eventChat;
     }
-    
-        
-    public EventMenu getEventMenu() {
-        return this.eventMenu;
-    }
 
     public EventEncrypt getEventEncrypt() {
         return eventEncrypt;
@@ -75,6 +70,10 @@ public class PublicEvent {
 
     public EventUpdate getEventUpdate() {
         return eventUpdate;
+    }
+
+    public EventNotificate getEventNotificate() {
+        return eventNotificate;
     }
     
     

@@ -8,11 +8,11 @@ import utilites.UserAction;
 public class ModelSendMessage  implements Serializable{
 
     private int id;
-    private int from;
+    private int fromId;
     private ModelUser user;
     private String text;
     private LocalDateTime time;
-    private int to;
+    private int toId;
     private UserAction action;
     private List<ModelUser> users;
 
@@ -20,7 +20,7 @@ public class ModelSendMessage  implements Serializable{
         this.user = user;
         this.text = text;
         this.time = time;
-        this.to = to;
+        this.toId = to;
         this.action = action;
     }
 
@@ -57,11 +57,11 @@ public class ModelSendMessage  implements Serializable{
     }
 
     public int getTo() {
-        return to;
+        return toId;
     }
 
     public void setTo(int to) {
-        this.to = to;
+        this.toId = to;
     }
 
     public UserAction getAction() {
@@ -81,11 +81,11 @@ public class ModelSendMessage  implements Serializable{
     }
 
     public int getFrom() {
-        return from;
+        return fromId;
     }
 
     public void setFrom(int from) {
-        this.from = from;
+        this.fromId = from;
     }
 
     public List<ModelUser> getUsers() {

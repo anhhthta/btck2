@@ -57,11 +57,11 @@ public class ControllerChat implements ActionListener, EventChat {
             }
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if(command.equals("send")) {
+        if (command.equals("send")) {
             sendMessage(null);
         }
     }
@@ -85,16 +85,19 @@ public class ControllerChat implements ActionListener, EventChat {
 
     @Override
     public void ReceiveMessage(ModelSendMessage data) {
-        if (header.getUser().getUserID() == -1) {
-            if (data.getTo() == -1) {
-                body.addGroupItem(data);
-                System.out.println("r1");
-            }
-        } else {
-            if (data.getUser().getUserID() == header.getUser().getUserID() && data.getTo() != -1) {
-                System.out.println("r2");
-                body.addGroupItem(data);
+        if (header.getUser() != null) {
+            if (header.getUser().getUserID() == -1) {
+                if (data.getTo() == -1) {
+                    body.addGroupItem(data);
+                    System.out.println("r1");
+                }
+            } else {
+                if (data.getUser().getUserID() == header.getUser().getUserID() && data.getTo() != -1) {
+                    System.out.println("r2");
+                    body.addGroupItem(data);
+                }
             }
         }
+
     }
 }

@@ -1,14 +1,11 @@
 package view.components;
 
-import event.PublicEvent;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
 import swing.ScrollBar;
-import event.EventMenu;
 import view.MainSystem;
 
 /**
@@ -33,58 +30,7 @@ public class Menu extends javax.swing.JPanel {
 
         listUser = new ArrayList<>();
         user = Client.getInstance().getUser();
-
-        PublicEvent.getInstance().addEventMenu(new EventMenu() {
-            @Override
-            public void newUser(List<ModelUser> users) {
-                for (ModelUser us : users) {
-                    if (user.getUserID() != us.getUserID()) {
-                        listUser.add(us);
-                        menuList.add(new ItemPeople(us), "wrap");
-                        refreshMenuList();
-                    }
-                }
-            }
-
-            @Override
-            public void userConnect(int userId) {
-                for (ModelUser u : listUser) {
-                    if (u.getUserID() == userId) {
-                        u.setStatus(true);
-                        PublicEvent.getInstance().getEventContent().updateUser(u);
-                        break;
-                    }
-                }
-
-                for (Component com : menuList.getComponents()) {
-                    ItemPeople item = (ItemPeople) com;
-                    if (item.getUser().getUserID() == userId) {
-                        item.updateStatus();
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void userDisconnect(int userId) {
-                for (ModelUser u : listUser) {
-                    if (u.getUserID() == userId) {
-                        u.setStatus(false);
-                        PublicEvent.getInstance().getEventContent().updateUser(u);
-                        break;
-                    }
-                }
-
-                for (Component com : menuList.getComponents()) {
-                    ItemPeople item = (ItemPeople) com;
-                    if (item.getUser().getUserID() == userId) {
-                        item.updateStatus();
-                        break;
-                    }
-                }
-            }
-        });
-
+        
         setPeople();
     }
 

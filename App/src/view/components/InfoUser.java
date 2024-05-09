@@ -21,6 +21,12 @@ public class InfoUser extends javax.swing.JPanel {
     }
 
     private void init() {
+        
+        pass.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/eye-off.png")),
+                new ImageIcon(getClass().getResource("/icon/eye.png")));
+        newPass.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/eye-off.png")),
+                new ImageIcon(getClass().getResource("/icon/eye.png")));
+        
         for (int i = 1; i <= 31; i++) {
             if (i <= 12) {
                 cbbMonth.addItem(i);
@@ -37,6 +43,7 @@ public class InfoUser extends javax.swing.JPanel {
     }
 
     public void setData() {
+        msgErr.setText("");
         ModelUser user = Client.getInstance().getUser();
         txtName.setText(user.getUserName());
         if (user.getDate() != null) {
@@ -87,7 +94,6 @@ public class InfoUser extends javax.swing.JPanel {
                 newPass,
                 msgErr
         );
-        btnCancel.addActionListener(event);
         btnRemove.addActionListener(event);
         btnUpdate.addActionListener(event);
 
@@ -122,7 +128,6 @@ public class InfoUser extends javax.swing.JPanel {
         newPass = new swing.PassField();
         jLabel6 = new javax.swing.JLabel();
         btnRemove = new swing.Button();
-        btnCancel = new swing.Button();
         btnUpdate = new swing.Button();
         isChange = new swing.button.toggle.SwitchButton();
         msgErr = new javax.swing.JLabel();
@@ -235,11 +240,6 @@ public class InfoUser extends javax.swing.JPanel {
         btnRemove.setText("Remove");
         btnRemove.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
-        btnCancel.setBackground(new java.awt.Color(51, 51, 255));
-        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel.setText("Cancel");
-        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-
         btnUpdate.setBackground(new java.awt.Color(51, 51, 255));
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Update");
@@ -306,10 +306,9 @@ public class InfoUser extends javax.swing.JPanel {
                                     .addComponent(newPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGap(48, 48, 48)
                                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(31, 31, 31))
                                     .addComponent(msgErr, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap())))
         );
@@ -354,7 +353,6 @@ public class InfoUser extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22))
         );
@@ -372,7 +370,6 @@ public class InfoUser extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swing.Button btnCancel;
     private swing.Avatar btnChangeAvatar;
     private javax.swing.ButtonGroup btnG;
     private swing.Button btnRemove;

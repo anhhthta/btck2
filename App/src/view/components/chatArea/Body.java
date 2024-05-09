@@ -5,7 +5,6 @@ import java.awt.Adjustable;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.time.LocalTime;
 import javax.swing.Icon;
 import javax.swing.JScrollBar;
 import model.ModelSendMessage;

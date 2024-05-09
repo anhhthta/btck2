@@ -18,7 +18,6 @@ public class Header extends javax.swing.JPanel {
     public void setName(ModelUser user) {
         this.user = user;
         txtName.setText(user.getUserName());
-        setStatus(user.isStatus());
 
         //        Decode
         try {
@@ -35,7 +34,6 @@ public class Header extends javax.swing.JPanel {
         if (this.user == user) {
             this.user = user;
             txtName.setText(user.getUserName());
-            setStatus(user.isStatus());
 
             //        Decode
             try {
@@ -53,16 +51,6 @@ public class Header extends javax.swing.JPanel {
         return user;
     }
 
-    private void setStatus(boolean isStatus) {
-        if (isStatus) {
-            txtStatus.setText("Active now");
-            txtStatus.setForeground(new Color(51, 255, 51));
-        } else {
-            txtStatus.setText("Offline");
-            txtStatus.setForeground(new Color(51, 51, 51));
-        }
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,16 +64,18 @@ public class Header extends javax.swing.JPanel {
         setBackground(new java.awt.Color(240, 240, 242));
         setOpaque(false);
 
+        panelShadow1.setBackground(new java.awt.Color(32, 32, 32));
+        panelShadow1.setBgColor(new java.awt.Color(40, 40, 40));
         panelShadow1.setShadowOpacity(0.1F);
         panelShadow1.setShadowSize(2);
 
         layer.setLayout(new java.awt.GridLayout(0, 1));
 
         txtName.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        txtName.setForeground(new java.awt.Color(186, 186, 186));
         layer.add(txtName);
 
         txtStatus.setForeground(new java.awt.Color(51, 255, 51));
-        txtStatus.setText("Active Now");
         layer.add(txtStatus);
 
         avatar1.setForeground(new java.awt.Color(255, 255, 255));
@@ -102,7 +92,7 @@ public class Header extends javax.swing.JPanel {
                 .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(layer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
         panelShadow1Layout.setVerticalGroup(
             panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

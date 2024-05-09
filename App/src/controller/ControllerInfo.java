@@ -2,6 +2,7 @@ package controller;
 
 import event.PublicEvent;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +31,9 @@ import swing.TextField;
 import swing.button.toggle.SwitchButton;
 import swing.combobox.ComboBoxSuggestion;
 import utilites.UserAction;
+import view.MainSystem;
 import view.components.InfoUser;
+import view.login.Login;
 
 public class ControllerInfo implements ActionListener {
 
@@ -100,28 +103,55 @@ public class ControllerInfo implements ActionListener {
             avatar.revalidate();
         }
     }
-    
+
     int i = 0;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("Remove")) {
-            
+            delete();
         } else if (command.equals("Update")) {
             update();
 
         } else if (command.equals("Cancel")) {
         }
     }
-    
+
     public void delete() {
         ModelUser dlt = new ModelUser();
         dlt.setUserID(Client.getInstance().getUser().getUserID());
-        
         ModelSendMessage data = new ModelSendMessage(dlt, UserAction.DELETE_USER);
+
+        data.setTo(-1);
+        data.setFrom(dlt.getUserID());
         PublicEvent.getInstance().getEventToServer().send(data);
 
+        new Thread(() -> {
+            try {
+                msgErr.setForeground(new Color(255, 0, 0));
+                msgErr.setText("Delete successfully (exit after 3s)");
+                Thread.sleep(1000);
+                msgErr.setText("Delete successfully (exit after 2s)");
+                Thread.sleep(1000);
+                msgErr.setText("Delete successfully (exit after 1s)");
+                Thread.sleep(1000);
+
+                Container com = panel.getParent();
+                while (!(com instanceof MainSystem)) {
+                    com = com.getParent();
+                }
+
+                Client.getInstance().getSocket().close();
+                Login login = new Login();
+                login.setVisible(true);
+                ((MainSystem) com).dispose();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ControllerInfo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ControllerInfo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
     }
 
     public void update() {
@@ -129,10 +159,10 @@ public class ControllerInfo implements ActionListener {
         String name = txtName.getText();
         try {
             LocalDate date = LocalDate.of(Integer.valueOf(cbbYear.getSelectedItem() + ""), cbbMonth.getSelectedIndex() + 1, cbbDay.getSelectedIndex() + 1);
-            
+
             ModelUser oldUser = Client.getInstance().getUser();
             ModelUser newUser = new ModelUser(oldUser.getUserID(), oldUser.getUserName(), oldUser.getDate(), oldUser.getEmail(), oldUser.getGender(), oldUser.getImage(), oldUser.getPassword(), oldUser.isStatus());
-            
+
             newUser.setUserName(name);
             System.out.println("userNew: " + newUser.getUserName());
             newUser.setDate(date);

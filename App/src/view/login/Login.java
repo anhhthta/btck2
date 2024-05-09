@@ -3,6 +3,7 @@ package view.login;
 
 import controller.ControllerLogin;
 import controller.Encrypt;
+import event.EventNotificate;
 import event.PublicEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class Login extends javax.swing.JFrame {
         Client.getInstance().createSocket();
         
         ActionListener event = new ControllerLogin(this, bg, layout, verify, loginAndRegister);
+        PublicEvent.getInstance().addEventNotificate((EventNotificate) event);
         loginAndRegister.addEvent(event);
         
         verify.addEventBtnOK(event);

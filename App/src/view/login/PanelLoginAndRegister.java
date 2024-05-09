@@ -1,6 +1,7 @@
 
 package view.login;
 
+import event.PublicEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -18,12 +19,14 @@ import net.miginfocom.swing.MigLayout;
 import swing.Button;
 import swing.PassField;
 import swing.TextField;
+import view.components.Notification;
 
 /**
  *
  * @author anhth
  */
 public class PanelLoginAndRegister extends javax.swing.JPanel {
+    
     private ActionListener event;
     
     private ModelUser user;
@@ -63,7 +66,8 @@ public class PanelLoginAndRegister extends javax.swing.JPanel {
         PassField txtPassword = new PassField();
         txtPassword.setHint("Password");
         txtPassword.setPrefixIcon(new ImageIcon(getClass().getResource("/icon/password.png")));
-        txtPassword.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/eye-off.png")), new ImageIcon(getClass().getResource("/icon/eye.png")));
+        txtPassword.setSuffixIcon(new ImageIcon(getClass().getResource("/icon/eye-off.png")),
+                new ImageIcon(getClass().getResource("/icon/eye.png")));
 
         PassField txtRepassword = new PassField();
         txtRepassword.setHint("Re-Password");
@@ -102,12 +106,17 @@ public class PanelLoginAndRegister extends javax.swing.JPanel {
             String repass = String.valueOf(txtRepassword.getPassword());
             if(userName.equals("")){
                 txtUser.grabFocus();
+                PublicEvent.getInstance().getEventNotificate().showMessage(Notification.MessageType.ERROR, "Name cannot be blank");
             } else if(email.equals("")){
                 txtEmail.grabFocus();
+                PublicEvent.getInstance().getEventNotificate().showMessage(Notification.MessageType.ERROR, "Email cannot be blank");
             } else if(pass.equals("")){
                 txtPassword.grabFocus();
+                PublicEvent.getInstance().getEventNotificate().showMessage(Notification.MessageType.ERROR, "Password cannot be blank");
             } else if(!repass.equals(pass)){
                 txtRepassword.grabFocus();
+                PublicEvent.getInstance().getEventNotificate().showMessage(Notification.MessageType.ERROR, "Incorrect password");
+
             } else {
                 user = new ModelUser(0, userName, email, pass, repass);
             }

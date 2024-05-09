@@ -20,9 +20,11 @@ import swing.ComponentResizer;
  * @author anhth
  */
 public class MainSystem extends javax.swing.JFrame {
-
+    
     private int pX, pY;
     public static String groupImage;
+    
+    
 
     public MainSystem() {
         Image image = new ImageIcon(getClass().getResource("/icon/avatarG-50.png")).getImage();
@@ -159,6 +161,8 @@ public class MainSystem extends javax.swing.JFrame {
         );
 
         body.setLayout(new java.awt.CardLayout());
+
+        content.setOpaque(true);
         body.add(content, "card2");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));

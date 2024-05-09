@@ -1,12 +1,11 @@
-
 package controller;
 
+import event.EventNotificate;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.logging.Level;
@@ -20,7 +19,6 @@ import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
-import service.ServiceGmail;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,16 +30,16 @@ import service.Client;
 import view.MainSystem;
 import view.components.Notification;
 import view.components.PanelVerify;
-import view.login.Login;
 import view.login.PanelLoginAndRegister;
 
 /**
  *
  * @author anhth
  */
-public class ControllerLogin implements ActionListener{
+public class ControllerLogin implements ActionListener, EventNotificate {
+
     private final Pattern p = Pattern.compile("^[a-zA-Z][a-zA-Z0-9]{0,}+@[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}{1,3}$)");
-    
+
     private final JFrame login;
     private final JLayeredPane bg;
     private final MigLayout layout;
@@ -50,7 +48,7 @@ public class ControllerLogin implements ActionListener{
     private boolean isLogin;
     private String veridyCode = "0";
     private ModelUser user = null;
-    
+
     private Socket socket;
     private ObjectInputStream readerOj;
     private ObjectOutputStream writerOj1;
@@ -59,8 +57,7 @@ public class ControllerLogin implements ActionListener{
     private ObjectInputStream readerOj1;
     private ObjectInputStream readerOj2;
 
-    
-    public ControllerLogin(JFrame login,JLayeredPane bg, MigLayout layout, PanelVerify verify, PanelLoginAndRegister loginAndRegister) {
+    public ControllerLogin(JFrame login, JLayeredPane bg, MigLayout layout, PanelVerify verify, PanelLoginAndRegister loginAndRegister) {
         this.login = login;
         this.bg = bg;
         this.layout = layout;
@@ -69,7 +66,7 @@ public class ControllerLogin implements ActionListener{
         try {
             this.socket = Client.getInstance().getSocket();
             this.writerOj1 = new ObjectOutputStream(socket.getOutputStream());
-            this.writerOj = new ObjectOutputStream(socket.getOutputStream());             
+            this.writerOj = new ObjectOutputStream(socket.getOutputStream());
             Client.getInstance().setWriterOj(writerOj2);
 
         } catch (IOException ex) {
@@ -82,18 +79,18 @@ public class ControllerLogin implements ActionListener{
         String btnValue = a.getActionCommand();
         switch (btnValue) {
             case "SIGN UP" -> {
-            try {
-                register();
-            } catch (IOException ex) {
-                Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                try {
+                    register();
+                } catch (IOException ex) {
+                    Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             case "SIGN IN" -> {
-            try {
-                login();
-            } catch (IOException ex) {
-                Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                try {
+                    login();
+                } catch (IOException ex) {
+                    Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             case "Forget your password?" -> {
                 forget();
@@ -104,50 +101,103 @@ public class ControllerLogin implements ActionListener{
             case "Or Login" -> {
                 changePanel();
             }
-            case "OK" -> {  
+            case "OK" -> {
                 changedPassOk();
             }
             default -> {
             }
         }
     }
-    
+
     private void register() throws IOException {
         ModelUser data = loginAndRegister.getUser();
-        if(data != null) {
+        if (data != null) {
+            boolean validEmail = p.matcher(data.getEmail()).find();
+            if (validEmail) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (readerOj == null) {
+                                readerOj = new ObjectInputStream(socket.getInputStream());
+                            }
+
+                            if (readerOj1 == null) {
+                                readerOj1 = new ObjectInputStream(socket.getInputStream());
+                            }
+
+                            if (readerOj2 == null) {
+                                readerOj2 = new ObjectInputStream(socket.getInputStream());
+                            }
+
+                            writerOj1.writeObject("REGISTER");
+                            writerOj.writeObject(data);
+                            ModelMessage response = (ModelMessage) readerOj.readObject();
+
+                            if (response.isSuccess()) {
+                                List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
+
+                                List<ModelUser> users = (List<ModelUser>) readerOj2.readObject();
+                                Client.getInstance().setUsers(users);
+
+                                Client.getInstance().setUser((ModelUser) response.getData());
+
+                                login.dispose();
+
+                                Client.getInstance().setHistory(history);
+                                new MainSystem().setVisible(true);
+                            } else {
+                                showMessage(Notification.MessageType.ERROR, response.getMessage());
+                            }
+                        } catch (IOException ex) {
+                            Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                }).start();
+            } else {
+                showMessage(Notification.MessageType.ERROR, "Email is not Valid!");
+
+            }
+
+        }
+    }
+
+    private void login() throws IOException {
+        ModelUser data = loginAndRegister.getDataLogin();
+        if (data != null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        if(readerOj == null) {
+                        if (readerOj == null) {
                             readerOj = new ObjectInputStream(socket.getInputStream());
                         }
-                        
-                        if(readerOj1 == null) {
+
+                        if (readerOj1 == null) {
                             readerOj1 = new ObjectInputStream(socket.getInputStream());
                         }
-                        
-                        if(readerOj2 == null) {
+
+                        if (readerOj2 == null) {
                             readerOj2 = new ObjectInputStream(socket.getInputStream());
                         }
-                        
-                        writerOj1.writeObject("REGISTER");
+
+                        writerOj1.writeObject("LOGIN");
                         writerOj.writeObject(data);
                         ModelMessage response = (ModelMessage) readerOj.readObject();
-                       
                         if (response.isSuccess()) {
-                            List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject(); 
-                            
-                            List<ModelUser> users = (List<ModelUser>) readerOj2.readObject(); 
+                            List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
+                            List<ModelUser> users = (List<ModelUser>) readerOj2.readObject();
                             Client.getInstance().setUsers(users);
-                            
+
                             Client.getInstance().setUser((ModelUser) response.getData());
-                            
                             login.dispose();
-                            
                             Client.getInstance().setHistory(history);
-                            new MainSystem().setVisible(true);
-                        } else {                            
+                            MainSystem main = new MainSystem();
+                            main.setVisible(true);
+                        } else {
                             showMessage(Notification.MessageType.ERROR, response.getMessage());
                         }
                     } catch (IOException ex) {
@@ -155,94 +205,47 @@ public class ControllerLogin implements ActionListener{
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                 }
             }).start();
+
         }
     }
-    
-    private void login() throws IOException {
-        ModelUser data = loginAndRegister.getDataLogin();
-        if(data != null) {            
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if(readerOj == null) {
-                            readerOj = new ObjectInputStream(socket.getInputStream());
-                        }
-                        
-                        if(readerOj1 == null) {
-                            readerOj1 = new ObjectInputStream(socket.getInputStream());
-                        }
-                        
-                        if(readerOj2 == null) {
-                            readerOj2 = new ObjectInputStream(socket.getInputStream());
-                        }
-                        
-                        writerOj1.writeObject("LOGIN");
-                        writerOj.writeObject(data);
-                        ModelMessage response = (ModelMessage) readerOj.readObject();
-                        if (response.isSuccess()) {
-                            List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
-                            List<ModelUser> users = (List<ModelUser>) readerOj2.readObject(); 
-                            Client.getInstance().setUsers(users);
-                            
-                            Client.getInstance().setUser((ModelUser) response.getData());
-                            login.dispose();
-                            Client.getInstance().setHistory(history);
-                            MainSystem main = new MainSystem();
-                            main.setVisible(true);
-                        } else {                            
-                            System.out.println("Login failed!");
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                }
-            }).start();
-            
-        }
-    }
-    
+
     private void forget() {
         verify.setVisible(true);
         MouseListener ml = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseClicked(MouseEvent e) {
                 verify.getUser();
                 sendMain();
             }
         };
         verify.addEvent(ml);
     }
-    
-    private void sendMain(){
+
+    private void sendMain() {
         this.user = verify.getUser();
         TextField btn = verify.getBtnTxtCode();
-        
+
         DecimalFormat df = new DecimalFormat("000000");
         Random rand = new Random();
         this.veridyCode = df.format(rand.nextInt(1000000));
     }
-   
+
     private void changePanel() {
         isLogin = !isLogin;
         loginAndRegister.showRegister(isLogin);
     }
-    
+
     private void changedPassOk() {
         ModelUser user1 = verify.getUser();
         boolean compareVerifyCode = this.veridyCode.equals(verify.getBtnTxtCode().getText());
-        
 
         String emailNew = user1.getEmail();
         boolean validPass = user1.getPassword().length() > 8;
         boolean comparePass = user1.comparePass();
-        
+
 //        check user already exists
         String emailOld = null;
         boolean comapareEmail = false;
@@ -253,18 +256,18 @@ public class ControllerLogin implements ActionListener{
             showMessage(Notification.MessageType.ERROR, "This user is not exists!");
         }
 
-        try{
-            if(user != null){
-                if(compareVerifyCode && comapareEmail){
-                    if(validPass){
-                        if(comparePass){
+        try {
+            if (user != null) {
+                if (compareVerifyCode && comapareEmail) {
+                    if (validPass) {
+                        if (comparePass) {
                             showMessage(Notification.MessageType.SUCCESS, "changed password successfully");
 //                            dao.updatePass(emailOld, user1.getPassword());
                             verify.setVisible(false);
                         } else {
                             showMessage(Notification.MessageType.ERROR, "Password is incorrect!");
                         }
-                    } else {                           
+                    } else {
                         showMessage(Notification.MessageType.ERROR, "Password must be more than 8 latters!");
                     }
                 } else {
@@ -275,8 +278,9 @@ public class ControllerLogin implements ActionListener{
             showMessage(Notification.MessageType.ERROR, "ERROR");
         }
     }
-    
-    private void showMessage(Notification.MessageType messageType, String message){
+
+    @Override
+    public void showMessage(Notification.MessageType messageType, String message) {
         Notification ms = new Notification();
         ms.showMessage(messageType, message);
         TimingTarget target = new TimingTargetAdapter() {
