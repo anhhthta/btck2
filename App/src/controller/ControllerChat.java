@@ -74,6 +74,7 @@ public class ControllerChat implements ActionListener, EventChat {
             ModelSendMessage data = new ModelSendMessage(Client.getInstance().getUser(), text, LocalDateTime.now(), header.getUser().getUserID(), UserAction.SEND_RECEIVE);
             PublicEvent.getInstance().getEventToServer().send(data);
             Client.getInstance().getHistory().add(data);
+            PublicEvent.getInstance().getEventLastTime().setLastTime(data);
             body.addRightItem(data);
             boxtxt.setText("");
             boxtxt.grabFocus();

@@ -2,7 +2,6 @@ package service;
 
 import DAO.MesageDAO;
 import DAO.UserDAO;
-import connection.DTBCS;
 import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
@@ -43,7 +42,6 @@ public class Server {
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
-            DTBCS.getInstance().connection();
         }
 
         public void run() {
@@ -85,7 +83,7 @@ public class Server {
                 writerOj1.writeObject(login);
                 List<ModelSendMessage> history = new MesageDAO().getMessage();
                 writerOj2.writeObject(history);
-                List<ModelUser> users = new UserDAO().getUsers(user.getEmail());
+                List<ModelUser> users = new UserDAO().getUsers();
                 writerOj3.writeObject(users);
                 new Handler(socket, userID);
             } else {
@@ -106,7 +104,7 @@ public class Server {
                 writerOj1.writeObject(register);
                 List<ModelSendMessage> history = new MesageDAO().getMessage();
                 writerOj2.writeObject(history);
-                List<ModelUser> users = new UserDAO().getUsers(user.getEmail());
+                List<ModelUser> users = new UserDAO().getUsers();
                 writerOj3.writeObject(users);
                 new Handler(socket, userID);
             } else {
@@ -137,7 +135,17 @@ public class Server {
                 writer = new ObjectOutputStream(socket.getOutputStream());
                 mr = new ModelUserReceive(writer, userID);
                 clientWriters.add(mr);
+                
+                ModelSendMessage firstMesage = new ModelSendMessage();
+                firstMesage.setTo(-1);
+                firstMesage.setFrom(userID);
+                firstMesage.setAction(UserAction.LOGIN);
+                firstMesage.setUsers(new UserDAO().getUsers());
+                broadcast(firstMesage);
+
+                
                 ModelSendMessage message;
+                
                 while ((message = (ModelSendMessage) reader.readObject()) != null) {
                     System.out.println("DAY ner:: " + message.getUser().getUserName());
                     System.out.println("TxT " + message.getText());
@@ -146,10 +154,14 @@ public class Server {
 //                        ModelUser info = new UserDAO().getUser(message.getUser());
 //                        message.setUser(info);
                         new MesageDAO().insertMessage(message);
-                    } 
-                    else if(message.getAction() == UserAction.UPDATE_INFO) {
+                    } else if(message.getAction() == UserAction.UPDATE_INFO) {
                         new UserDAO().update(message.getUser());
                         System.out.println("UserName: " + message.getUser().getUserName());
+                    } else if (message.getAction() == UserAction.DELETE_USER){
+                        new UserDAO().delete(message.getUser());
+                        message.setUsers(new UserDAO().getUsers());
+                        System.out.println(message.getUser().getUserID());
+                        new MesageDAO().delete(message.getUser().getUserID());
                     }
                     
                     broadcast(message);
@@ -178,7 +190,7 @@ public class Server {
                         clientWriter.getOb().writeObject(message);
                     }
                 }
-            } else {
+            } else{
                 for (ModelUserReceive clientWriter : clientWriters) {
                     if (clientWriter.getUserID() == message.getTo()) {
                         clientWriter.getOb().writeObject(message);

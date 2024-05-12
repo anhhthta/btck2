@@ -10,6 +10,7 @@ public class PublicEvent {
     private EventEncrypt eventEncrypt;
     private EventUpdate eventUpdate;
     private EventNotificate eventNotificate;
+    private EventLastTime eventLastTime;
 
     public static PublicEvent getInstance() {
         if (instance == null) {
@@ -45,6 +46,10 @@ public class PublicEvent {
     public void addEventNotificate(EventNotificate event) {
         this.eventNotificate = event;
     }
+    
+    public void addEventLastTime(EventLastTime event) {
+        this.eventLastTime = event;
+    }
 
     public EventToServer getEventToServer() {
         return eventToServer;
@@ -53,8 +58,6 @@ public class PublicEvent {
     public EventContent getEventItemPeople() {
         return eventItemPeople;
     }
-    
-    
 
     public EventContent getEventContent() {
         return this.eventItemPeople;
@@ -75,6 +78,8 @@ public class PublicEvent {
     public EventNotificate getEventNotificate() {
         return eventNotificate;
     }
-    
-    
+
+    public EventLastTime getEventLastTime() {
+        return eventLastTime;
+    }
 }

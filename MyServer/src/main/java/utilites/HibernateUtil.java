@@ -15,6 +15,7 @@ public class HibernateUtil {
             return new Configuration().configure().buildSessionFactory();
         } catch (Exception e) {
             System.err.println("Lỗi 1");
+            e.printStackTrace();
             return null;
         }
     }

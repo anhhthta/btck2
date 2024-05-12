@@ -65,6 +65,7 @@ public class ControllerToServer implements EventToServer {
                 if (data.getAction() == UserAction.SEND_RECEIVE) {
                     PublicEvent.getInstance().getEventChat().ReceiveMessage(data);
                     Client.getInstance().getHistory().add(data);
+                    PublicEvent.getInstance().getEventLastTime().setLastTime(data);
                 } else if (data.getAction() == UserAction.UPDATE_INFO) {
                     int i = 0;
                     for (ModelUser user : Client.getInstance().getUsers()) {

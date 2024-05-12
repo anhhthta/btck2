@@ -1,6 +1,6 @@
-
 package view.components.chatArea;
 
+import event.PublicEvent;
 import java.awt.Adjustable;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -16,22 +16,23 @@ import swing.ScrollBar;
  * @author anhth
  */
 public class Body extends javax.swing.JPanel {
+
     private ActionListener event;
 
     public Body() {
         initComponents();
         init();
     }
-    
+
     private void init() {
-        body.setLayout(new MigLayout("fillx","","3[]3"));
+        body.setLayout(new MigLayout("fillx", "", "3[]3"));
         ScrollBar sb = new ScrollBar();
         sb.setSizeThumb(5, 5);
-        scroll.setVerticalScrollBar(sb);   
+        scroll.setVerticalScrollBar(sb);
     }
-    
+
     public void addRightItem(ModelSendMessage data, Icon... images) {
-        for(Icon img : images) {
+        for (Icon img : images) {
             ImageItem imageItem = new ImageItem();
             imageItem.addImage(img);
             body.add(imageItem, "wrap, al right, w ::75%");
@@ -39,28 +40,28 @@ public class Body extends javax.swing.JPanel {
         ChatItem item = new ChatItem();
         item.setTextRight(data.getText(), data.getTime());
         body.add(item, "wrap, al right, w ::75%");
-        
+
 //        ::x is max 
         body.repaint();
         body.revalidate();
         scrollToBottom();
         refresh();
     }
-    
+
     public void addGroupItem(ModelSendMessage data, Icon... images) {
 //        ChatItem user = new ChatItem();
 //        user.setUserName(data.getUser().getUserName());
-        
+
 //        body.add(user, "wrap, w ::75%");
-        for(Icon img : images) {
+        for (Icon img : images) {
             ImageItem imageItem = new ImageItem();
             imageItem.addImage(img);
             body.add(imageItem, "wrap, w ::75%");
         }
-        
+
         ItemChatLeft item = new ItemChatLeft();
         item.setData(data);
-        
+
         body.add(item, "wrap, w ::75%");
 //        ::x is max 
         body.repaint();
@@ -68,15 +69,16 @@ public class Body extends javax.swing.JPanel {
         scrollToBottom();
         refresh();
     }
-    
-    public void addEvent(ActionListener event){
+
+    public void addEvent(ActionListener event) {
         this.event = event;
-    } 
-    
+    }
+
     public void refresh() {
         repaint();
         revalidate();
     }
+
     public void clearChat() {
         body.removeAll();
         repaint();

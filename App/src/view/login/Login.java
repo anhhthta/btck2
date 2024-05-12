@@ -1,4 +1,3 @@
-
 package view.login;
 
 import controller.ControllerLogin;
@@ -14,16 +13,16 @@ import net.miginfocom.swing.MigLayout;
 import service.Client;
 import view.components.PanelVerify;
 
-
 /**
  *
  * @author anhth
  */
 public class Login extends javax.swing.JFrame {
+
     private MigLayout layout;
     private PanelVerify verify;
     private PanelLoginAndRegister loginAndRegister;
-    
+
     public Login() throws IOException {
         initComponents();
         init();
@@ -39,16 +38,16 @@ public class Login extends javax.swing.JFrame {
         bg.add(verify, "pos 0 0 100% 100%");
         bg.add(loginAndRegister, "w 50%, pos 0.5al 0.5al");
         Client.getInstance().createSocket();
-        
+
         ActionListener event = new ControllerLogin(this, bg, layout, verify, loginAndRegister);
         PublicEvent.getInstance().addEventNotificate((EventNotificate) event);
         loginAndRegister.addEvent(event);
-        
+
         verify.addEventBtnOK(event);
 //        Service.getInstance().startServer();
 
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -104,7 +103,6 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 new Login().setVisible(true);

@@ -20,11 +20,13 @@ public class ModelUser  implements Serializable{
     @Column(name = "name")
     private String userName;
     private LocalDate date;
+    @Lob
     private String email;
     private String gender;
     @Lob
     @Column(name = "image")
     private String image;
+    @Lob
     private String password;
     @Transient
     private String repassword;

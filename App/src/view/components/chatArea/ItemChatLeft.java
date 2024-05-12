@@ -12,9 +12,9 @@ public class ItemChatLeft extends javax.swing.JPanel {
     }
     
     public void setData(ModelSendMessage data) {
-        
-        chatItem.setTextLeft(data.getText(), data.getTime());
-        userNama.setText(data.getUser().getUserName());
+        String name = data.getUser().getUserName();
+        chatItem.setTextLeft(data.getText(), data.getTime(), name);
+        userNama.setText(name);
 //      Decode
         try {
             byte[] imageByte = Base64.getDecoder().decode(data.getUser().getImage());

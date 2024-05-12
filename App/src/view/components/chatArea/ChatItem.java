@@ -1,14 +1,13 @@
 
 package view.components.chatArea;
 
+import event.PublicEvent;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.border.EmptyBorder;
 
 public class ChatItem extends javax.swing.JLayeredPane {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -19,7 +18,7 @@ public class ChatItem extends javax.swing.JLayeredPane {
         txt.setOpaque(false);
     }
 
-    public void setTextLeft(String text, LocalDateTime time) {
+    public void setTextLeft(String text, LocalDateTime time, String name) {
         txt.setText(text);
         txtTime.setText(time.format(formatter));
         setBackground(new Color(239,239,239));

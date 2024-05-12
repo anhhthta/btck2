@@ -1,7 +1,11 @@
 package view.components;
 
+import event.EventLastTime;
+import event.PublicEvent;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import model.ModelSendMessage;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
@@ -32,6 +36,27 @@ public class Menu extends javax.swing.JPanel {
         user = Client.getInstance().getUser();
         
         setPeople();
+        
+        Menu t = this;
+        
+        PublicEvent.getInstance().addEventLastTime(new EventLastTime() {
+            @Override
+            public void setLastTime(ModelSendMessage msg) {
+                for(Component com : menuList.getComponents()) {
+                    ItemPeople item = (ItemPeople) com;
+                    int idItem = item.getUser().getUserID();
+                    if(idItem == msg.getUser().getUserID() || idItem == msg.getTo()) {
+//                        System.out.println("from: " +msg.getFrom());
+//                        System.out.println("to: " +msg.getTo());
+//                        System.out.println("user: " +idItem);
+
+                        item.setLastText(msg);
+                        break;
+                    }
+                }
+            }
+        });
+        
     }
 
      public void setPeople() {

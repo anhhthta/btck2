@@ -1,48 +1,76 @@
-
 package view.components;
 
+import event.EventLastTime;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.ModelUser;
 import event.PublicEvent;
 import java.awt.Image;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
 import javax.swing.ImageIcon;
+import model.ModelSendMessage;
+import service.Client;
 
 public class ItemPeople extends javax.swing.JPanel {
+
     private ModelUser user;
-    
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
     public ItemPeople(ModelUser user) {
         this.user = user;
         initComponents();
         lb.setText(user.getUserName());
-        
+
         //        Decode
         try {
             byte[] imageByte = Base64.getDecoder().decode(user.getImage());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             avatar1.setIcon(new ImageIcon(image));
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         init();
+        setData();
     }
-    
+
+    private void setData() {
+        List<ModelSendMessage> list = Client.getInstance().getHistory();
+        int id = Client.getInstance().getUser().getUserID();
+        for (ModelSendMessage l : list) {
+            System.out.println("now user: " + user.getUserID());
+            if (user.getUserID() == l.getTo() || id == l.getTo()) {
+                if (user.getUserID() == l.getFrom()) {
+                    lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
+                    lastTime.setText(l.getTime().format(formatter));
+                } else if (id == l.getFrom()) {
+                    lastMsg.setText("You: " + l.getText());
+                    lastTime.setText(l.getTime().format(formatter));
+                } else if (user.getUserID() == -1 && l.getTo() == -1) {
+                    lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
+                    lastTime.setText(l.getTime().format(formatter));
+                }
+            }
+        }
+    }
+
     private void init() {
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                bg.setBgColor(new Color(204,204,204,70));
+                bg.setBgColor(new Color(204, 204, 204, 70));
                 bg.revalidate();
                 bg.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                bg.setBgColor(new Color(255,255,255));
+                bg.setBgColor(new Color(255, 255, 255));
                 bg.revalidate();
                 bg.repaint();
             }
@@ -50,15 +78,34 @@ public class ItemPeople extends javax.swing.JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 PublicEvent.getInstance().getEventContent().selectedUser(user);
-            } 
-            
+            }
+
         });
     }
 
     public ModelUser getUser() {
         return user;
     }
-    
+
+    public void setLastText(ModelSendMessage data) {
+        System.out.println("from: " + data.getUser().getUserID());
+        System.out.println("to: " + data.getTo());
+        System.out.println("user: " + user.getUserID());
+
+        int id = Client.getInstance().getUser().getUserID();
+
+        if (user.getUserID() == data.getUser().getUserID()) {
+            lastMsg.setText(data.getUser().getUserName() + ": " + data.getText());
+            lastTime.setText(data.getTime().format(formatter));
+        } else if (id == data.getUser().getUserID()) {
+            lastMsg.setText("You: " + data.getText());
+            lastTime.setText(data.getTime().format(formatter));
+        } else if (user.getUserID() == -1) {
+            lastMsg.setText(data.getUser().getUserName() + ": " + data.getText());
+            lastTime.setText(data.getTime().format(formatter));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -66,6 +113,8 @@ public class ItemPeople extends javax.swing.JPanel {
         bg = new swing.radius.PanelRadius();
         avatar1 = new swing.Avatar();
         lb = new javax.swing.JLabel();
+        lastMsg = new javax.swing.JLabel();
+        lastTime = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 204, 204));
         setOpaque(false);
@@ -79,6 +128,15 @@ public class ItemPeople extends javax.swing.JPanel {
         lb.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb.setForeground(new java.awt.Color(51, 51, 51));
 
+        lastMsg.setBackground(new java.awt.Color(51, 51, 51));
+        lastMsg.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lastMsg.setForeground(new java.awt.Color(102, 102, 102));
+
+        lastTime.setBackground(new java.awt.Color(51, 51, 51));
+        lastTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lastTime.setForeground(new java.awt.Color(102, 102, 102));
+        lastTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
@@ -87,17 +145,26 @@ public class ItemPeople extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lb)
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lastMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lastTime, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lb)
-                    .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lastMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastTime, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -116,6 +183,8 @@ public class ItemPeople extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swing.Avatar avatar1;
     private swing.radius.PanelRadius bg;
+    private javax.swing.JLabel lastMsg;
+    private javax.swing.JLabel lastTime;
     private javax.swing.JLabel lb;
     // End of variables declaration//GEN-END:variables
 }

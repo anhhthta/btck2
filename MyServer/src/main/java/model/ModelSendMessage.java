@@ -19,22 +19,23 @@ public class ModelSendMessage  implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "fromUser")
-    private int from;
+    private int fromId;
     @Transient
     private ModelUser user;
     private String text;
     private LocalDateTime time;
     @Column(name = "toUser")
-    private int to;
+    private int toId;
     @Transient
     private UserAction action;
+    @Transient
     private List<ModelUser> users;
 
     public ModelSendMessage(ModelUser user, String text, LocalDateTime time, int to,UserAction action) {
         this.user = user;
         this.text = text;
         this.time = time;
-        this.to = to;
+        this.toId = to;
         this.action = action;
     }
 
@@ -71,11 +72,11 @@ public class ModelSendMessage  implements Serializable{
     }
 
     public int getTo() {
-        return to;
+        return toId;
     }
 
     public void setTo(int to) {
-        this.to = to;
+        this.toId = to;
     }
 
     public UserAction getAction() {
@@ -95,11 +96,11 @@ public class ModelSendMessage  implements Serializable{
     }
 
     public int getFrom() {
-        return from;
+        return fromId;
     }
 
     public void setFrom(int from) {
-        this.from = from;
+        this.fromId = from;
     }
 
     public List<ModelUser> getUsers() {
