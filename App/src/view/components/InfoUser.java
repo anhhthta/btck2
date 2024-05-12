@@ -125,12 +125,12 @@ public class InfoUser extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         pass = new swing.PassField();
-        newPass = new swing.PassField();
         jLabel6 = new javax.swing.JLabel();
         btnRemove = new swing.Button();
         btnUpdate = new swing.Button();
         isChange = new swing.button.toggle.SwitchButton();
         msgErr = new javax.swing.JLabel();
+        newPass = new swing.PassField();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -225,14 +225,6 @@ public class InfoUser extends javax.swing.JPanel {
 
         jLabel5.setText("Password");
 
-        pass.setBackground(new java.awt.Color(254, 254, 254));
-        pass.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(3, 10, 3, 10)));
-        pass.setSelectionColor(new java.awt.Color(51, 51, 255));
-
-        newPass.setBackground(new java.awt.Color(254, 254, 254));
-        newPass.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(3, 10, 3, 10)));
-        newPass.setSelectionColor(new java.awt.Color(51, 51, 255));
-
         jLabel6.setText("New Pass");
 
         btnRemove.setBackground(new java.awt.Color(255, 51, 51));
@@ -275,7 +267,9 @@ public class InfoUser extends javax.swing.JPanel {
                                             .addComponent(jLabel6)
                                             .addComponent(jLabel5)
                                             .addComponent(jLabel3))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(pass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(newPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(6, 6, 6))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -302,8 +296,6 @@ public class InfoUser extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(newPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(48, 48, 48)
@@ -348,13 +340,13 @@ public class InfoUser extends javax.swing.JPanel {
                 .addComponent(jLabel6)
                 .addGap(0, 0, 0)
                 .addComponent(newPass, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(msgErr)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
