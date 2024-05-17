@@ -41,11 +41,6 @@ public class ControllerToServer implements EventToServer {
     @Override
     public void send(ModelSendMessage data) {
         try {
-//            if(i > 1){
-//                data.getUser().setUserName("A");
-//            }
-//            i++;
-            System.out.println("data--: " + data.getUser().getUserName());
             writerOj.writeObject(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +56,6 @@ public class ControllerToServer implements EventToServer {
                 readerOj = new ObjectInputStream(socket.getInputStream());
             }
             while ((data = (ModelSendMessage) readerOj.readObject()) != null) {
-                System.out.println("Action: " + data.getAction());
                 if (data.getAction() == UserAction.SEND_RECEIVE) {
                     PublicEvent.getInstance().getEventChat().ReceiveMessage(data);
                     Client.getInstance().getHistory().add(data);
@@ -69,7 +63,6 @@ public class ControllerToServer implements EventToServer {
                 } else if (data.getAction() == UserAction.UPDATE_INFO) {
                     int i = 0;
                     for (ModelUser user : Client.getInstance().getUsers()) {
-                        System.out.println("List: " + data.getUser().getUserName());
                         if (user.getUserID() == data.getFrom()) {
                             Client.getInstance().getUsers().set(i, data.getUser());
                             break;
@@ -78,12 +71,16 @@ public class ControllerToServer implements EventToServer {
                     }
 
                     PublicEvent.getInstance().getEventUpdate().updateMenu();
-                } else {
-                    System.out.println("Dang cho lenh");
-                    Client.getInstance().setUsers(data.getUsers());
-                    for (ModelUser C : Client.getInstance().getUsers()) {
-                        System.out.println("user--u: " + C.getUserName());
+                } else if(data.getAction() == UserAction.BAN) {
+                    
+                    if(data.getUser().getUserID() == Client.getInstance().getUser().getUserID()) {
+                        PublicEvent.getInstance().getEventUpdate().clearMenu();
+                    } else {
+                        Client.getInstance().setUsers(data.getUsers());
+                        PublicEvent.getInstance().getEventUpdate().updateMenu();
                     }
+                } else{
+                    Client.getInstance().setUsers(data.getUsers());
                     PublicEvent.getInstance().getEventUpdate().updateMenu();
                 }
             }

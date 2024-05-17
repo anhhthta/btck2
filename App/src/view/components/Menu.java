@@ -46,9 +46,6 @@ public class Menu extends javax.swing.JPanel {
                     ItemPeople item = (ItemPeople) com;
                     int idItem = item.getUser().getUserID();
                     if(idItem == msg.getUser().getUserID() || idItem == msg.getTo()) {
-//                        System.out.println("from: " +msg.getFrom());
-//                        System.out.println("to: " +msg.getTo());
-//                        System.out.println("user: " +idItem);
 
                         item.setLastText(msg);
                         break;
@@ -59,7 +56,7 @@ public class Menu extends javax.swing.JPanel {
         
     }
 
-     public void setPeople() {
+    public void setPeople() {
         listUser = Client.getInstance().getUsers();
         if (listUser == null) {
             listUser = new ArrayList<>();
@@ -69,12 +66,16 @@ public class Menu extends javax.swing.JPanel {
         for (ModelUser us : listUser) {
             if (user.getUserID() != us.getUserID()) {
                 menuList.add(new ItemPeople(us), "wrap");
-                System.out.println("new User" +us.getUserName());
             }
         }
         refreshMenuList();
     }
 
+    public void clearP() {
+        menuList.removeAll();
+        refreshMenuList();
+    }
+    
     private void refreshMenuList() {
         menuList.repaint();
         menuList.revalidate();

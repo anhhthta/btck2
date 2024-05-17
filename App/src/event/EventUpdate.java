@@ -8,4 +8,5 @@ package event;
 public interface EventUpdate {
     public void updateHeader();
     public void updateMenu();
+    public void clearMenu();
 }

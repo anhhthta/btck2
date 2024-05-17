@@ -1,7 +1,6 @@
 package view.components.chatArea;
 
 import event.PublicEvent;
-import java.awt.Color;
 import java.awt.Image;
 import java.util.Base64;
 import javax.swing.ImageIcon;

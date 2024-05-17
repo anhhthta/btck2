@@ -29,8 +29,6 @@ public class Encrypt implements EventEncrypt{
     @Override
     public String encodeImage(Image image, String extension) {
         try {
-            
-            
             BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
             bufferedImage.getGraphics().drawImage(image, 0, 0, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream(10000);

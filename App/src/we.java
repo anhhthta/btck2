@@ -25,11 +25,11 @@ public class we {
             String encode = Base64.getEncoder().encodeToString(tim.getBytes("UTF-8"));
             System.out.println(encode);
 
-            byte[] s = Base64.getDecoder().decode(encode);
+            byte[] s = Base64.getDecoder().decode("bmdhbm5lMQ==");
             System.out.println(new String(s, "UTF-8"));
 
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(tt.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(we.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

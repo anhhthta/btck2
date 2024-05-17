@@ -20,7 +20,6 @@ public class ItemChatLeft extends javax.swing.JPanel {
             byte[] imageByte = Base64.getDecoder().decode(data.getUser().getImage());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             avatar.setIcon(new ImageIcon(image));
-            System.out.println(imageByte);
         } catch (Exception e) {
             e.printStackTrace();
         }

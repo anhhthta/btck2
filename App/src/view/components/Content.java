@@ -47,6 +47,10 @@ public class Content extends javax.swing.JLayeredPane {
     public void setMenu() {
         menu.setPeople();
     }
+    
+    public void clearMenu() {
+        menu.clearP();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

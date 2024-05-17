@@ -164,7 +164,6 @@ public class ControllerInfo implements ActionListener {
             ModelUser newUser = new ModelUser(oldUser.getUserID(), oldUser.getUserName(), oldUser.getDate(), oldUser.getEmail(), oldUser.getGender(), oldUser.getImage(), oldUser.getPassword(), oldUser.isStatus());
 
             newUser.setUserName(name);
-            System.out.println("userNew: " + newUser.getUserName());
             newUser.setDate(date);
             newUser.setGender(getSelected());
 
@@ -206,7 +205,6 @@ public class ControllerInfo implements ActionListener {
                     data.setTo(-1);
                     data.setFrom(newUser.getUserID());
 
-                    System.out.println("data: " + data.getUser().getUserName());
                     Client.getInstance().setUser(newUser);
 
                     PublicEvent.getInstance().getEventToServer().send(data);

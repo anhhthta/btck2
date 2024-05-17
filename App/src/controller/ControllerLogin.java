@@ -141,11 +141,7 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                                 List<ModelUser> users = (List<ModelUser>) readerOj2.readObject();
                                 Client.getInstance().setUsers(users);
                                 ModelUser u = ((ModelUser) response.getData());
-                                System.out.println("Email_1: " + u.getEmail());
-                                System.out.println("pas1: " + u.getPassword());
                                 u.setPassword(data.getPassword());
-                                System.out.println("Email_2: " + u.getEmail());
-                                System.out.println("pas2: " + u.getPassword());
 
                                 Client.getInstance().setUser((ModelUser) response.getData());
 

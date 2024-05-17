@@ -42,7 +42,6 @@ public class ItemPeople extends javax.swing.JPanel {
         List<ModelSendMessage> list = Client.getInstance().getHistory();
         int id = Client.getInstance().getUser().getUserID();
         for (ModelSendMessage l : list) {
-            System.out.println("now user: " + user.getUserID());
             if (user.getUserID() == l.getTo() || id == l.getTo()) {
                 if (user.getUserID() == l.getFrom()) {
                     lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
@@ -88,9 +87,6 @@ public class ItemPeople extends javax.swing.JPanel {
     }
 
     public void setLastText(ModelSendMessage data) {
-        System.out.println("from: " + data.getUser().getUserID());
-        System.out.println("to: " + data.getTo());
-        System.out.println("user: " + user.getUserID());
 
         int id = Client.getInstance().getUser().getUserID();
 

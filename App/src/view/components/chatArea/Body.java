@@ -1,6 +1,5 @@
 package view.components.chatArea;
 
-import event.PublicEvent;
 import java.awt.Adjustable;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;

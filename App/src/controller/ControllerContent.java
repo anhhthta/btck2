@@ -45,7 +45,6 @@ public class ControllerContent implements ActionListener, EventContent{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if(command.equals("back")) {
-            System.out.println("was");
             content.back();
             main.isBack(false);
         }

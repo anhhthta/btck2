@@ -5,5 +5,6 @@ public enum UserAction {
     LOGIN,
     REGISTER,
     DELETE_USER,
-    UPDATE_INFO
+    UPDATE_INFO,
+    BAN
 }

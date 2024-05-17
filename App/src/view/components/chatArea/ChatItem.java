@@ -1,7 +1,6 @@
 
 package view.components.chatArea;
 
-import event.PublicEvent;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
