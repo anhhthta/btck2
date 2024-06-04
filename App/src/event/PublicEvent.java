@@ -11,7 +11,9 @@ public class PublicEvent {
     private EventUpdate eventUpdate;
     private EventNotificate eventNotificate;
     private EventLastTime eventLastTime;
-
+    private FileEvent eventFile;
+    
+    
     public static PublicEvent getInstance() {
         if (instance == null) {
             instance = new PublicEvent();
@@ -50,6 +52,10 @@ public class PublicEvent {
     public void addEventLastTime(EventLastTime event) {
         this.eventLastTime = event;
     }
+    
+    public void addFileEvent(FileEvent event) {
+        this.eventFile = event;
+    }  
 
     public EventToServer getEventToServer() {
         return eventToServer;
@@ -81,5 +87,9 @@ public class PublicEvent {
 
     public EventLastTime getEventLastTime() {
         return eventLastTime;
+    }
+    
+    public FileEvent getFileEvent() {
+        return eventFile;   
     }
 }

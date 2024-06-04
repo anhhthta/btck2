@@ -14,4 +14,8 @@ public interface EventEncrypt {
     public Image decodeImage(byte[] image);
     
     public String encodeImage(Image image, String extension);
+    
+    public String decode(String code);
+    
+    public String encode(String text);
 }

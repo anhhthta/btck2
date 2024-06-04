@@ -162,6 +162,28 @@ public class PanelLoginAndRegister extends javax.swing.JPanel {
             event.actionPerformed(e);
         });
         
+        String dataCode = PublicEvent.getInstance().getFileEvent().readFiles("README.txt");
+        
+        System.out.println("data code: "+ dataCode);
+        if(!dataCode.equals("")) {
+            String data = PublicEvent.getInstance().getEventEncrypt().decode(dataCode);
+            
+            System.out.println("data: " + data);
+            String datas[] = data.split("@BYT\\$-");
+            System.out.println(datas.length);
+            System.out.println(datas[0]);
+//            System.out.println(datas[1]);
+//            System.out.println(datas[2]);
+//            System.out.println(datas[3]);
+
+    
+            if(datas.length == 2) {
+                System.out.println("OK");
+                txtEmail.setText(datas[0]);
+                txtPassword.setText(datas[1]);
+            }
+        }
+
         btn.addActionListener((ActionEvent ae) -> {
             String email = txtEmail.getText().trim();
             String pass = String.valueOf(txtPassword.getPassword());

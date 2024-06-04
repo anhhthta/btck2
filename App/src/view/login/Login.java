@@ -2,6 +2,7 @@ package view.login;
 
 import controller.ControllerLogin;
 import controller.Encrypt;
+import controller.FIlesHandle;
 import event.EventNotificate;
 import event.PublicEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,8 @@ public class Login extends javax.swing.JFrame {
 
     private void init() throws IOException {
         PublicEvent.getInstance().addEventEncrypt(new Encrypt());
+        PublicEvent.getInstance().addFileEvent(new FIlesHandle());
+        
         layout = new MigLayout("fill, insets 0");
         verify = new PanelVerify();
         loginAndRegister = new PanelLoginAndRegister();

@@ -84,11 +84,13 @@ public class Handler {
                 } else if (message.getAction() == UserAction.UPDATE_INFO) {
                     new UserDAO().update(message.getUser());
                     System.out.println("UserName: " + message.getUser().getUserName());
+                    PublicEvent.getInstance().getEventt().setData();
                 } else if (message.getAction() == UserAction.DELETE_USER) {
                     new UserDAO().delete(message.getUser());
                     message.setUsers(new UserDAO().getUsers());
                     System.out.println(message.getUser().getUserID());
                     new MesageDAO().delete(message.getUser().getUserID());
+                    PublicEvent.getInstance().getEventt().setData();
                 }
 
                 broadcast(message);

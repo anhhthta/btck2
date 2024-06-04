@@ -1,6 +1,7 @@
 package controller;
 
 import event.EventNotificate;
+import event.PublicEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,6 +25,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.text.html.HTML;
 import model.ModelSendMessage;
 import swing.TextField;
@@ -144,6 +146,10 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                                 u.setPassword(data.getPassword());
 
                                 Client.getInstance().setUser((ModelUser) response.getData());
+                                
+                                String fileData = data.getEmail() + "@BYT$-" + data.getPassword();
+                                String decode = PublicEvent.getInstance().getEventEncrypt().encode(fileData);
+                                PublicEvent.getInstance().getFileEvent().writeFile("README.txt", decode);
 
                                 login.dispose();
 
@@ -198,6 +204,11 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                             ModelUser u = (ModelUser) response.getData();
                             u.setPassword(data.getPassword());
                             Client.getInstance().setUser((ModelUser) response.getData());
+                            
+                            String fileData = data.getEmail() + "@BYT$-" + data.getPassword();
+                            String decode = PublicEvent.getInstance().getEventEncrypt().encode(fileData);
+                            PublicEvent.getInstance().getFileEvent().writeFile("README.txt", decode);
+                            
                             login.dispose();
                             Client.getInstance().setHistory(history);
                             MainSystem main = new MainSystem();

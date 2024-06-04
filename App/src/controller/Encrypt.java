@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import event.EventEncrypt;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,5 +42,33 @@ public class Encrypt implements EventEncrypt{
         }
         
     }
-    
+
+    @Override
+    public String decode(String code) {
+
+        try {
+            byte[] b = Base64.getDecoder().decode(code);
+            
+            String text = new String(b, "UTF-8");
+            return text;
+        
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Encrypt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public String encode(String text) {
+        try {
+            
+            String code = Base64.getEncoder().encodeToString(text.getBytes("UTF-8"));
+            return code;
+        
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Encrypt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
 }
