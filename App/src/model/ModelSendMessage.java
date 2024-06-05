@@ -14,7 +14,9 @@ public class ModelSendMessage  implements Serializable{
     private LocalDateTime time;
     private int toId;
     private UserAction action;
-    private List<ModelUser> users;
+    private List<RequestFriend> requests;
+    private List<ModelFriend> friends;
+
 
     public ModelSendMessage(ModelUser user, String text, LocalDateTime time, int to,UserAction action) {
         this.user = user;
@@ -27,6 +29,11 @@ public class ModelSendMessage  implements Serializable{
     public ModelSendMessage(ModelUser user, UserAction action) {
         this.user = user;
         this.action = action;
+    }
+    
+    public ModelSendMessage(List<RequestFriend> requests, List<ModelFriend> friends) {
+        this.requests = requests;
+        this.friends = friends;
     }
 
     public ModelSendMessage() {
@@ -88,11 +95,20 @@ public class ModelSendMessage  implements Serializable{
         this.fromId = from;
     }
 
-    public List<ModelUser> getUsers() {
-        return users;
+    public List<RequestFriend> getRequests() {
+        return requests;
     }
 
-    public void setUsers(List<ModelUser> users) {
-        this.users = users;
+    public void setRequests(List<RequestFriend> requests) {
+        this.requests = requests;
     }
+
+    public List<ModelFriend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<ModelFriend> friends) {
+        this.friends = friends;
+    }
+    
 }

@@ -23,7 +23,13 @@ public class PassField extends JPasswordField {
     private Icon suffixIconShow;
     private String hint = "";
     private boolean c = true;
-
+    
+    private int radius = 5;
+    private Color borderColor = new Color(255,0,0);
+    private Color bgColor = new Color(235,235,255);
+    private Color selectColor = new Color(51,51,255);
+    private boolean border = false;
+    
     public String getHint() {
         return hint;
     }
@@ -69,16 +75,22 @@ public class PassField extends JPasswordField {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
         setFont(new java.awt.Font("sansserif", 0, 13));
-        setSelectionColor(new Color(75, 175, 152));
+        setSelectionColor(selectColor);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(230, 245, 241));
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
+        g2.setColor(bgColor);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
         paintIcon(g);
+        
+        if(border){
+            g2.setColor(borderColor);
+            g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius , radius);
+        }
+        
         super.paintComponent(g);
     }
 
@@ -160,4 +172,43 @@ public class PassField extends JPasswordField {
             }
         });
     }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public Color getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(Color bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public Color getSelectColor() {
+        return selectColor;
+    }
+
+    public void setSelectColor(Color selectColor) {
+        this.selectColor = selectColor;
+        setSelectColor(selectColor);
+    }
+    
+    
+    public void setBd(boolean border) {
+        this.border = border;
+    }
+    
 }

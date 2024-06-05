@@ -34,6 +34,9 @@ public class MainSystem extends javax.swing.JFrame {
         initComponents();
         init();
         btnBack.setVisible(false);
+        btnBack.setHover(new Color(171, 196, 255));
+//        btnChats.setHover(new Color(171, 196, 255));
+//        btnPeople.setHover(new Color(171, 196, 255));
     }
 
     private void init() {
@@ -41,8 +44,8 @@ public class MainSystem extends javax.swing.JFrame {
         btnMinimize.setHover(new Color(72, 72, 72));
         ComponentResizer com = new ComponentResizer();
         com.registerComponent(this);
-        com.setMinimumSize(new Dimension(340, 543));
-        com.setMaximumSize(new Dimension(340, 543));
+        com.setMinimumSize(new Dimension(340, 539));
+        com.setMaximumSize(new Dimension(340, 539));
         com.setSnapSize(new Dimension(10, 10));
         ModelUser user = Client.getInstance().getUser();
 
@@ -59,6 +62,8 @@ public class MainSystem extends javax.swing.JFrame {
 
         ActionListener event = new ControllerContent(this, content, btnAvatar);
         btnBack.addActionListener(event);
+        btnChats.addActionListener(event);
+        btnPeople.addActionListener(event);
 
         PublicEvent.getInstance().addEventContent((EventContent) event);
         
@@ -95,11 +100,31 @@ public class MainSystem extends javax.swing.JFrame {
                 }
             }
 
+            @Override
+            public void updateMenuAll() {
+                content.setMenuAll();
+            }
+
+            
         });
     }
 
     public void isBack(boolean c) {
         btnBack.setVisible(c);
+        if(c) {
+            btnPeople.setBackground(new Color(193,211,254));
+            btnChats.setBackground(new Color(193,211,254));
+        }
+    }
+    
+    public void chatsActive(){
+        btnChats.setBackground(new Color(72, 149, 239));
+        btnPeople.setBackground(new Color(193,211,254));
+    }
+    
+    public void peopleActive() {
+        btnPeople.setBackground(new Color(72, 149, 239));
+        btnChats.setBackground(new Color(193,211,254));
     }
 
     @SuppressWarnings("unchecked")
@@ -116,7 +141,10 @@ public class MainSystem extends javax.swing.JFrame {
         h = new javax.swing.JPanel();
         btnAvatar = new swing.Avatar();
         userName = new javax.swing.JLabel();
+        panelCard1 = new swing.card.PanelCard();
         btnBack = new swing.Button();
+        btnChats = new swing.Button();
+        btnPeople = new swing.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -158,7 +186,7 @@ public class MainSystem extends javax.swing.JFrame {
         titleLayout.setHorizontalGroup(
             titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titleLayout.createSequentialGroup()
-                .addContainerGap(275, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -177,7 +205,7 @@ public class MainSystem extends javax.swing.JFrame {
         content.setOpaque(true);
         body.add(content, "card2");
 
-        h.setBackground(new java.awt.Color(255, 255, 255));
+        h.setBackground(new java.awt.Color(193, 211, 254));
 
         btnAvatar.setForeground(new java.awt.Color(255, 255, 255));
         btnAvatar.setToolTipText("");
@@ -190,9 +218,43 @@ public class MainSystem extends javax.swing.JFrame {
         userName.setText("jLabel1");
         userName.setToolTipText("");
 
-        btnBack.setBackground(new java.awt.Color(204, 204, 255));
-        btnBack.setText("back");
+        panelCard1.setBackground(new java.awt.Color(193, 211, 254));
+
+        btnBack.setBackground(new java.awt.Color(193, 211, 254));
+        btnBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 3));
+        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/back-20.png"))); // NOI18N
+        btnBack.setActionCommand("back");
         btnBack.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBack.setMaximumSize(new java.awt.Dimension(33, 33));
+        btnBack.setMinimumSize(new java.awt.Dimension(33, 33));
+        btnBack.setPreferredSize(new java.awt.Dimension(33, 33));
+        btnBack.setRadius(100);
+        panelCard1.add(btnBack);
+
+        btnChats.setBackground(new java.awt.Color(72, 149, 239));
+        btnChats.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 3, 1, 1));
+        btnChats.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btn-message-28.png"))); // NOI18N
+        btnChats.setActionCommand("getChats");
+        btnChats.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnChats.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChats.setMaximumSize(new java.awt.Dimension(33, 33));
+        btnChats.setMinimumSize(new java.awt.Dimension(33, 33));
+        btnChats.setPreferredSize(new java.awt.Dimension(33, 33));
+        btnChats.setRadius(100);
+        panelCard1.add(btnChats);
+
+        btnPeople.setBackground(new java.awt.Color(193, 211, 254));
+        btnPeople.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 3, 1, 1));
+        btnPeople.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btn-group-28-1.png"))); // NOI18N
+        btnPeople.setActionCommand("getPeople");
+        btnPeople.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnPeople.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnPeople.setMaximumSize(new java.awt.Dimension(33, 33));
+        btnPeople.setMinimumSize(new java.awt.Dimension(33, 33));
+        btnPeople.setPreferredSize(new java.awt.Dimension(33, 33));
+        btnPeople.setRadius(100);
+        panelCard1.add(btnPeople);
 
         javax.swing.GroupLayout hLayout = new javax.swing.GroupLayout(h);
         h.setLayout(hLayout);
@@ -200,23 +262,27 @@ public class MainSystem extends javax.swing.JFrame {
             hLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(userName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelCard1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         hLayout.setVerticalGroup(
             hLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hLayout.createSequentialGroup()
-                .addGroup(hLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(userName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAvatar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(hLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(hLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(hLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(btnAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(hLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(userName)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hLayout.createSequentialGroup()
+                .addComponent(panelCard1, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
@@ -224,22 +290,18 @@ public class MainSystem extends javax.swing.JFrame {
         backgroundLayout.setHorizontalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(backgroundLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(body, javax.swing.GroupLayout.PREFERRED_SIZE, 319, Short.MAX_VALUE)
-                    .addComponent(h, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(h, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(body, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(h, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0)
+                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout borderLayout = new javax.swing.GroupLayout(border);
@@ -298,10 +360,13 @@ public class MainSystem extends javax.swing.JFrame {
     private javax.swing.JPanel border;
     private swing.Avatar btnAvatar;
     private swing.Button btnBack;
+    private swing.Button btnChats;
     private swing.Button btnClose;
     private swing.Button btnMinimize;
+    private swing.Button btnPeople;
     private view.components.Content content;
     private javax.swing.JPanel h;
+    private swing.card.PanelCard panelCard1;
     private javax.swing.JPanel title;
     private javax.swing.JLabel userName;
     // End of variables declaration//GEN-END:variables

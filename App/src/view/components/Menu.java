@@ -5,6 +5,7 @@ import event.PublicEvent;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import model.ModelFriend;
 import model.ModelSendMessage;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
@@ -18,7 +19,7 @@ import view.MainSystem;
  */
 public class Menu extends javax.swing.JPanel {
 
-    private List<ModelUser> listUser;
+    private List<ModelFriend> listFriends;
     private ModelUser user;
 
     public Menu() {
@@ -32,7 +33,7 @@ public class Menu extends javax.swing.JPanel {
         sb.setSizeThumb(5, 12);
         scroll.setVerticalScrollBar(sb);
 
-        listUser = new ArrayList<>();
+        listFriends = new ArrayList<>();
         user = Client.getInstance().getUser();
         
         setPeople();
@@ -43,8 +44,8 @@ public class Menu extends javax.swing.JPanel {
             @Override
             public void setLastTime(ModelSendMessage msg) {
                 for(Component com : menuList.getComponents()) {
-                    ItemPeople item = (ItemPeople) com;
-                    int idItem = item.getUser().getUserID();
+                    ItemFriend item = (ItemFriend) com;
+                    int idItem = item.getFriend().getFriendId();
                     if(idItem == msg.getUser().getUserID() || idItem == msg.getTo()) {
 
                         item.setLastText(msg);
@@ -57,15 +58,15 @@ public class Menu extends javax.swing.JPanel {
     }
 
     public void setPeople() {
-        listUser = Client.getInstance().getUsers();
-        if (listUser == null) {
-            listUser = new ArrayList<>();
+        listFriends = Client.getInstance().getFriends();
+        if (listFriends == null) {
+            listFriends = new ArrayList<>();
         }
         menuList.removeAll();
-        menuList.add(new ItemPeople(new ModelUser(-1, "Group", "", "", MainSystem.groupImage, true)), "wrap");
-        for (ModelUser us : listUser) {
-            if (user.getUserID() != us.getUserID()) {
-                menuList.add(new ItemPeople(us), "wrap");
+        menuList.add(new ItemFriend(new ModelFriend(0, -1, "Group", MainSystem.groupImage, "")), "wrap");
+        for (ModelFriend us : listFriends) {
+            if (user.getUserID() != us.getFriendId()) {
+                menuList.add(new ItemFriend(us), "wrap");
             }
         }
         refreshMenuList();
@@ -90,12 +91,12 @@ public class Menu extends javax.swing.JPanel {
         scroll = new javax.swing.JScrollPane();
         menuList = new javax.swing.JLayeredPane();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(215, 227, 252));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(193, 211, 254));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Chat");
+        jLabel1.setText("Chats");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,21 +104,21 @@ public class Menu extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(139, 139, 139))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addGap(0, 4, Short.MAX_VALUE))
         );
 
         scroll.setBackground(new java.awt.Color(255, 255, 255));
         scroll.setBorder(null);
         scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        menuList.setBackground(new java.awt.Color(255, 255, 255));
+        menuList.setBackground(new java.awt.Color(215, 227, 252));
         menuList.setOpaque(true);
 
         javax.swing.GroupLayout menuListLayout = new javax.swing.GroupLayout(menuList);
@@ -137,8 +138,8 @@ public class Menu extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(scroll)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

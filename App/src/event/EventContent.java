@@ -1,9 +1,9 @@
 package event;
 
-import model.ModelUser;
+import model.ModelFriend;
 
 public interface EventContent {
-    public void selectedUser(ModelUser user);
+    public void selectedUser(ModelFriend user);
     
-    public void updateUser(ModelUser user);
+    public void updateUser(ModelFriend user);
 }

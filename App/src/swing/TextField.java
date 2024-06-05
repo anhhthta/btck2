@@ -38,6 +38,7 @@ public class TextField extends JTextField {
     private boolean border = false;
     private int radius = 5;
     private Color borderColor = new Color(255,0,0);
+    private Color bgColor = new Color(235,235,255);
 
     public String getHint() {
         return hint;
@@ -89,7 +90,7 @@ public class TextField extends JTextField {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(Color.decode("#7A8C8D"));
         setFont(new java.awt.Font("sansserif", 0, 13));
-        setSelectionColor(new Color(75, 175, 152));
+        setSelectionColor(new Color(51,51,255));
         
         timer = new Timer(50, (ActionEvent e) -> {
             angle += Math.PI/5;
@@ -101,7 +102,7 @@ public class TextField extends JTextField {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(new Color(230, 245, 241));
+        g2.setColor(bgColor);
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
         paintIcon(g);
         paintSuffixText(g2);
@@ -355,7 +356,7 @@ public class TextField extends JTextField {
     public void setBorder(boolean border) {
         this.border = border;
     }
-
+    
     public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
     }
@@ -363,4 +364,13 @@ public class TextField extends JTextField {
     public void setRadius(int radius) {
         this.radius = radius;
     }
+
+    public Color getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(Color bgColor) {
+        this.bgColor = bgColor;
+    }
+
 }

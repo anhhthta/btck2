@@ -9,8 +9,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import model.ModelFriend;
 import model.ModelSendMessage;
 import model.ModelUser;
+import model.RequestFriend;
 
 public class Client {
     private static Client instance;
@@ -24,7 +26,8 @@ public class Client {
     
     private List<ModelSendMessage> history;
     
-    private List<ModelUser> users;
+    private List<ModelFriend> friends;
+    private List<RequestFriend> requests;
     
     public static Client getInstance() {
         if(instance == null) {
@@ -104,12 +107,19 @@ public class Client {
         this.history = history;
     }
 
-    public List<ModelUser> getUsers() {
-        return users;
+    public List<ModelFriend> getFriends() {
+        return friends;
     }
 
-    public void setUsers(List<ModelUser> users) {
-        this.users = users;
+    public void setFriends(List<ModelFriend> friends) {
+        this.friends = friends;
     }
-    
+
+    public List<RequestFriend> getRequest() {
+        return requests;
+    }
+
+    public void setRequest(List<RequestFriend> request) {
+        this.requests = request;
+    } 
 }

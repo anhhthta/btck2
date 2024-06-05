@@ -25,8 +25,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
-import javax.swing.plaf.metal.MetalIconFactory;
-import javax.swing.text.html.HTML;
 import model.ModelSendMessage;
 import swing.TextField;
 import service.Client;
@@ -140,8 +138,10 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                             if (response.isSuccess()) {
                                 List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
 
-                                List<ModelUser> users = (List<ModelUser>) readerOj2.readObject();
-                                Client.getInstance().setUsers(users);
+                                ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
+                                Client.getInstance().setFriends(msgu.getFriends());
+                                Client.getInstance().setRequest(msgu.getRequests());
+                            
                                 ModelUser u = ((ModelUser) response.getData());
                                 u.setPassword(data.getPassword());
 
@@ -198,8 +198,10 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                         ModelMessage response = (ModelMessage) readerOj.readObject();
                         if (response.isSuccess()) {
                             List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
-                            List<ModelUser> users = (List<ModelUser>) readerOj2.readObject();
-                            Client.getInstance().setUsers(users);
+                            
+                            ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
+                            Client.getInstance().setFriends(msgu.getFriends());
+                            Client.getInstance().setRequest(msgu.getRequests());
 
                             ModelUser u = (ModelUser) response.getData();
                             u.setPassword(data.getPassword());

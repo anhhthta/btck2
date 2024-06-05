@@ -1,32 +1,57 @@
 package view.components;
 
-import event.EventLastTime;
+import controller.ControllerRequestFriend;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import model.ModelUser;
 import event.PublicEvent;
 import java.awt.Image;
-import java.time.format.DateTimeFormatter;
+import java.awt.event.ActionListener;
 import java.util.Base64;
-import java.util.List;
 import javax.swing.ImageIcon;
-import model.ModelSendMessage;
+import model.ModelFriend;
+import model.RequestFriend;
 import service.Client;
+import swing.layout.WrapLayout;
 
 public class ItemPeople extends javax.swing.JPanel {
 
-    private ModelUser user;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    private RequestFriend request;
 
-    public ItemPeople(ModelUser user) {
-        this.user = user;
+    public ItemPeople(RequestFriend request) {
+        this.request = request;
         initComponents();
-        lb.setText(user.getUserName());
+        layoutBtn.setAlign(WrapLayout.RIGHT);
+        btnAS2.setVisible(false);
+        
+        lb.setText(request.getFriend().getFriendName());
+        
+        int rqId = request.getRequester();
+        
+        if(rqId != -10) {
+            ModelFriend uss = request.getFriend();
+            if(uss.getStatus().equals("accepted")) {
+                btnAS1.setText("Unfriend");
+            } else {
+                if(rqId == Client.getInstance().getUser().getUserID()) {
+                    btnAS1.setText("Cacel");
+                } else {
+                    btnAS2.setVisible(true);
+                    btnAS1.setText("Refuse");
+                    btnAS2.setText("Confirm");
+                    btnAS2.setActionCommand("confirm");
+                }
+            }
+        } else {
+            btnAS1.setVisible(false);
+            btnAS2.setVisible(true);
+            btnAS2.setText("Request");
+            btnAS2.setActionCommand("request");
+        }
 
         //        Decode
         try {
-            byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+            byte[] imageByte = Base64.getDecoder().decode(request.getFriend().getFriendImage());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             avatar1.setIcon(new ImageIcon(image));
 
@@ -35,26 +60,6 @@ public class ItemPeople extends javax.swing.JPanel {
         }
 
         init();
-        setData();
-    }
-
-    private void setData() {
-        List<ModelSendMessage> list = Client.getInstance().getHistory();
-        int id = Client.getInstance().getUser().getUserID();
-        for (ModelSendMessage l : list) {
-            if (user.getUserID() == l.getTo() || id == l.getTo()) {
-                if (user.getUserID() == l.getFrom()) {
-                    lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
-                    lastTime.setText(l.getTime().format(formatter));
-                } else if (id == l.getFrom()) {
-                    lastMsg.setText("You: " + l.getText());
-                    lastTime.setText(l.getTime().format(formatter));
-                } else if (user.getUserID() == -1 && l.getTo() == -1) {
-                    lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
-                    lastTime.setText(l.getTime().format(formatter));
-                }
-            }
-        }
     }
 
     private void init() {
@@ -62,44 +67,40 @@ public class ItemPeople extends javax.swing.JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                bg.setBgColor(new Color(204, 204, 204, 70));
-                bg.revalidate();
+                bg.setBgColor(new Color(182, 204, 254));
                 bg.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                bg.setBgColor(new Color(255, 255, 255));
-                bg.revalidate();
+                bg.setBgColor(new Color(215, 227, 252));
                 bg.repaint();
             }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                PublicEvent.getInstance().getEventContent().selectedUser(user);
-            }
-
         });
+        
+        btnAS1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                bg.setBgColor(new Color(182, 204, 254));
+                bg.repaint();
+            }
+        });      
+        
+        btnAS2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                bg.setBgColor(new Color(182, 204, 254));
+                bg.repaint();
+            }
+        });
+        
+        ActionListener event = new ControllerRequestFriend(request);
+        btnAS1.addActionListener(event);
+        btnAS2.addActionListener(event);
     }
 
-    public ModelUser getUser() {
-        return user;
-    }
-
-    public void setLastText(ModelSendMessage data) {
-
-        int id = Client.getInstance().getUser().getUserID();
-
-        if (user.getUserID() == data.getUser().getUserID()) {
-            lastMsg.setText(data.getUser().getUserName() + ": " + data.getText());
-            lastTime.setText(data.getTime().format(formatter));
-        } else if (id == data.getUser().getUserID()) {
-            lastMsg.setText("You: " + data.getText());
-            lastTime.setText(data.getTime().format(formatter));
-        } else if (user.getUserID() == -1) {
-            lastMsg.setText(data.getUser().getUserName() + ": " + data.getText());
-            lastTime.setText(data.getTime().format(formatter));
-        }
+    public RequestFriend getUser() {
+        return request;
     }
 
     @SuppressWarnings("unchecked")
@@ -109,11 +110,14 @@ public class ItemPeople extends javax.swing.JPanel {
         bg = new swing.radius.PanelRadius();
         avatar1 = new swing.Avatar();
         lb = new javax.swing.JLabel();
-        lastMsg = new javax.swing.JLabel();
-        lastTime = new javax.swing.JLabel();
+        layoutBtn = new swing.card.PanelCard();
+        btnAS1 = new swing.Button();
+        btnAS2 = new swing.Button();
 
         setBackground(new java.awt.Color(255, 204, 204));
         setOpaque(false);
+
+        bg.setBgColor(new java.awt.Color(215, 227, 252));
 
         avatar1.setForeground(new java.awt.Color(204, 204, 255));
         avatar1.setBorderColor(new java.awt.Color(204, 204, 255));
@@ -124,14 +128,19 @@ public class ItemPeople extends javax.swing.JPanel {
         lb.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb.setForeground(new java.awt.Color(51, 51, 51));
 
-        lastMsg.setBackground(new java.awt.Color(51, 51, 51));
-        lastMsg.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lastMsg.setForeground(new java.awt.Color(102, 102, 102));
+        layoutBtn.setOpaque(false);
 
-        lastTime.setBackground(new java.awt.Color(51, 51, 51));
-        lastTime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lastTime.setForeground(new java.awt.Color(102, 102, 102));
-        lastTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnAS1.setBackground(new java.awt.Color(193, 211, 254));
+        btnAS1.setText("Refuse");
+        btnAS1.setActionCommand("delete");
+        btnAS1.setRadius(15);
+        layoutBtn.add(btnAS1);
+
+        btnAS2.setBackground(new java.awt.Color(193, 211, 254));
+        btnAS2.setText("Confirm");
+        btnAS2.setActionCommand("confirm");
+        btnAS2.setRadius(15);
+        layoutBtn.add(btnAS2);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -141,26 +150,20 @@ public class ItemPeople extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lastMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lastTime, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(layoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(avatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lastMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lastTime, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                    .addComponent(lb, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(layoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -179,8 +182,9 @@ public class ItemPeople extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swing.Avatar avatar1;
     private swing.radius.PanelRadius bg;
-    private javax.swing.JLabel lastMsg;
-    private javax.swing.JLabel lastTime;
+    private swing.Button btnAS1;
+    private swing.Button btnAS2;
+    private swing.card.PanelCard layoutBtn;
     private javax.swing.JLabel lb;
     // End of variables declaration//GEN-END:variables
 }

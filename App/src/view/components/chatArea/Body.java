@@ -96,7 +96,7 @@ public class Body extends javax.swing.JPanel {
         scroll.setBorder(null);
         scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        body.setBackground(new java.awt.Color(255, 255, 255));
+        body.setBackground(new java.awt.Color(215, 227, 252));
 
         javax.swing.GroupLayout bodyLayout = new javax.swing.GroupLayout(body);
         body.setLayout(bodyLayout);
@@ -122,7 +122,7 @@ public class Body extends javax.swing.JPanel {
             .addComponent(scroll)
         );
     }// </editor-fold>//GEN-END:initComponents
-    private void scrollToBottom() {
+    public void scrollToBottom() {
         JScrollBar verticalBar = scroll.getVerticalScrollBar();
         AdjustmentListener downScroller = new AdjustmentListener() {
             @Override

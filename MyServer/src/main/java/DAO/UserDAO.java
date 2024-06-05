@@ -4,13 +4,16 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
+import model.ModelFriend;
 import model.ModelMessage;
 import model.ModelUser;
+import model.RequestFriend;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import utilites.HibernateUtil;
@@ -76,7 +79,6 @@ public class UserDAO {
     public boolean checkEmail(String email) {
         Transaction tr = null;
 //            encode
-
 
         boolean c = false;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -150,6 +152,50 @@ public class UserDAO {
         }
     }
 
+     public List<RequestFriend> getRequestUsers(int userId, String search) {
+        List<RequestFriend> requests = new ArrayList<>();
+        
+        Transaction tr = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tr = session.beginTransaction();
+            String hql = "select " +
+                        "coalesce(f.id, fr.id, -10) requesterId, coalesce(fr.id, f.friendId, -10) ownId, "+
+                        "u.id userId, u.name, u.image, coalesce(fr.status, f.status, 'no') status from users u " +
+                        "left join friends f on f.id = u.id and f.friendId = :id " +
+                        "left join friends fr on fr.friendId = u.id and fr.id = :id " +
+                        "where u.id != :id and u.name like :se";
+            
+            Query query = session.createSQLQuery(hql);
+            query.setParameter("id", userId);
+            query.setParameter("se", "%"+search+"%");
+            
+            List<Object[]> results = query.getResultList();
+            
+            if (results != null && !results.isEmpty()) { 
+                for(Object[] rs : results) {
+                    requests.add(new RequestFriend(
+                            Integer.parseInt(rs[0]+""), 
+                            new ModelFriend(
+                                Integer.parseInt(rs[1]+""), 
+                                Integer.parseInt(rs[2]+""), 
+                                rs[3]+"",
+                                rs[4]+"", 
+                                rs[5]+""
+                        )));
+                }
+            }
+            
+            tr.commit();
+            session.close();
+        } catch (Exception e) {
+            if(tr != null) {
+                tr.rollback();
+            }
+            e.printStackTrace();
+        }
+        return requests;
+    }
+    
     public void update(ModelUser user) {
         Transaction tr = null;
 

@@ -4,6 +4,7 @@
  */
 package service;
 
+import DAO.FriendDAO;
 import DAO.MesageDAO;
 import DAO.UserDAO;
 import event.PublicEvent;
@@ -16,9 +17,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import model.ModelFriend;
 import model.ModelMessage;
 import model.ModelSendMessage;
 import model.ModelUser;
+import model.RequestFriend;
 
 /**
  *
@@ -70,8 +73,11 @@ public class ClientHandler implements Runnable {
                 writerOj1.writeObject(login);
                 List<ModelSendMessage> history = new MesageDAO().getMessage();
                 writerOj2.writeObject(history);
-                List<ModelUser> users = new UserDAO().getUsers();
-                writerOj3.writeObject(users);
+                
+                List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");
+                List<ModelFriend> friends = new FriendDAO().getFriends(userID);
+                ModelSendMessage msgu = new ModelSendMessage(requests, friends);
+                writerOj3.writeObject(msgu);
                 new Handler(socket, userID, jTextArea);
             } else {
                 writerOj1.writeObject(login);
@@ -91,8 +97,11 @@ public class ClientHandler implements Runnable {
                 writerOj1.writeObject(register);
                 List<ModelSendMessage> history = new MesageDAO().getMessage();
                 writerOj2.writeObject(history);
-                List<ModelUser> users = new UserDAO().getUsers();
-                writerOj3.writeObject(users);
+                
+                List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");
+                List<ModelFriend> friends = new FriendDAO().getFriends(userID);
+                ModelSendMessage msgu = new ModelSendMessage(requests, friends);
+                writerOj3.writeObject(msgu);
                 PublicEvent.getInstance().getEventt().setData();
                 new Handler(socket, userID, jTextArea);
             } else {

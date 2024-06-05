@@ -23,8 +23,6 @@ public class Avatar extends JComponent {
     }
 
     public void setIcon(Icon icon) {
-                        System.out.println("avt has updated");
-
         this.icon = icon;
     }
 

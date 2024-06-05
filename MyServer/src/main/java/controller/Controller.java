@@ -6,7 +6,6 @@ import event.Eventt;
 import event.PublicEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +60,7 @@ public class Controller implements ActionListener, Eventt {
             new UserDAO().delete(user);
             new MesageDAO().delete(id);
             ModelSendMessage message = new ModelSendMessage(user, UserAction.BAN);
-            message.setUsers(new UserDAO().getUsers());
+            message.setRequests(new UserDAO().getRequestUsers(id,""));
             
             setData();
             

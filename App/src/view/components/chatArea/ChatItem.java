@@ -20,13 +20,13 @@ public class ChatItem extends javax.swing.JLayeredPane {
     public void setTextLeft(String text, LocalDateTime time, String name) {
         txt.setText(text);
         txtTime.setText(time.format(formatter));
-        setBackground(new Color(239,239,239));
+//        setBackground(new Color(239,239,239));
     }
     
     public void setTextRight(String text, LocalDateTime time) {
         txt.setText(text);
         txtTime.setText(time.format(formatter));        
-        setBackground(new Color(153,153,255));
+        setBackground(new Color(162,149,255));
     }
     
     @SuppressWarnings("unchecked")

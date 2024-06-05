@@ -5,14 +5,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JScrollPane;
-import model.ModelUser;
+import model.ModelFriend;
 import net.miginfocom.swing.MigLayout;
 import swing.JIMSendTextPane;
 import swing.ScrollBar;
 
 public class Bottom extends javax.swing.JPanel {
     private JIMSendTextPane txt;
-    private ModelUser user;
+    private ModelFriend user;
 
     public Bottom() {
         initComponents();
@@ -20,7 +20,7 @@ public class Bottom extends javax.swing.JPanel {
     }
 
     private void init(){
-        btnSend.setHover(new Color(204,204,255));
+        btnSend.setHover(new Color(215,227,252));
         txtArea.setLayout(new MigLayout("fillx, filly", "" ,""));
         JScrollPane scroll = new JScrollPane();
         scroll.setBorder(null);
@@ -56,11 +56,11 @@ public class Bottom extends javax.swing.JPanel {
         btnSend.addActionListener(event);
     }
 
-    public void setUser(ModelUser user) {
+    public void setUser(ModelFriend user) {
         this.user = user;
     }
 
-    public ModelUser getUser() {
+    public ModelFriend getUser() {
         return user;
     }
     
@@ -70,28 +70,28 @@ public class Bottom extends javax.swing.JPanel {
     private void initComponents() {
 
         txtArea = new swing.radius.PanelRadius();
-        button2 = new swing.Button();
         btnSend = new swing.Button();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(182, 204, 254));
 
-        txtArea.setBgColor(new java.awt.Color(224, 224, 224));
+        txtArea.setBgColor(new java.awt.Color(215, 227, 252));
         txtArea.setRadius(30);
 
         javax.swing.GroupLayout txtAreaLayout = new javax.swing.GroupLayout(txtArea);
         txtArea.setLayout(txtAreaLayout);
         txtAreaLayout.setHorizontalGroup(
             txtAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
         );
         txtAreaLayout.setVerticalGroup(
             txtAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        button2.setText("button2");
-
-        btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/send-28.png"))); // NOI18N
+        btnSend.setBackground(new java.awt.Color(182, 204, 254));
+        btnSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 1));
+        btnSend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/send-28_1.png"))); // NOI18N
+        btnSend.setToolTipText("");
         btnSend.setActionCommand("send");
         btnSend.setRadius(40);
 
@@ -101,8 +101,6 @@ public class Bottom extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -115,11 +113,8 @@ public class Bottom extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(button2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -129,7 +124,6 @@ public class Bottom extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swing.Button btnSend;
-    private swing.Button button2;
     private swing.radius.PanelRadius txtArea;
     // End of variables declaration//GEN-END:variables
 }

@@ -35,6 +35,8 @@ public class ItemChatLeft extends javax.swing.JPanel {
 
         setOpaque(false);
 
+        chatItem.setBackground(new java.awt.Color(255, 213, 161));
+
         avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar2-50.png"))); // NOI18N
 
         userNama.setText("jLabel1");

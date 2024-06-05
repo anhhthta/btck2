@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ModelSendMessage;
+import model.ModelUser;
 import service.Client;
 import swing.JIMSendTextPane;
 import utilites.UserAction;
@@ -27,7 +30,7 @@ public class ControllerChat implements ActionListener, EventChat {
     }
 
     public void setHistory() {
-        if (header.getUser().getUserID() == -1) {
+        if (header.getFriend().getFriendId()== -1) {
             List<ModelSendMessage> list = Client.getInstance().getHistory();
             int id = Client.getInstance().getUser().getUserID();
             for (ModelSendMessage l : list) {
@@ -45,8 +48,8 @@ public class ControllerChat implements ActionListener, EventChat {
             int id = Client.getInstance().getUser().getUserID();
 
             for (ModelSendMessage l : list) {
-                if ((header.getUser().getUserID() == l.getTo() && l.getUser().getUserID() == id)
-                        || (id == l.getTo() && header.getUser().getUserID() == l.getUser().getUserID())) {
+                if ((header.getFriend().getFriendId() == l.getTo() && l.getUser().getUserID() == id)
+                        || (id == l.getTo() && header.getFriend().getFriendId()== l.getUser().getUserID())) {
 
                     if (l.getUser().getUserID() == id) {
                         body.addRightItem(l);
@@ -71,7 +74,7 @@ public class ControllerChat implements ActionListener, EventChat {
         JIMSendTextPane boxtxt = bottom.getTextBox();
         String text = boxtxt.getText();
         if (!text.trim().equals("")) {
-            ModelSendMessage data = new ModelSendMessage(Client.getInstance().getUser(), text, LocalDateTime.now(), header.getUser().getUserID(), UserAction.SEND_RECEIVE);
+            ModelSendMessage data = new ModelSendMessage(Client.getInstance().getUser(), text, LocalDateTime.now(), header.getFriend().getFriendId(), UserAction.SEND_RECEIVE);
             PublicEvent.getInstance().getEventToServer().send(data);
             Client.getInstance().getHistory().add(data);
             PublicEvent.getInstance().getEventLastTime().setLastTime(data);
@@ -86,14 +89,14 @@ public class ControllerChat implements ActionListener, EventChat {
 
     @Override
     public void ReceiveMessage(ModelSendMessage data) {
-        if (header.getUser() != null) {
-            if (header.getUser().getUserID() == -1) {
+        if (header.getFriend()!= null) {
+            if (header.getFriend().getFriendId() == -1) {
                 if (data.getTo() == -1) {
                     body.addGroupItem(data);
                     System.out.println("r1");
                 }
             } else {
-                if (data.getUser().getUserID() == header.getUser().getUserID() && data.getTo() != -1) {
+                if (data.getUser().getUserID() == header.getFriend().getFriendId() && data.getTo() != -1) {
                     System.out.println("r2");
                     body.addGroupItem(data);
                 }

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import model.ModelUser;
+import model.ModelFriend;
 import swing.Avatar;
 import view.MainSystem;
 import view.components.Content;
@@ -31,22 +31,27 @@ public class ControllerContent implements ActionListener, EventContent{
     }
     
     @Override
-    public void selectedUser(ModelUser user) {
+    public void selectedUser(ModelFriend user) {
         content.setUser(user);
         main.isBack(true);
     }
 
     @Override
-    public void updateUser(ModelUser user) {
+    public void updateUser(ModelFriend user) {
         content.updateUser(user);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if(command.equals("back")) {
+        if(command.equals("back") || command.equals("getChats")) {
             content.back();
             main.isBack(false);
+            main.chatsActive();
+        } else if(command.equals("getPeople")) {
+            content.openMenuAll();
+            main.isBack(false);
+            main.peopleActive();
         }
     }
     

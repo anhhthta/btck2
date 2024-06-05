@@ -3,7 +3,7 @@ package view.components;
 
 import controller.ControllerToServer;
 import event.PublicEvent;
-import model.ModelUser;
+import model.ModelFriend;
 
 
 public class Content extends javax.swing.JLayeredPane {
@@ -13,22 +13,22 @@ public class Content extends javax.swing.JLayeredPane {
         initEvent();
         infoUser.setVisible(false);
         chat.setVisible(false);
-
+        menuAll.setVisible(false);
     }
     
     private void initEvent() {
         PublicEvent.getInstance().addEventToServer(new ControllerToServer());
     }
     
-    public void setUser(ModelUser user) {
+    public void setUser(ModelFriend user) {
         chat.setUser(user);
         chat.setVisible(true);
         menu.setVisible(false);
         infoUser.isShow(false);
-
+        menuAll.setVisible(false);
     }
     
-    public void updateUser(ModelUser user) {
+    public void updateUser(ModelFriend user) {
         chat.updateUser(user);
     }
     
@@ -36,10 +36,19 @@ public class Content extends javax.swing.JLayeredPane {
         menu.setVisible(true);
         chat.setVisible(false);
         infoUser.isShow(false);
+        menuAll.setVisible(false);
     }
     
     public void openInfo() {
         infoUser.isShow(true);
+        menu.setVisible(false);
+        chat.setVisible(false);
+        menuAll.setVisible(false);
+    }
+    
+    public void openMenuAll() {
+        menuAll.setVisible(true);
+        infoUser.isShow(false);
         menu.setVisible(false);
         chat.setVisible(false);
     }
@@ -51,6 +60,12 @@ public class Content extends javax.swing.JLayeredPane {
     public void clearMenu() {
         menu.clearP();
     }
+    
+    public void setMenuAll() {
+        menuAll.setPeople();
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -58,11 +73,13 @@ public class Content extends javax.swing.JLayeredPane {
         menu = new view.components.Menu();
         chat = new view.components.Chat();
         infoUser = new view.components.InfoUser();
+        menuAll = new view.components.MenuAll();
 
         setLayout(new java.awt.CardLayout());
         add(menu, "card2");
         add(chat, "card3");
         add(infoUser, "card4");
+        add(menuAll, "card5");
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -70,5 +87,6 @@ public class Content extends javax.swing.JLayeredPane {
     private view.components.Chat chat;
     private view.components.InfoUser infoUser;
     private view.components.Menu menu;
+    private view.components.MenuAll menuAll;
     // End of variables declaration//GEN-END:variables
 }

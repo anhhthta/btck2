@@ -4,9 +4,8 @@ package view.components;
 import controller.ControllerChat;
 import event.EventChat;
 import event.PublicEvent;
-import model.ModelUser;
+import model.ModelFriend;
 import net.miginfocom.swing.MigLayout;
-import swing.BackgroundImage;
 import view.components.chatArea.Body;
 import view.components.chatArea.Bottom;
 import view.components.chatArea.Header;
@@ -40,21 +39,21 @@ public class Chat extends javax.swing.JPanel {
         bottom.addEvent(event);
     }
         
-    public void setUser(ModelUser user) {
+    public void setUser(ModelFriend user) {
         header.setName(user);
         bottom.setUser(user);
         body.clearChat();
         event.setHistory();
     }
     
-    public void updateUser(ModelUser user) {
+    public void updateUser(ModelFriend user) {
         header.updateUser(user);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(215, 227, 252));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

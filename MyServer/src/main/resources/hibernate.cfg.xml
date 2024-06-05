@@ -18,5 +18,6 @@
         <!-- Mapping -->
         <mapping class="model.ModelUser"/>
         <mapping class="model.ModelSendMessage"/>
+        <mapping class="model.ModelFriend"/>        
     </session-factory>
 </hibernate-configuration>
