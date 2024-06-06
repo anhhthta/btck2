@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import model.History;
 import model.ModelFriend;
 import model.ModelMessage;
 import model.ModelSendMessage;
@@ -71,7 +72,7 @@ public class ClientHandler implements Runnable {
             if (login.isSuccess()) {
                 int userID = ((ModelUser) login.getData()).getUserID();
                 writerOj1.writeObject(login);
-                List<ModelSendMessage> history = new MesageDAO().getMessage();
+                History history = new History(new MesageDAO().getMessage());
                 writerOj2.writeObject(history);
                 
                 List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");
@@ -95,7 +96,7 @@ public class ClientHandler implements Runnable {
                 int userID = ((ModelUser) register.getData()).getUserID();
 
                 writerOj1.writeObject(register);
-                List<ModelSendMessage> history = new MesageDAO().getMessage();
+                History history = new History(new MesageDAO().getMessage());
                 writerOj2.writeObject(history);
                 
                 List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");

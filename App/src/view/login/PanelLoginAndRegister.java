@@ -162,7 +162,7 @@ public class PanelLoginAndRegister extends javax.swing.JPanel {
             event.actionPerformed(e);
         });
         
-        String dataCode = PublicEvent.getInstance().getFileEvent().readFiles("README.txt");
+        String dataCode = PublicEvent.getInstance().getFileEvent().readFiles("cache.txt");
         
         if(!dataCode.equals("")) {
             String data = PublicEvent.getInstance().getEventEncrypt().decode(dataCode);

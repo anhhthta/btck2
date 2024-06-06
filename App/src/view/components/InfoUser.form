@@ -233,7 +233,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="cMale" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
+                  <Component id="cMale" alignment="0" pref="73" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -291,7 +291,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="cFemale" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
+                  <Component id="cFemale" alignment="0" pref="73" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -409,8 +409,14 @@
           </Properties>
         </Component>
         <Component class="swing.combobox.ComboBoxSuggestion" name="cbbDay">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
         <Component class="swing.combobox.ComboBoxSuggestion" name="cbbMonth">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
         <Component class="swing.combobox.ComboBoxSuggestion" name="cbbYear">
           <Properties>
@@ -418,6 +424,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>

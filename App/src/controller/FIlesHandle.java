@@ -1,6 +1,7 @@
 package controller;
 
 import event.FileEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,6 +19,12 @@ public class FIlesHandle implements FileEvent{
     public String readFiles(String fileName) {
         String data = "";
         try {
+            File file = new File(fileName);
+            
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            
             FileInputStream fileInputStream = new FileInputStream(fileName);
             int d;
             while((d = fileInputStream.read()) != -1) {
@@ -35,6 +42,13 @@ public class FIlesHandle implements FileEvent{
     @Override
     public void writeFile(String fileName, String data) {
         try {
+            File file = new File(fileName);
+            
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            
+            
             FileOutputStream fileOutputStream = fileOutputStream = new FileOutputStream(fileName);
             
             fileOutputStream.write(data.getBytes());

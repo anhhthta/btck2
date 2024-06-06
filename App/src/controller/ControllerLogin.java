@@ -25,6 +25,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import model.History;
 import model.ModelSendMessage;
 import swing.TextField;
 import service.Client;
@@ -136,7 +137,7 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                             ModelMessage response = (ModelMessage) readerOj.readObject();
 
                             if (response.isSuccess()) {
-                                List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
+                                List<ModelSendMessage> history = ((History) readerOj1.readObject()).getHistory();
 
                                 ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
                                 Client.getInstance().setFriends(msgu.getFriends());
@@ -149,7 +150,7 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                                 
                                 String fileData = data.getEmail() + "@BYT$-" + data.getPassword();
                                 String decode = PublicEvent.getInstance().getEventEncrypt().encode(fileData);
-                                PublicEvent.getInstance().getFileEvent().writeFile("README.txt", decode);
+                                PublicEvent.getInstance().getFileEvent().writeFile("cache.txt", decode);
 
                                 login.dispose();
 
@@ -197,7 +198,8 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                         writerOj.writeObject(data);
                         ModelMessage response = (ModelMessage) readerOj.readObject();
                         if (response.isSuccess()) {
-                            List<ModelSendMessage> history = (List<ModelSendMessage>) readerOj1.readObject();
+                            
+                            List<ModelSendMessage> history = ((History) readerOj1.readObject()).getHistory();
                             
                             ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
                             Client.getInstance().setFriends(msgu.getFriends());
@@ -209,7 +211,7 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                             
                             String fileData = data.getEmail() + "@BYT$-" + data.getPassword();
                             String decode = PublicEvent.getInstance().getEventEncrypt().encode(fileData);
-                            PublicEvent.getInstance().getFileEvent().writeFile("README.txt", decode);
+                            PublicEvent.getInstance().getFileEvent().writeFile("cache.txt", decode);
                             
                             login.dispose();
                             Client.getInstance().setHistory(history);

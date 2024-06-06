@@ -1,6 +1,8 @@
-
 package swing.combobox;
 
+
+
+import swing.ScrollBarCustom;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -26,7 +28,6 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import swing.ScrollBarCustom;
 
 public class ComboSuggestionUI extends BasicComboBoxUI {
 
@@ -80,10 +81,10 @@ public class ComboSuggestionUI extends BasicComboBoxUI {
     }
 
     @Override
-    protected ListCellRenderer createRenderer() {
-        return new ListCellRenderer() {
+    protected ListCellRenderer<Object> createRenderer() {
+        return new ListCellRenderer<Object>() {
             @Override
-            public Component getListCellRendererComponent(JList jlist, Object e, int i, boolean bln, boolean bln1) {
+            public Component getListCellRendererComponent(JList<? extends Object> jlist, Object e, int i, boolean bln, boolean bln1) {
                 String text = e == null ? "" : e.toString();
                 JLabel label = new JLabel(text);
                 label.setFont(comboBox.getFont());
@@ -108,7 +109,7 @@ public class ComboSuggestionUI extends BasicComboBoxUI {
 
     private class ComboSuggestionPopup extends BasicComboPopup {
 
-        public ComboSuggestionPopup(JComboBox combo) {
+        public ComboSuggestionPopup(JComboBox<Object> combo) {
             super(combo);
             setBorder(new Border(1));
         }

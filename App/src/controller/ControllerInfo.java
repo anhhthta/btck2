@@ -158,8 +158,12 @@ public class ControllerInfo implements ActionListener {
         msgErr.setForeground(new Color(255, 0, 0));
         String name = txtName.getText();
         try {
-            LocalDate date = LocalDate.of(Integer.valueOf(cbbYear.getSelectedItem() + ""), cbbMonth.getSelectedIndex() + 1, cbbDay.getSelectedIndex() + 1);
-
+            
+            LocalDate date = LocalDate.of(
+                    Integer.parseInt(cbbYear.getSelectedItem() +""), 
+                    Integer.parseInt(cbbMonth.getSelectedItem() +""), 
+                    Integer.parseInt(cbbDay.getSelectedItem() +"")
+            );
             ModelUser oldUser = Client.getInstance().getUser();
             ModelUser newUser = new ModelUser(oldUser.getUserID(), oldUser.getUserName(), oldUser.getDate(), oldUser.getEmail(), oldUser.getGender(), oldUser.getImage(), oldUser.getPassword(), oldUser.isStatus());
 

@@ -17,7 +17,6 @@ public class ModelSendMessage  implements Serializable{
     private List<RequestFriend> requests;
     private List<ModelFriend> friends;
 
-
     public ModelSendMessage(ModelUser user, String text, LocalDateTime time, int to,UserAction action) {
         this.user = user;
         this.text = text;
@@ -110,5 +109,4 @@ public class ModelSendMessage  implements Serializable{
     public void setFriends(List<ModelFriend> friends) {
         this.friends = friends;
     }
-    
 }

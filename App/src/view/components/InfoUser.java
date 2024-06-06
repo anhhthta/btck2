@@ -29,14 +29,14 @@ public class InfoUser extends javax.swing.JPanel {
         
         for (int i = 1; i <= 31; i++) {
             if (i <= 12) {
-                cbbMonth.addItem(i);
+                cbbMonth.addItem(i+"");
             }
-            cbbDay.addItem(i);
+            cbbDay.addItem(i+"");
         }
 
         int year = LocalDate.now().getYear();
         for (int i = year; i >= year - 15; i--) {
-            cbbYear.addItem(i);
+            cbbYear.addItem(i+"");
         }
 
         setData();
@@ -118,9 +118,9 @@ public class InfoUser extends javax.swing.JPanel {
         cOther = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cbbDay = new swing.combobox.ComboBoxSuggestion();
-        cbbMonth = new swing.combobox.ComboBoxSuggestion();
-        cbbYear = new swing.combobox.ComboBoxSuggestion();
+        cbbDay = new swing.combobox.ComboBoxSuggestion<>();
+        cbbMonth = new swing.combobox.ComboBoxSuggestion<>();
+        cbbYear = new swing.combobox.ComboBoxSuggestion<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -161,7 +161,7 @@ public class InfoUser extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cMale, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(cMale, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +184,7 @@ public class InfoUser extends javax.swing.JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cFemale, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(cFemale, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,9 +369,9 @@ public class InfoUser extends javax.swing.JPanel {
     private javax.swing.JRadioButton cFemale;
     private javax.swing.JRadioButton cMale;
     private javax.swing.JRadioButton cOther;
-    private swing.combobox.ComboBoxSuggestion cbbDay;
-    private swing.combobox.ComboBoxSuggestion cbbMonth;
-    private swing.combobox.ComboBoxSuggestion cbbYear;
+    private swing.combobox.ComboBoxSuggestion<String> cbbDay;
+    private swing.combobox.ComboBoxSuggestion<String> cbbMonth;
+    private swing.combobox.ComboBoxSuggestion<String> cbbYear;
     private swing.button.toggle.SwitchButton isChange;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
