@@ -1,6 +1,7 @@
 package view.components.chatArea;
 
 import java.awt.Adjustable;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -27,6 +28,8 @@ public class Body extends javax.swing.JPanel {
         body.setLayout(new MigLayout("fillx", "", "3[]3"));
         ScrollBar sb = new ScrollBar();
         sb.setSizeThumb(5, 5);
+        sb.setFgColor(new Color(92,129,253));
+        sb.setBackground(new Color(92,129,253));
         scroll.setVerticalScrollBar(sb);
     }
 

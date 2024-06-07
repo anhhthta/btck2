@@ -22,17 +22,25 @@ public class ItemFriend extends javax.swing.JPanel {
         this.friend = friend;
         initComponents();
         lb.setText(friend.getFriendName());
+        
+        if(friend.getFriendImage() != null) {
+            avatar1.setIcon(new ImageIcon(friend.getFriendImage()));
+        } else {
+            //        Decode
+//            new Thread(() -> {
+                try {
+                    byte[] imageByte = Base64.getDecoder().decode(friend.getFriendImageString());
+                    Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
 
-        //        Decode
-        try {
-            byte[] imageByte = Base64.getDecoder().decode(friend.getFriendImage());
-            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
-            avatar1.setIcon(new ImageIcon(image));
-
-        } catch (Exception e) {
-            e.printStackTrace();
+                    friend.setFriendImage(image);
+                    avatar1.setIcon(new ImageIcon(image));
+                    refreshAvatar();
+                    image.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            }).start();
         }
-
         init();
         setData();
     }
@@ -99,6 +107,35 @@ public class ItemFriend extends javax.swing.JPanel {
             lastMsg.setText(data.getUser().getUserName() + ": " + data.getText());
             lastTime.setText(data.getTime().format(formatter));
         }
+    }
+    
+    public void setDataFriend(ModelFriend friend) {
+        this.friend = friend;
+        lb.setText(friend.getFriendName());
+        
+        if(friend.getFriendImage() != null) {
+            avatar1.setIcon(new ImageIcon(friend.getFriendImage()));
+            
+        } else {
+            //        Decode
+//            new Thread(() -> {
+                try {
+                    byte[] imageByte = Base64.getDecoder().decode(friend.getFriendImageString());
+                    Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+
+                    friend.setFriendImage(image);
+                    avatar1.setIcon(new ImageIcon(image));
+                    refreshAvatar();
+                    image.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            }).start();
+        }
+    }
+    private void refreshAvatar() {
+        avatar1.repaint();
+        avatar1.revalidate();
     }
 
     @SuppressWarnings("unchecked")

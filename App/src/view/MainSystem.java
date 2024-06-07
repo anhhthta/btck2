@@ -12,7 +12,9 @@ import java.awt.event.MouseListener;
 import java.util.Base64;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import model.ModelFriend;
 import model.ModelUser;
+import model.RequestFriend;
 import service.Client;
 import swing.ComponentResizer;
 
@@ -52,7 +54,7 @@ public class MainSystem extends javax.swing.JFrame {
         userName.setText(user.getUserName());
 //        Decode
         try {
-            byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+            byte[] imageByte = Base64.getDecoder().decode(user.getImageString());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             btnAvatar.setIcon(new ImageIcon(image));
 
@@ -74,7 +76,7 @@ public class MainSystem extends javax.swing.JFrame {
                 ModelUser user = Client.getInstance().getUser();
                 userName.setText(user.getUserName());
                 try {
-                    byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+                    byte[] imageByte = Base64.getDecoder().decode(user.getImageString());
                     Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
                     btnAvatar.setIcon(new ImageIcon(image));
                     main.repaint();
@@ -86,10 +88,25 @@ public class MainSystem extends javax.swing.JFrame {
             }
 
             @Override
-            public void updateMenu() {
+            public void setMenu() {
                 content.setMenu();
             }
 
+            @Override
+            public void updateMenuItem(ModelFriend nf) {
+                content.updateMenuItem(nf);
+            }
+
+            @Override
+            public void addMenuItem(ModelFriend nf) {
+                content.addMenuItem(nf);
+            }
+
+            @Override
+            public void removeMenuItem(int rf) {
+                content.removeMenuItem(rf);
+            }
+            
             @Override
             public void clearMenu() {
                 content.clearMenu();
@@ -101,11 +118,29 @@ public class MainSystem extends javax.swing.JFrame {
             }
 
             @Override
-            public void updateMenuAll() {
+            public void setMenuAll() {
                 content.setMenuAll();
             }
-
             
+            @Override
+            public void updateMenuAllItem(RequestFriend rq) {
+                content.updateMenuAllItem(rq);
+            }
+
+            @Override
+            public void addMenuAllItem(RequestFriend rq) {
+                content.addMenuAllItem(rq);
+            }
+
+            @Override
+            public void removeMenuAllItem(int rq) {
+                content.removeMenuAllItem(rq);
+            }
+
+            @Override
+            public void clearMenuAll() {
+                content.clearMenuAll();
+            }
         });
     }
 

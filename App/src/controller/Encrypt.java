@@ -17,9 +17,12 @@ public class Encrypt implements EventEncrypt{
 
     @Override
     public Image decodeImage(byte[] image) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(image);
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(image)){
+            
             BufferedImage bufferedImage = ImageIO.read(inputStream);
+            
+            bufferedImage.flush();
+            inputStream.reset();
             return bufferedImage;
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,12 +32,14 @@ public class Encrypt implements EventEncrypt{
 
     @Override
     public String encodeImage(Image image, String extension) {
-        try {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1000);) {
             BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
             bufferedImage.getGraphics().drawImage(image, 0, 0, null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(10000);
+            
             ImageIO.write(bufferedImage, extension, baos);
             byte[] imageInByte = baos.toByteArray();
+            bufferedImage.flush();
+            baos.reset();
             return Base64.getEncoder().encodeToString(imageInByte);
         } catch (IOException ex) {
             Logger.getLogger(Encrypt.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,7 +53,6 @@ public class Encrypt implements EventEncrypt{
 
         try {
             byte[] b = Base64.getDecoder().decode(code);
-            
             String text = new String(b, "UTF-8");
             return text;
         

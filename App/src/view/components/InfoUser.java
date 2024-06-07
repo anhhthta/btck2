@@ -64,7 +64,7 @@ public class InfoUser extends javax.swing.JPanel {
 
 //      Decode
         try {
-            byte[] imageByte = Base64.getDecoder().decode(user.getImage());
+            byte[] imageByte = Base64.getDecoder().decode(user.getImageString());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             btnChangeAvatar.setIcon(new ImageIcon(image));
 

@@ -27,17 +27,21 @@ public class ItemPeople extends javax.swing.JPanel {
         lb.setText(request.getFriend().getFriendName());
         
         int rqId = request.getRequester();
-        
         if(rqId != -10) {
             ModelFriend uss = request.getFriend();
             if(uss.getStatus().equals("accepted")) {
                 btnAS1.setText("Unfriend");
+                btnAS1.setActionCommand("unfriend");
             } else {
                 if(rqId == Client.getInstance().getUser().getUserID()) {
-                    btnAS1.setText("Cacel");
+                    btnAS1.setVisible(true);
+                    btnAS1.setText("Cancel");
+                    btnAS1.setActionCommand("cancel");
                 } else {
                     btnAS2.setVisible(true);
                     btnAS1.setText("Refuse");
+                    btnAS1.setActionCommand("refuse");
+                    
                     btnAS2.setText("Confirm");
                     btnAS2.setActionCommand("confirm");
                 }
@@ -47,18 +51,35 @@ public class ItemPeople extends javax.swing.JPanel {
             btnAS2.setVisible(true);
             btnAS2.setText("Request");
             btnAS2.setActionCommand("request");
+
         }
 
-        //        Decode
-        try {
-            byte[] imageByte = Base64.getDecoder().decode(request.getFriend().getFriendImage());
-            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
-            avatar1.setIcon(new ImageIcon(image));
+//        ModelFriend f = request.getFriend();
+//        if(f.getFriendImage() != null) {
+//            avatar1.setIcon(new ImageIcon(request.getFriend().getFriendImage()));
+//        } else {
+//            //        Decode
+////            new Thread(() -> {
+                try {
+                    byte[] imageByte = Base64.getDecoder().decode(request.getFriend().getFriendImageString());
+                    Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+                    
+                    if(image != null) {
+                        avatar1.setIcon(new ImageIcon(image));
+//                        refreshAvatar();
+                        image.flush();
+                        imageByte = null;
+                    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            }).start();
+//        }
+        this.repaint();
+        this.revalidate();
+        layoutBtn.repaint();
+        layoutBtn.revalidate();
         init();
     }
 
@@ -103,6 +124,62 @@ public class ItemPeople extends javax.swing.JPanel {
         return request;
     }
 
+    private void refreshAvatar(){
+        avatar1.repaint();
+        avatar1.revalidate();
+    };
+    
+    public void setDataPeople(RequestFriend nrq) {
+        this.request = nrq;
+        btnAS2.setVisible(false);
+        
+        lb.setText(request.getFriend().getFriendName());
+        
+        int rqId = request.getRequester();
+        
+        if(rqId != -10) {
+            ModelFriend uss = request.getFriend();
+            if(uss.getStatus().equals("accepted")) {
+                btnAS1.setText("Unfriend");
+                btnAS1.setActionCommand("unfriend");
+            } else {
+                if(rqId == Client.getInstance().getUser().getUserID()) {
+                    btnAS1.setVisible(true);
+                    btnAS1.setText("Cancel");
+                    btnAS1.setActionCommand("cancel");
+
+                } else {
+                    btnAS1.setVisible(true);
+                    btnAS2.setVisible(true);
+                    btnAS1.setText("Refuse");
+                    btnAS1.setActionCommand("refuse");
+
+                    btnAS2.setText("Confirm");
+                    btnAS2.setActionCommand("confirm");
+                }
+            }
+        } else {
+            btnAS1.setVisible(false);
+            btnAS2.setVisible(true);
+            btnAS2.setText("Request");
+            btnAS2.setActionCommand("request");
+
+        }
+        try {
+            byte[] imageByte = Base64.getDecoder().decode(request.getFriend().getFriendImageString());
+            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+            if(image != null) {
+                avatar1.setIcon(new ImageIcon(image));
+                image.flush();
+                imageByte = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+//        layoutBtn.repaint();
+//        layoutBtn.revalidate();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

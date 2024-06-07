@@ -54,6 +54,7 @@ public class Controller implements ActionListener, Eventt {
 
         int i = table.getSelectedRow();
         if (i != -1) {
+            
             ModelUser user = new ModelUser();
             int id = Integer.parseInt(table.getValueAt(i, 0) + "");
             user.setUserID(id);
@@ -65,6 +66,7 @@ public class Controller implements ActionListener, Eventt {
             setData();
             
             if(PublicEvent.getInstance().getEvent1() != null) {
+                System.out.println("123 + 12==");
                 PublicEvent.getInstance().getEvent1().send(message);
             }
         }

@@ -23,8 +23,19 @@ public class ControllerRequestFriend implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         
-        if(command.equals("delete")) {
-            delete();
+        if(command.equals("cancel")) {
+            msg = new ModelSendMessage();
+            msg.setAction(UserAction.CANCEL_REQUESR);
+            System.out.println("was cancel");
+            delete(msg);
+        } else if(command.equals("refuse")) {
+            msg = new ModelSendMessage();
+            msg.setAction(UserAction.REFUSE_REQUEST);
+            delete(msg);
+        } else if(command.equals("unfriend")) {
+            msg = new ModelSendMessage();
+            msg.setAction(UserAction.REQUEST_UNFRIEND);
+            delete(msg);
         } else if(command.equals("confirm")) {
             confirm();
         } else if(command.equals("request")) {
@@ -32,10 +43,9 @@ public class ControllerRequestFriend implements ActionListener{
         }
     }
     
-    private void delete() {
+    private void delete(ModelSendMessage msg) {
         request.setRequester(-10);
-        msg = new ModelSendMessage();
-        msg.setAction(UserAction.DELETE_REQUEST);
+        
     
         msg.setTo(request.getFriend().getFriendId());
         msg.setFrom(user.getUserID());
@@ -50,13 +60,14 @@ public class ControllerRequestFriend implements ActionListener{
             i++;
         }
         
-        PublicEvent.getInstance().getEventUpdate().updateMenu();
+        PublicEvent.getInstance().getEventUpdate().setMenu();
         
         PublicEvent.getInstance().getEventToServer().send(msg);
     }
     
     public void confirm() {
         request.getFriend().setStatus("accepted");
+        request.setRequester(request.getFriend().getFriendId());
         msg = new ModelSendMessage();
         msg.setAction(UserAction.CONFIRM_REQUEST);
     
@@ -66,7 +77,7 @@ public class ControllerRequestFriend implements ActionListener{
         updateRqFriend();
         
         Client.getInstance().getFriends().add(request.getFriend());
-        PublicEvent.getInstance().getEventUpdate().updateMenu();
+        PublicEvent.getInstance().getEventUpdate().setMenu();
         
         PublicEvent.getInstance().getEventToServer().send(msg);
     }
@@ -94,6 +105,6 @@ public class ControllerRequestFriend implements ActionListener{
             }
             i++;
         }
-        PublicEvent.getInstance().getEventUpdate().updateMenuAll();
+        PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
     }
 }

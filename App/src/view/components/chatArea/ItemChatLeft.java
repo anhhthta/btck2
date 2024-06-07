@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.util.Base64;
 import javax.swing.ImageIcon;
 import model.ModelSendMessage;
+import model.ModelUser;
 
 public class ItemChatLeft extends javax.swing.JPanel {
     public ItemChatLeft() {
@@ -12,17 +13,45 @@ public class ItemChatLeft extends javax.swing.JPanel {
     }
     
     public void setData(ModelSendMessage data) {
-        String name = data.getUser().getUserName();
+        ModelUser user = data.getUser();
+        String name = user.getUserName();
         chatItem.setTextLeft(data.getText(), data.getTime(), name);
         userNama.setText(name);
-//      Decode
-        try {
-            byte[] imageByte = Base64.getDecoder().decode(data.getUser().getImage());
-            Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
-            avatar.setIcon(new ImageIcon(image));
-        } catch (Exception e) {
-            e.printStackTrace();
+        
+        if(user.getImage() != null) {
+            avatar.setIcon(new ImageIcon(user.getImage()));
+        } else {
+            //      Decode
+            new Thread(() -> {
+                try {
+                    while(data.getUser().getImage() == null) {
+                        byte[] imageByte = Base64.getDecoder().decode(user.getImageString());
+                        Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
+                        data.getUser().setImage(image);
+                        avatar.setIcon(new ImageIcon(image));
+                        refreshAvatar();
+                    }
+                    
+                    Thread.sleep(300);
+                    refreshAvatar();
+                    Thread.sleep(400);
+                    refreshAvatar();
+                    Thread.sleep(500);
+                    refreshAvatar();
+                     Thread.sleep(650);
+                    refreshAvatar();
+                    Thread.sleep(880);
+                    refreshAvatar();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
+    }
+    
+    private void refreshAvatar() {
+        avatar.repaint();
+        avatar.revalidate();
     }
     
     @SuppressWarnings("unchecked")

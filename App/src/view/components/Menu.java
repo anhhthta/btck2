@@ -72,6 +72,30 @@ public class Menu extends javax.swing.JPanel {
         refreshMenuList();
     }
 
+    public void updatePeople(ModelFriend nf) {
+        for(Component m : menuList.getComponents()) {
+            ItemFriend item = (ItemFriend) m;
+            if(nf.getFriendId() == item.getFriend().getFriendId()) {
+                item.setDataFriend(nf);
+            }
+        }
+    }
+    
+    public void addPeople(ModelFriend nf) {
+        menuList.add(new ItemFriend(nf), "wrap");
+    } 
+    
+    public void removePeople(int nf) {
+        for(Component m : menuList.getComponents()) {
+            ItemFriend item = (ItemFriend) m;
+            if(nf == item.getFriend().getFriendId()) {
+                menuList.remove(m);
+            }
+        }
+        refreshMenuList();
+
+    } 
+    
     public void clearP() {
         menuList.removeAll();
         refreshMenuList();

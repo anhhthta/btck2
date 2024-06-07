@@ -52,30 +52,44 @@ public class ControllerToServer implements EventToServer {
     @Override
     public void receive() {
         ModelSendMessage data;
-
         try {
             if (readerOj == null) {
                 readerOj = new ObjectInputStream(socket.getInputStream());
             }
             while ((data = (ModelSendMessage) readerOj.readObject()) != null) {
-                
-                if (data.getAction() == UserAction.SEND_RECEIVE) {
+                UserAction uas = data.getAction();
+
+                if (uas == UserAction.SEND_RECEIVE) {
                     PublicEvent.getInstance().getEventChat().ReceiveMessage(data);
                     Client.getInstance().getHistory().add(data);
                     PublicEvent.getInstance().getEventLastTime().setLastTime(data);
-                } else if (data.getAction() == UserAction.UPDATE_INFO) {
+                } else if(uas == UserAction.REGISTER) {
+                    int i = 0;
+                    Client.getInstance().setRequest(data.getRequests());
+                    for (RequestFriend request : Client.getInstance().getRequest()) {
+                        if (request.getFriend().getFriendId()== data.getFrom()) {
+                            
+                            Client.getInstance().getRequest().set(i, request);
+                            PublicEvent.getInstance().getEventUpdate().addMenuAllItem(request);
+                            break;
+                        }
+                        i++;
+                    }
+                } else if (uas == UserAction.UPDATE_INFO) {
                     int i = 0;
                     for (ModelFriend friend : Client.getInstance().getFriends()) {
                         if (friend.getFriendId() == data.getFrom()) {
                             ModelUser uu = data.getUser();
-                            Client.getInstance().getFriends().set(i, 
-                                    new ModelFriend(
+                            ModelFriend nf = new ModelFriend(
                                             uu.getUserID(), 
                                             friend.getFriendId(), 
                                             uu.getUserName(), 
-                                            uu.getImage(),
+                                            uu.getImageString(),
                                             friend.getStatus()
-                                    ));
+                                    );
+                            Client.getInstance().getFriends().set(i,nf);
+                            
+                            PublicEvent.getInstance().getEventUpdate().updateMenuItem(nf);
                             break;
                         }
                         i++;
@@ -84,41 +98,92 @@ public class ControllerToServer implements EventToServer {
                     for (RequestFriend request : Client.getInstance().getRequest()) {
                         if (request.getFriend().getFriendId()== data.getFrom()) {
                             ModelUser uu = data.getUser();
-                            Client.getInstance().getRequest().set(i, 
-                                    new RequestFriend(
+                            RequestFriend nrq = new RequestFriend(
                                             request.getRequester(),
                                             new ModelFriend(
                                                 uu.getUserID(), 
                                                 request.getFriend().getFriendId(), 
                                                 uu.getUserName(), 
-                                                uu.getImage(),
+                                                uu.getImageString(),
                                                 request.getFriend().getStatus()
-                                )));
+                                ));
+                            Client.getInstance().getRequest().set(i, nrq);
+                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(nrq);
                             break;
                         }
                         i++;
                     }
                     
-                    PublicEvent.getInstance().getEventUpdate().updateMenu();
-                    PublicEvent.getInstance().getEventUpdate().updateMenuAll();
-                } else if(data.getAction() == UserAction.BAN) {
-                    if(data.getUser().getUserID() == Client.getInstance().getUser().getUserID()) {
-                        PublicEvent.getInstance().getEventUpdate().clearMenu();
-                        socket.close();
+                } else if(uas == UserAction.BAN || uas == UserAction.DELETE_USER) {
+                    if(uas == UserAction.BAN) {
+                        
+                        if(data.getUser().getUserID() == Client.getInstance().getUser().getUserID()) {
+                            PublicEvent.getInstance().getEventUpdate().clearMenu();
+                            PublicEvent.getInstance().getEventUpdate().clearMenuAll();
+                            socket.close();
+                        } else {
+                            Client.getInstance().setFriends(data.getFriends());
+                            PublicEvent.getInstance().getEventUpdate().removeMenuItem(data.getUser().getUserID());
+                        
+                            Client.getInstance().setRequest(data.getRequests());
+                            PublicEvent.getInstance().getEventUpdate().removeMenuAllItem(data.getUser().getUserID());
+                        }
                     } else {
                         Client.getInstance().setFriends(data.getFriends());
+                        PublicEvent.getInstance().getEventUpdate().removeMenuItem(data.getFrom());
+                        
                         Client.getInstance().setRequest(data.getRequests());
-                        PublicEvent.getInstance().getEventUpdate().updateMenu();
-                        PublicEvent.getInstance().getEventUpdate().updateMenuAll();
+                        PublicEvent.getInstance().getEventUpdate().removeMenuAllItem(data.getFrom());
                     }
-                } else if(data.getAction() == UserAction.SEARCH) {
+                } else if(uas == UserAction.SEARCH) {
                     Client.getInstance().setRequest(data.getRequests());
-                    PublicEvent.getInstance().getEventUpdate().updateMenuAll();
+                    PublicEvent.getInstance().getEventUpdate().setMenuAll();
+                } else if(uas == UserAction.REQUEST_FRIEND
+                        || uas == UserAction.CANCEL_REQUESR
+                        || uas == UserAction.REFUSE_REQUEST
+                    ) {
+                    int i = 0;
+                    Client.getInstance().setRequest(data.getRequests());
+                    for (RequestFriend request : Client.getInstance().getRequest()) {
+                        if (request.getFriend().getFriendId()== data.getFrom()) {
+                            
+                            Client.getInstance().getRequest().set(i, request);
+                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
+                            break;
+                        }
+                        i++;
+                    }
+                } else if(uas == UserAction.CONFIRM_REQUEST) {
+                    int i = 0;
+                    Client.getInstance().setRequest(data.getRequests());
+                    for (RequestFriend request : Client.getInstance().getRequest()) {
+                        if (request.getFriend().getFriendId()== data.getFrom()) {
+                            
+                            Client.getInstance().getRequest().set(i, request);
+                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
+                            PublicEvent.getInstance().getEventUpdate().addMenuItem(request.getFriend());
+                            break;
+                        }
+                        i++;
+                    }
+                } else if(uas == UserAction.REQUEST_UNFRIEND) {
+                    int i = 0;
+                    Client.getInstance().setRequest(data.getRequests());
+                    for (RequestFriend request : Client.getInstance().getRequest()) {
+                        if (request.getFriend().getFriendId()== data.getFrom()) {
+                            
+                            Client.getInstance().getRequest().set(i, request);
+                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
+                            break;
+                        }
+                        i++;
+                    }
+                    PublicEvent.getInstance().getEventUpdate().removeMenuItem(data.getFrom());
                 } else{
                     Client.getInstance().setRequest(data.getRequests());
                     Client.getInstance().setFriends(data.getFriends());
-                    PublicEvent.getInstance().getEventUpdate().updateMenu();
-                    PublicEvent.getInstance().getEventUpdate().updateMenuAll();
+                    PublicEvent.getInstance().getEventUpdate().setMenu();
+                    PublicEvent.getInstance().getEventUpdate().setMenuAll();
                 }
             }
         } catch (IOException ex) {

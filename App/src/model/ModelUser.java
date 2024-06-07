@@ -1,8 +1,8 @@
 package model;
 
+import java.awt.Image;
 import java.io.Serializable;
 import java.time.LocalDate;
-
 public class ModelUser  implements Serializable{  
     private int userID;
     private String userName;
@@ -10,6 +10,7 @@ public class ModelUser  implements Serializable{
     private String email;
     private String gender;
     private String image;
+    private Image img;
     private String password;
     private String repassword;
     private boolean status;
@@ -25,7 +26,7 @@ public class ModelUser  implements Serializable{
         this.password = password;
         this.status = status;
     }
-
+    
     public ModelUser(int userID, String userName, String email, String gender, String image, boolean status) {
         this.userID = userID;
         this.userName = userName;
@@ -95,12 +96,20 @@ public class ModelUser  implements Serializable{
         this.gender = gender;
     }
 
-    public String getImage() {
+    public String getImageString() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImageString(String image) {
         this.image = image;
+    }
+
+    public Image getImage() {
+        return img;
+    }
+
+    public void setImage(Image img) {
+        this.img = img;
     }
 
     public String getPassword() {

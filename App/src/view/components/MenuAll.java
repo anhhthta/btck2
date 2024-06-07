@@ -1,17 +1,15 @@
 package view.components;
 
-import event.PublicEvent;
+import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import model.ModelSendMessage;
 import model.ModelUser;
 import model.RequestFriend;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
 import swing.ScrollBar;
-import utilites.UserAction;
 
 /**
  *
@@ -44,13 +42,28 @@ public class MenuAll extends javax.swing.JPanel {
         txtSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                ModelSendMessage msg = new ModelSendMessage();
-                msg.setAction(UserAction.SEARCH);
-                msg.setFrom(user.getUserID());
-                msg.setTo(user.getUserID());
-                msg.setText(txtSearch.getText());
+//                ModelSendMessage msg = new ModelSendMessage();
+//                msg.setAction(UserAction.SEARCH);
+//                msg.setFrom(user.getUserID());
+//                msg.setTo(user.getUserID());
+//                msg.setText(txtSearch.getText());
+//                
+//                PublicEvent.getInstance().getEventToServer().send(msg);
+
+                List<RequestFriend> list = Client.getInstance().getRequest();
+                List<RequestFriend> search = new ArrayList<>();
+                String text = txtSearch.getText();
+                for(RequestFriend r : list) {
+                    if(!text.equals("")) {
+                        if(r.getFriend().getFriendName().toLowerCase().startsWith(text.toLowerCase())) {
+                            search.add(r);
+                        }
+                    } else {
+                        search = list;
+                    }
+                }
                 
-                PublicEvent.getInstance().getEventToServer().send(msg);
+                setSearch(search);
             }
             
         });
@@ -63,6 +76,42 @@ public class MenuAll extends javax.swing.JPanel {
         }
         menuList.removeAll();
         for (RequestFriend us : listRequests) {
+            if (user.getUserID() != us.getFriend().getFriendId()) {
+                menuList.add(new ItemPeople(us), "wrap");
+            }
+        }
+        refreshMenuList();
+    }
+    
+    public void updatePeople(RequestFriend nrq) {
+        for(Component m : menuList.getComponents()) {
+            ItemPeople item = (ItemPeople) m;
+            if(nrq.getFriend().getFriendId() == item.getUser().getFriend().getFriendId()) {
+                item.setDataPeople(nrq);
+            }
+        }
+    }
+    
+    public void addPeople(RequestFriend nrq) {
+        menuList.add(new ItemPeople(nrq), "wrap");
+    }
+    
+    public void removePeople(int nrq) {
+        for(Component m : menuList.getComponents()) {
+            ItemPeople item = (ItemPeople) m;
+            if(nrq == item.getUser().getFriend().getFriendId()) {
+                menuList.remove(m);
+            }
+        }
+        refreshMenuList();
+    }
+    
+    public void setSearch(List<RequestFriend> rq) {
+        if (rq == null) {
+            rq = new ArrayList<>();
+        }
+        menuList.removeAll();
+        for (RequestFriend us : rq) {
             if (user.getUserID() != us.getFriend().getFriendId()) {
                 menuList.add(new ItemPeople(us), "wrap");
             }

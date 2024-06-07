@@ -4,6 +4,7 @@ package view.components;
 import controller.ControllerToServer;
 import event.PublicEvent;
 import model.ModelFriend;
+import model.RequestFriend;
 
 
 public class Content extends javax.swing.JLayeredPane {
@@ -57,6 +58,18 @@ public class Content extends javax.swing.JLayeredPane {
         menu.setPeople();
     }
     
+    public void updateMenuItem(ModelFriend nf) {
+        menu.updatePeople(nf);
+    }
+    
+    public void addMenuItem(ModelFriend nf) {
+        menu.addPeople(nf);
+    }
+    
+    public void removeMenuItem(int nf) {
+        menu.removePeople(nf);
+    }
+    
     public void clearMenu() {
         menu.clearP();
     }
@@ -65,6 +78,21 @@ public class Content extends javax.swing.JLayeredPane {
         menuAll.setPeople();
     }
     
+    public void updateMenuAllItem(RequestFriend nrq) {
+        menuAll.updatePeople(nrq);
+    }
+    
+    public void addMenuAllItem(RequestFriend nrq) {
+        menuAll.addPeople(nrq);
+    }
+    
+    public void removeMenuAllItem(int id) {
+        menuAll.removePeople(id);
+    }
+    
+    public void clearMenuAll() {
+        menuAll.clearP();
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

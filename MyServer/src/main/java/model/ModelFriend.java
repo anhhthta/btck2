@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Image;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ public class ModelFriend implements Serializable{
     private String friendName;
     @Transient
     private String friendImage;
+    @Transient
+    private Image friendImg;
     private String status;
 
     public ModelFriend(int userID, int friendId, String friendName, String friendImage, String status) {
@@ -59,12 +62,20 @@ public class ModelFriend implements Serializable{
         this.friendName = friendName;
     }
 
-    public String getFriendImage() {
+    public String getFriendImageString() {
         return friendImage;
     }
 
-    public void setFriendImage(String friendImage) {
+    public void setFriendImageString(String friendImage) {
         this.friendImage = friendImage;
+    }
+
+    public Image getFriendImage() {
+        return friendImg;
+    }
+
+    public void setFriendImage(Image friendImg) {
+        this.friendImg = friendImg;
     }
 
     public String getStatus() {

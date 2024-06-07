@@ -53,7 +53,7 @@ public class UserDAO {
                 
                 user.setEmail(encodeEmail);
                 user.setPassword(encodePass);
-                user.setImage(imgString);
+                user.setImageString(imgString);
 //===================================================
                 user.setStatus(true);
                 user.setDate(LocalDate.now());

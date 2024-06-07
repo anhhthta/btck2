@@ -200,7 +200,7 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                         if (response.isSuccess()) {
                             
                             List<ModelSendMessage> history = ((History) readerOj1.readObject()).getHistory();
-                            
+
                             ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
                             Client.getInstance().setFriends(msgu.getFriends());
                             Client.getInstance().setRequest(msgu.getRequests());

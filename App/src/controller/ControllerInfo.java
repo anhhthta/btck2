@@ -165,7 +165,7 @@ public class ControllerInfo implements ActionListener {
                     Integer.parseInt(cbbDay.getSelectedItem() +"")
             );
             ModelUser oldUser = Client.getInstance().getUser();
-            ModelUser newUser = new ModelUser(oldUser.getUserID(), oldUser.getUserName(), oldUser.getDate(), oldUser.getEmail(), oldUser.getGender(), oldUser.getImage(), oldUser.getPassword(), oldUser.isStatus());
+            ModelUser newUser = new ModelUser(oldUser.getUserID(), oldUser.getUserName(), oldUser.getDate(), oldUser.getEmail(), oldUser.getGender(), oldUser.getImageString(), oldUser.getPassword(), oldUser.isStatus());
 
             newUser.setUserName(name);
             newUser.setDate(date);
@@ -173,7 +173,7 @@ public class ControllerInfo implements ActionListener {
 
             if (!imageExtension.isEmpty()) {
                 String imgString = PublicEvent.getInstance().getEventEncrypt().encodeImage(((ImageIcon) avatar.getIcon()).getImage(), imageExtension);
-                newUser.setImage(imgString);
+                newUser.setImageString(imgString);
             }
 
             if (!name.isEmpty()) {

@@ -33,11 +33,13 @@ public class Handler {
     ModelUserReceive mr;
     private int userID;
     private JTextArea jTextArea1;
+    private String as;
 
-    public Handler(Socket socket, int userId, JTextArea jTextArea) throws SQLException {
+    public Handler(Socket socket, int userId, JTextArea jTextArea, String as) throws SQLException {
         this.socket = socket;
         this.userID = userId;
         this.jTextArea1 = jTextArea;
+        this.as = as;
         run();
     }
 
@@ -53,45 +55,42 @@ public class Handler {
             PublicEvent.getInstance().addEvent1(new Event1() {
                 @Override
                 public void send(ModelSendMessage msg) {
-                    for (ModelUserReceive clientWriter : clientWriters) {
-                        try {
-                            msg.setFriends(new FriendDAO().getFriends(clientWriter.getUserID()));
-                            clientWriter.getOb().writeObject(msg);
-                            if(clientWriter.getUserID() == userID) {
-                                clientWriters.remove(clientWriter);
-                            }
-                        } catch (IOException ex) {
-                            Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                    if (writer != null) {
-                        clientWriters.remove(mr);
+                    try {
+                        msg.setTo(-11);
+                        broadcast(msg);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
-
-            ModelSendMessage firstMesage = new ModelSendMessage();
-            firstMesage.setTo(-1);
-            firstMesage.setFrom(userID);
-            firstMesage.setAction(UserAction.LOGIN);
-            broadcast(firstMesage);
+            
+            if(as.equals("register")) {
+                ModelSendMessage msgRegister = new ModelSendMessage();
+                msgRegister.setTo(-1);
+                msgRegister.setFrom(userID);
+                msgRegister.setAction(UserAction.REGISTER);
+                broadcast(msgRegister);
+            }
 
             ModelSendMessage message;
 
             while ((message = (ModelSendMessage) reader.readObject()) != null) {
  
-                if (message.getAction() == UserAction.SEND_RECEIVE) {
+                UserAction uas = message.getAction();
+                if (uas == UserAction.SEND_RECEIVE) {
                     new MesageDAO().insertMessage(message);
-                } else if (message.getAction() == UserAction.UPDATE_INFO) {
+                } else if (uas == UserAction.UPDATE_INFO) {
                     new UserDAO().update(message.getUser());
                     PublicEvent.getInstance().getEventt().setData();
 
-                } else if (message.getAction() == UserAction.DELETE_USER) {
+                } else if (uas == UserAction.DELETE_USER) {
                     new UserDAO().delete(message.getUser());
                     new MesageDAO().delete(message.getUser().getUserID());
                     PublicEvent.getInstance().getEventt().setData();
-                } else if (message.getAction() == UserAction.DELETE_REQUEST) {
+                } else if (uas == UserAction.REQUEST_UNFRIEND 
+                        || uas == UserAction.REFUSE_REQUEST 
+                        || uas == UserAction.CANCEL_REQUESR 
+                    ) {
                     new FriendDAO().delete(message.getFrom(), message.getTo());
                 } else if (message.getAction() == UserAction.CONFIRM_REQUEST) {
                     new FriendDAO().update(message.getFrom(), message.getTo(), "accepted");
@@ -120,24 +119,41 @@ public class Handler {
     }
 
     private void broadcast(ModelSendMessage message) throws IOException {
-
+        UserAction uas = message.getAction();
         if (message.getTo() == -1) {
             for (ModelUserReceive clientWriter : clientWriters) {
                 if (clientWriter.getOb() != writer) {
-                    if( message.getAction() == UserAction.DELETE_USER || message.getAction() == UserAction.LOGIN){
+                    if( uas == UserAction.DELETE_USER 
+                            || uas == UserAction.LOGIN){
                         message.setRequests(new UserDAO().getRequestUsers(clientWriter.getUserID(), ""));
                         message.setFriends(new FriendDAO().getFriends(clientWriter.getUserID()));
+                    } else if (uas == UserAction.REGISTER) {
+                        message.setRequests(new UserDAO().getRequestUsers(clientWriter.getUserID(), ""));
                     }
                     clientWriter.getOb().writeObject(message);
                 }
             }
-        } else {
+        } else if(message.getTo() == -11) {
+            for (ModelUserReceive clientWriter : clientWriters) {
+                message.setFriends(new FriendDAO().getFriends(clientWriter.getUserID()));
+                clientWriter.getOb().writeObject(message);
+                if(clientWriter.getUserID() == userID) {
+                    clientWriters.remove(clientWriter);
+                }
+            }
+            if (writer != null) {
+                clientWriters.remove(mr);
+            }
+        }else {
             for (ModelUserReceive clientWriter : clientWriters) {
                 if (clientWriter.getUserID() == message.getTo()) {
                     
-                    if(message.getAction() == UserAction.DELETE_REQUEST 
-                            || message.getAction() == UserAction.CONFIRM_REQUEST 
-                            || message.getAction() == UserAction.REQUEST_FRIEND) {
+                    if(uas == UserAction.REQUEST_UNFRIEND
+                            || uas == UserAction.REFUSE_REQUEST
+                            || uas == UserAction.CANCEL_REQUESR
+                            || uas == UserAction.CONFIRM_REQUEST 
+                            || uas == UserAction.REQUEST_FRIEND
+                            ) {
                         message.setRequests(new UserDAO().getRequestUsers(clientWriter.getUserID(), ""));
                         message.setFriends(new FriendDAO().getFriends(clientWriter.getUserID()));
                     } else if(message.getAction() == UserAction.SEARCH) {

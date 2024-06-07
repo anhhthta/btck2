@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package service;
 
 import DAO.FriendDAO;
@@ -79,7 +75,7 @@ public class ClientHandler implements Runnable {
                 List<ModelFriend> friends = new FriendDAO().getFriends(userID);
                 ModelSendMessage msgu = new ModelSendMessage(requests, friends);
                 writerOj3.writeObject(msgu);
-                new Handler(socket, userID, jTextArea);
+                new Handler(socket, userID, jTextArea, "login");
             } else {
                 writerOj1.writeObject(login);
             }
@@ -104,7 +100,7 @@ public class ClientHandler implements Runnable {
                 ModelSendMessage msgu = new ModelSendMessage(requests, friends);
                 writerOj3.writeObject(msgu);
                 PublicEvent.getInstance().getEventt().setData();
-                new Handler(socket, userID, jTextArea);
+                new Handler(socket, userID, jTextArea, "register");
             } else {
                 writerOj1.writeObject(register);
             }

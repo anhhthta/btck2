@@ -21,7 +21,7 @@ public class Header extends javax.swing.JPanel {
 
         //        Decode
         try {
-            byte[] imageByte = Base64.getDecoder().decode(user.getFriendImage());
+            byte[] imageByte = Base64.getDecoder().decode(user.getFriendImageString());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             avatar1.setIcon(new ImageIcon(image));
 
@@ -37,7 +37,7 @@ public class Header extends javax.swing.JPanel {
 
             //        Decode
             try {
-                byte[] imageByte = Base64.getDecoder().decode(user.getFriendImage());
+                byte[] imageByte = Base64.getDecoder().decode(user.getFriendImageString());
                 Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
                 avatar1.setIcon(new ImageIcon(image));
 

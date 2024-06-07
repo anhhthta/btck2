@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Image;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -26,6 +27,8 @@ public class ModelUser  implements Serializable{
     @Lob
     @Column(name = "image")
     private String image;
+    @Transient
+    private Image img;
     @Lob
     private String password;
     @Transient
@@ -114,12 +117,20 @@ public class ModelUser  implements Serializable{
         this.gender = gender;
     }
 
-    public String getImage() {
+    public String getImageString() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImageString(String image) {
         this.image = image;
+    }
+
+    public Image getImage() {
+        return img;
+    }
+
+    public void setImage(Image img) {
+        this.img = img;
     }
 
     public String getPassword() {
