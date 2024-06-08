@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ModelFriend;
 import model.ModelSendMessage;
-import model.ModelUser;
 import model.RequestFriend;
 import service.Client;
 import utilites.UserAction;
@@ -59,6 +58,7 @@ public class ControllerToServer implements EventToServer {
             while ((data = (ModelSendMessage) readerOj.readObject()) != null) {
                 UserAction uas = data.getAction();
 
+                System.out.println(data.getAction());
                 if (uas == UserAction.SEND_RECEIVE) {
                     PublicEvent.getInstance().getEventChat().ReceiveMessage(data);
                     Client.getInstance().getHistory().add(data);
@@ -77,19 +77,14 @@ public class ControllerToServer implements EventToServer {
                     }
                 } else if (uas == UserAction.UPDATE_INFO) {
                     int i = 0;
+                    Client.getInstance().setFriends(data.getFriends());
+                    Client.getInstance().setRequest(data.getRequests());
                     for (ModelFriend friend : Client.getInstance().getFriends()) {
+                        
                         if (friend.getFriendId() == data.getFrom()) {
-                            ModelUser uu = data.getUser();
-                            ModelFriend nf = new ModelFriend(
-                                            uu.getUserID(), 
-                                            friend.getFriendId(), 
-                                            uu.getUserName(), 
-                                            uu.getImageString(),
-                                            friend.getStatus()
-                                    );
-                            Client.getInstance().getFriends().set(i,nf);
                             
-                            PublicEvent.getInstance().getEventUpdate().updateMenuItem(nf);
+                            
+                            PublicEvent.getInstance().getEventUpdate().updateMenuItem(friend);
                             break;
                         }
                         i++;
@@ -97,18 +92,7 @@ public class ControllerToServer implements EventToServer {
                     i = 0;
                     for (RequestFriend request : Client.getInstance().getRequest()) {
                         if (request.getFriend().getFriendId()== data.getFrom()) {
-                            ModelUser uu = data.getUser();
-                            RequestFriend nrq = new RequestFriend(
-                                            request.getRequester(),
-                                            new ModelFriend(
-                                                uu.getUserID(), 
-                                                request.getFriend().getFriendId(), 
-                                                uu.getUserName(), 
-                                                uu.getImageString(),
-                                                request.getFriend().getStatus()
-                                ));
-                            Client.getInstance().getRequest().set(i, nrq);
-                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(nrq);
+                            PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
                             break;
                         }
                         i++;

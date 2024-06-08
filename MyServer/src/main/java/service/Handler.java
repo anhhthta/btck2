@@ -124,12 +124,14 @@ public class Handler {
             for (ModelUserReceive clientWriter : clientWriters) {
                 if (clientWriter.getOb() != writer) {
                     if( uas == UserAction.DELETE_USER 
-                            || uas == UserAction.LOGIN){
+                            || uas == UserAction.LOGIN
+                            || uas == UserAction.UPDATE_INFO){
                         message.setRequests(new UserDAO().getRequestUsers(clientWriter.getUserID(), ""));
                         message.setFriends(new FriendDAO().getFriends(clientWriter.getUserID()));
                     } else if (uas == UserAction.REGISTER) {
                         message.setRequests(new UserDAO().getRequestUsers(clientWriter.getUserID(), ""));
                     }
+                    System.out.println(uas);
                     clientWriter.getOb().writeObject(message);
                 }
             }

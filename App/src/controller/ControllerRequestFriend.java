@@ -3,6 +3,7 @@ package controller;
 import event.PublicEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import model.ModelFriend;
 import model.ModelSendMessage;
 import model.ModelUser;
@@ -26,7 +27,6 @@ public class ControllerRequestFriend implements ActionListener{
         if(command.equals("cancel")) {
             msg = new ModelSendMessage();
             msg.setAction(UserAction.CANCEL_REQUESR);
-            System.out.println("was cancel");
             delete(msg);
         } else if(command.equals("refuse")) {
             msg = new ModelSendMessage();
@@ -52,15 +52,20 @@ public class ControllerRequestFriend implements ActionListener{
         
         updateRqFriend();
         int i=0;
-        for(ModelFriend f : Client.getInstance().getFriends()) {
+        
+        List<ModelFriend> friend = Client.getInstance().getFriends();
+        for(ModelFriend f : friend) {
             if(f.getFriendId() == request.getFriend().getFriendId()) {
-                Client.getInstance().getFriends().remove(i);
+                friend.remove(i);
+                Client.getInstance().setFriends(friend);
                 break;
             }
-            i++;
+            ++i;
         }
         
-        PublicEvent.getInstance().getEventUpdate().setMenu();
+        
+        
+        PublicEvent.getInstance().getEventUpdate().removeMenuItem(request.getFriend().getFriendId());
         
         PublicEvent.getInstance().getEventToServer().send(msg);
     }
@@ -77,7 +82,7 @@ public class ControllerRequestFriend implements ActionListener{
         updateRqFriend();
         
         Client.getInstance().getFriends().add(request.getFriend());
-        PublicEvent.getInstance().getEventUpdate().setMenu();
+        PublicEvent.getInstance().getEventUpdate().addMenuItem(request.getFriend());
         
         PublicEvent.getInstance().getEventToServer().send(msg);
     }
@@ -106,5 +111,9 @@ public class ControllerRequestFriend implements ActionListener{
             i++;
         }
         PublicEvent.getInstance().getEventUpdate().updateMenuAllItem(request);
+    }
+    
+    public void setRequest(RequestFriend request) {
+        this.request = request;
     }
 }

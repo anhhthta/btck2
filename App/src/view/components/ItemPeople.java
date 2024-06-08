@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import event.PublicEvent;
 import java.awt.Image;
-import java.awt.event.ActionListener;
 import java.util.Base64;
 import javax.swing.ImageIcon;
 import model.ModelFriend;
@@ -17,6 +16,7 @@ import swing.layout.WrapLayout;
 public class ItemPeople extends javax.swing.JPanel {
 
     private RequestFriend request;
+    private ControllerRequestFriend event;
 
     public ItemPeople(RequestFriend request) {
         this.request = request;
@@ -70,6 +70,13 @@ public class ItemPeople extends javax.swing.JPanel {
                         image.flush();
                         imageByte = null;
                     }
+                    
+//                    Thread.sleep(400);
+//                    refreshAvatar();
+//                    Thread.sleep(600);
+//                    refreshAvatar();
+//                    Thread.sleep(850);
+//                    refreshAvatar();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -115,15 +122,11 @@ public class ItemPeople extends javax.swing.JPanel {
             }
         });
         
-        ActionListener event = new ControllerRequestFriend(request);
+        event = new ControllerRequestFriend(request);
         btnAS1.addActionListener(event);
         btnAS2.addActionListener(event);
     }
-
-    public RequestFriend getUser() {
-        return request;
-    }
-
+   
     private void refreshAvatar(){
         avatar1.repaint();
         avatar1.revalidate();
@@ -169,17 +172,32 @@ public class ItemPeople extends javax.swing.JPanel {
             byte[] imageByte = Base64.getDecoder().decode(request.getFriend().getFriendImageString());
             Image image = PublicEvent.getInstance().getEventEncrypt().decodeImage(imageByte);
             if(image != null) {
+                request.getFriend().setFriendImage(image);
                 avatar1.setIcon(new ImageIcon(image));
                 image.flush();
                 imageByte = null;
             }
+            
+            Thread.sleep(50);
+            refreshAvatar();
+            Thread.sleep(100);
+            refreshAvatar();
+            Thread.sleep(150);
+            refreshAvatar();
         } catch (Exception e) {
             e.printStackTrace();
         }
         
+        
+        event.setRequest(request);
 //        layoutBtn.repaint();
 //        layoutBtn.revalidate();
     }
+    
+    public RequestFriend getUser() {
+        return request;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -36,6 +36,14 @@ public class ItemFriend extends javax.swing.JPanel {
                     avatar1.setIcon(new ImageIcon(image));
                     refreshAvatar();
                     image.flush();
+                    
+//                    Thread.sleep(400);
+//                    refreshAvatar();
+//                    Thread.sleep(600);
+//                    refreshAvatar();
+//                    Thread.sleep(850);
+//                    refreshAvatar();
+//                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -89,10 +97,6 @@ public class ItemFriend extends javax.swing.JPanel {
         });
     }
 
-    public ModelFriend getFriend() {
-        return friend;
-    }
-
     public void setLastText(ModelSendMessage data) {
 
         int id = Client.getInstance().getUser().getUserID();
@@ -127,6 +131,15 @@ public class ItemFriend extends javax.swing.JPanel {
                     avatar1.setIcon(new ImageIcon(image));
                     refreshAvatar();
                     image.flush();
+                    
+                    Thread.sleep(50);
+                    refreshAvatar();
+                    Thread.sleep(100);
+                    refreshAvatar();
+                    Thread.sleep(150);
+                    refreshAvatar();
+                    
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -136,6 +149,10 @@ public class ItemFriend extends javax.swing.JPanel {
     private void refreshAvatar() {
         avatar1.repaint();
         avatar1.revalidate();
+    }
+    
+    public ModelFriend getFriend() {
+        return friend;
     }
 
     @SuppressWarnings("unchecked")
