@@ -1,7 +1,7 @@
 package event;
 
-import model.ModelSendMessage;
+import model.ModelSend;
 
 public interface Event1 {
-    public void send(ModelSendMessage msg);
+    public void send(ModelSend msg);
 }

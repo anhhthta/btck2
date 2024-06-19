@@ -26,7 +26,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import model.History;
-import model.ModelSendMessage;
+import model.ModelSend;
 import swing.TextField;
 import service.Client;
 import view.MainSystem;
@@ -137,9 +137,9 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                             ModelMessage response = (ModelMessage) readerOj.readObject();
 
                             if (response.isSuccess()) {
-                                List<ModelSendMessage> history = ((History) readerOj1.readObject()).getHistory();
+                                List<ModelSend> history = ((History) readerOj1.readObject()).getHistory();
 
-                                ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
+                                ModelSend msgu = (ModelSend) readerOj2.readObject();
                                 Client.getInstance().setFriends(msgu.getFriends());
                                 Client.getInstance().setRequest(msgu.getRequests());
                             
@@ -199,9 +199,9 @@ public class ControllerLogin implements ActionListener, EventNotificate {
                         ModelMessage response = (ModelMessage) readerOj.readObject();
                         if (response.isSuccess()) {
                             
-                            List<ModelSendMessage> history = ((History) readerOj1.readObject()).getHistory();
+                            List<ModelSend> history = ((History) readerOj1.readObject()).getHistory();
 
-                            ModelSendMessage msgu = (ModelSendMessage) readerOj2.readObject();
+                            ModelSend msgu = (ModelSend) readerOj2.readObject();
                             Client.getInstance().setFriends(msgu.getFriends());
                             Client.getInstance().setRequest(msgu.getRequests());
 

@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import service.Client;
 import swing.Avatar;
@@ -121,7 +121,7 @@ public class ControllerInfo implements ActionListener {
     public void delete() {
         ModelUser dlt = new ModelUser();
         dlt.setUserID(Client.getInstance().getUser().getUserID());
-        ModelSendMessage data = new ModelSendMessage(dlt, UserAction.DELETE_USER);
+        ModelSend data = new ModelSend(dlt, UserAction.DELETE_USER);
 
         data.setTo(-1);
         data.setFrom(dlt.getUserID());
@@ -186,7 +186,7 @@ public class ControllerInfo implements ActionListener {
                             msgErr.setText("Update successful");
                             newUser.setPassword(newp);
 
-                            ModelSendMessage data = new ModelSendMessage(newUser, UserAction.UPDATE_INFO);
+                            ModelSend data = new ModelSend(newUser, UserAction.UPDATE_INFO);
                             data.setTo(-1);
                             data.setFrom(newUser.getUserID());
                             PublicEvent.getInstance().getEventToServer().send(data);
@@ -205,7 +205,7 @@ public class ControllerInfo implements ActionListener {
                 } else {
                     msgErr.setForeground(new Color(0, 144, 0));
                     msgErr.setText("Update successful");
-                    ModelSendMessage data = new ModelSendMessage(newUser, UserAction.UPDATE_INFO);
+                    ModelSend data = new ModelSend(newUser, UserAction.UPDATE_INFO);
                     data.setTo(-1);
                     data.setFrom(newUser.getUserID());
 

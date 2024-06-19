@@ -9,11 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import utilites.TypeMessage;
 import utilites.UserAction;
 
 @Entity
 @Table(name = "message")
-public class ModelSendMessage  implements Serializable{
+public class ModelSend  implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,31 +29,33 @@ public class ModelSendMessage  implements Serializable{
     private int toId;
     @Transient
     private UserAction action;
+    private TypeMessage TypeMessage;
     @Transient
     private List<RequestFriend> requests;
     @Transient
     private List<ModelFriend> friends;
 
 
-    public ModelSendMessage(ModelUser user, String text, LocalDateTime time, int to,UserAction action) {
+    public ModelSend(ModelUser user, String text, LocalDateTime time, int to,TypeMessage typeMessage, UserAction action) {
         this.user = user;
         this.text = text;
         this.time = time;
         this.toId = to;
+        this.TypeMessage = typeMessage;
         this.action = action;
     }
 
-    public ModelSendMessage(ModelUser user, UserAction action) {
+    public ModelSend(ModelUser user, UserAction action) {
         this.user = user;
         this.action = action;
     }
 
-    public ModelSendMessage(List<RequestFriend> requests, List<ModelFriend> friends) {
+    public ModelSend(List<RequestFriend> requests, List<ModelFriend> friends) {
         this.requests = requests;
         this.friends = friends;
     }
 
-    public ModelSendMessage() {
+    public ModelSend() {
     }
 
     public ModelUser getUser() {
@@ -127,5 +130,11 @@ public class ModelSendMessage  implements Serializable{
         this.friends = friends;
     }
     
-    
+    public TypeMessage getTypeMessage() {
+        return TypeMessage;
+    }
+
+    public void setTypeMessage(TypeMessage TypeMessage) {
+        this.TypeMessage = TypeMessage;
+    }
 }

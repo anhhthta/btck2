@@ -6,7 +6,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
@@ -42,7 +42,7 @@ public class Menu extends javax.swing.JPanel {
         
         PublicEvent.getInstance().addEventLastTime(new EventLastTime() {
             @Override
-            public void setLastTime(ModelSendMessage msg) {
+            public void setLastTime(ModelSend msg) {
                 for(Component com : menuList.getComponents()) {
                     ItemFriend item = (ItemFriend) com;
                     int idItem = item.getFriend().getFriendId();

@@ -7,9 +7,10 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import javax.swing.Icon;
 import javax.swing.JScrollBar;
-import model.ModelSendMessage;
+import model.ModelSend;
 import net.miginfocom.swing.MigLayout;
 import swing.ScrollBar;
+import utilites.TypeMessage;
 
 /**
  *
@@ -33,15 +34,21 @@ public class Body extends javax.swing.JPanel {
         scroll.setVerticalScrollBar(sb);
     }
 
-    public void addRightItem(ModelSendMessage data, Icon... images) {
+    public void addRightItem(ModelSend data, Icon... images) {
         for (Icon img : images) {
             ImageItem imageItem = new ImageItem();
             imageItem.addImage(img);
             body.add(imageItem, "wrap, al right, w ::75%");
         }
-        ChatItem item = new ChatItem();
-        item.setTextRight(data.getText(), data.getTime());
-        body.add(item, "wrap, al right, w ::75%");
+        if(data.getTypeMessage() == TypeMessage.TEXT) {
+            ChatItem item = new ChatItem();
+            item.setTextRight(data.getText(), data.getTime());
+            body.add(item, "wrap, al right, w ::75%");
+        } else {
+            ChatItemEmoji item = new ChatItemEmoji();
+            item.setTextRight(data.getText(), data.getTime());
+            body.add(item, "wrap, al right, w ::75%");
+        }
 
 //        ::x is max 
         body.repaint();
@@ -50,7 +57,7 @@ public class Body extends javax.swing.JPanel {
         refresh();
     }
 
-    public void addGroupItem(ModelSendMessage data, Icon... images) {
+    public void addGroupItem(ModelSend data, Icon... images) {
 //        ChatItem user = new ChatItem();
 //        user.setUserName(data.getUser().getUserName());
 
@@ -61,10 +68,18 @@ public class Body extends javax.swing.JPanel {
             body.add(imageItem, "wrap, w ::75%");
         }
 
-        ItemChatLeft item = new ItemChatLeft();
-        item.setData(data);
+        if(data.getTypeMessage() == TypeMessage.TEXT) {
+            ItemChatLeft item = new ItemChatLeft();
+            item.setData(data);
 
-        body.add(item, "wrap, w ::75%");
+            body.add(item, "wrap, w ::75%");
+        } else {
+            ItemChatEmojiLeft item = new ItemChatEmojiLeft();
+            item.setData(data);
+
+            body.add(item, "wrap, w ::75%");
+        }
+        
 //        ::x is max 
         body.repaint();
         body.revalidate();
@@ -125,7 +140,7 @@ public class Body extends javax.swing.JPanel {
             .addComponent(scroll)
         );
     }// </editor-fold>//GEN-END:initComponents
-    public void scrollToBottom() {
+    private void scrollToBottom() {
         JScrollBar verticalBar = scroll.getVerticalScrollBar();
         AdjustmentListener downScroller = new AdjustmentListener() {
             @Override

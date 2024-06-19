@@ -3,7 +3,7 @@ package DAO;
 
 import java.util.List;
 import javax.persistence.Query;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,7 +11,7 @@ import utilites.HibernateUtil;
 
 public class MesageDAO {
 
-    public void insertMessage(ModelSendMessage data) {
+    public void insertMessage(ModelSend data) {
         Transaction tr = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tr = session.beginTransaction();
@@ -28,14 +28,14 @@ public class MesageDAO {
         }
     }
 
-    public List<ModelSendMessage> getMessage() {
+    public List<ModelSend> getMessage() {
         List<ModelUser> users = new UserDAO().getUsers();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<ModelSendMessage> list = session.createQuery("from ModelSendMessage", ModelSendMessage.class).list();
+            List<ModelSend> list = session.createQuery("from ModelSend", ModelSend.class).list();
 
             for (ModelUser user : users) {
-                for (ModelSendMessage m : list) {
+                for (ModelSend m : list) {
                     if (m.getFrom() == user.getUserID()) {
                         m.setUser(user);
                     }
@@ -50,7 +50,7 @@ public class MesageDAO {
         Transaction tr = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tr = session.beginTransaction();
-            String hql = "delete from ModelSendMessage where fromId = :fid or toId = :tid";
+            String hql = "delete from ModelSend where fromId = :fid or toId = :tid";
             Query query = session.createQuery(hql);
             query.setParameter("fid", id);
             query.setParameter("tid", id);

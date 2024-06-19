@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import model.RequestFriend;
 
@@ -24,7 +24,7 @@ public class Client {
     private PrintWriter writer;
     private BufferedReader reader;
     
-    private List<ModelSendMessage> history;
+    private List<ModelSend> history;
     
     private List<ModelFriend> friends;
     private List<RequestFriend> requests;
@@ -96,14 +96,14 @@ public class Client {
         this.user = user;
     }
 
-    public List<ModelSendMessage> getHistory() {
+    public List<ModelSend> getHistory() {
         if(history == null) {
             return new ArrayList<>();
         }
         return history;
     }
 
-    public void setHistory(List<ModelSendMessage> history) {
+    public void setHistory(List<ModelSend> history) {
         this.history = history;
     }
 

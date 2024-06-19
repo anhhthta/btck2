@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 public class History implements Serializable{
-    private List<ModelSendMessage> history;
+    private List<ModelSend> history;
 
-    public History(List<ModelSendMessage> history) {
+    public History(List<ModelSend> history) {
         this.history = history;
     }
 
-    public List<ModelSendMessage> getHistory() {
+    public List<ModelSend> getHistory() {
         return history;
     }
 
-    public void setHistory(List<ModelSendMessage> history) {
+    public void setHistory(List<ModelSend> history) {
         this.history = history;
     }
     

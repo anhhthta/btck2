@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import model.RequestFriend;
 import service.Client;
@@ -13,7 +13,7 @@ import utilites.UserAction;
 
 public class ControllerRequestFriend implements ActionListener{
     private RequestFriend request;
-    private ModelSendMessage msg;
+    private ModelSend msg;
     private ModelUser user;
     public ControllerRequestFriend(RequestFriend request) {
         this.request = request;
@@ -25,15 +25,15 @@ public class ControllerRequestFriend implements ActionListener{
         String command = e.getActionCommand();
         
         if(command.equals("cancel")) {
-            msg = new ModelSendMessage();
+            msg = new ModelSend();
             msg.setAction(UserAction.CANCEL_REQUESR);
             delete(msg);
         } else if(command.equals("refuse")) {
-            msg = new ModelSendMessage();
+            msg = new ModelSend();
             msg.setAction(UserAction.REFUSE_REQUEST);
             delete(msg);
         } else if(command.equals("unfriend")) {
-            msg = new ModelSendMessage();
+            msg = new ModelSend();
             msg.setAction(UserAction.REQUEST_UNFRIEND);
             delete(msg);
         } else if(command.equals("confirm")) {
@@ -43,7 +43,7 @@ public class ControllerRequestFriend implements ActionListener{
         }
     }
     
-    private void delete(ModelSendMessage msg) {
+    private void delete(ModelSend msg) {
         request.setRequester(-10);
         
     
@@ -73,7 +73,7 @@ public class ControllerRequestFriend implements ActionListener{
     public void confirm() {
         request.getFriend().setStatus("accepted");
         request.setRequester(request.getFriend().getFriendId());
-        msg = new ModelSendMessage();
+        msg = new ModelSend();
         msg.setAction(UserAction.CONFIRM_REQUEST);
     
         msg.setTo(request.getFriend().getFriendId());
@@ -91,7 +91,7 @@ public class ControllerRequestFriend implements ActionListener{
         request.setRequester(user.getUserID());
         request.getFriend().setStatus("pending");
         
-        msg = new ModelSendMessage();
+        msg = new ModelSend();
         msg.setAction(UserAction.REQUEST_FRIEND);
     
         msg.setTo(request.getFriend().getFriendId());

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUserReceive;
 import utilites.UserAction;
 
@@ -54,7 +54,7 @@ public class Handler {
 
             PublicEvent.getInstance().addEvent1(new Event1() {
                 @Override
-                public void send(ModelSendMessage msg) {
+                public void send(ModelSend msg) {
                     try {
                         msg.setTo(-11);
                         broadcast(msg);
@@ -65,16 +65,16 @@ public class Handler {
             });
             
             if(as.equals("register")) {
-                ModelSendMessage msgRegister = new ModelSendMessage();
+                ModelSend msgRegister = new ModelSend();
                 msgRegister.setTo(-1);
                 msgRegister.setFrom(userID);
                 msgRegister.setAction(UserAction.REGISTER);
                 broadcast(msgRegister);
             }
 
-            ModelSendMessage message;
+            ModelSend message;
 
-            while ((message = (ModelSendMessage) reader.readObject()) != null) {
+            while ((message = (ModelSend) reader.readObject()) != null) {
  
                 UserAction uas = message.getAction();
                 if (uas == UserAction.SEND_RECEIVE) {
@@ -118,7 +118,7 @@ public class Handler {
         }
     }
 
-    private void broadcast(ModelSendMessage message) throws IOException {
+    private void broadcast(ModelSend message) throws IOException {
         UserAction uas = message.getAction();
         if (message.getTo() == -1) {
             for (ModelUserReceive clientWriter : clientWriters) {

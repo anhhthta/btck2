@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import utilites.UserAction;
 
@@ -60,7 +60,7 @@ public class Controller implements ActionListener, Eventt {
             user.setUserID(id);
             new UserDAO().delete(user);
             new MesageDAO().delete(id);
-            ModelSendMessage message = new ModelSendMessage(user, UserAction.BAN);
+            ModelSend message = new ModelSend(user, UserAction.BAN);
             message.setRequests(new UserDAO().getRequestUsers(id,""));
             
             setData();

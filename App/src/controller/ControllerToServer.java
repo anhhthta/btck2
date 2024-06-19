@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.RequestFriend;
 import service.Client;
 import utilites.UserAction;
@@ -40,7 +40,7 @@ public class ControllerToServer implements EventToServer {
     int i = 0;
 
     @Override
-    public void send(ModelSendMessage data) {
+    public void send(ModelSend data) {
         try {
             writerOj.writeObject(data);
         } catch (Exception e) {
@@ -50,12 +50,12 @@ public class ControllerToServer implements EventToServer {
 
     @Override
     public void receive() {
-        ModelSendMessage data;
+        ModelSend data;
         try {
             if (readerOj == null) {
                 readerOj = new ObjectInputStream(socket.getInputStream());
             }
-            while ((data = (ModelSendMessage) readerOj.readObject()) != null) {
+            while ((data = (ModelSend) readerOj.readObject()) != null) {
                 UserAction uas = data.getAction();
 
                 System.out.println(data.getAction());

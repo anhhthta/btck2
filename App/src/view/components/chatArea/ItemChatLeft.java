@@ -4,7 +4,7 @@ import event.PublicEvent;
 import java.awt.Image;
 import java.util.Base64;
 import javax.swing.ImageIcon;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 
 public class ItemChatLeft extends javax.swing.JPanel {
@@ -12,7 +12,7 @@ public class ItemChatLeft extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setData(ModelSendMessage data) {
+    public void setData(ModelSend data) {
         ModelUser user = data.getUser();
         String name = user.getUserName();
         chatItem.setTextLeft(data.getText(), data.getTime(), name);

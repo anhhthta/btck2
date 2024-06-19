@@ -35,7 +35,7 @@ public class InfoUser extends javax.swing.JPanel {
         }
 
         int year = LocalDate.now().getYear();
-        for (int i = year; i >= year - 15; i--) {
+        for (int i = year; i >= year - 35; i--) {
             cbbYear.addItem(i+"");
         }
 

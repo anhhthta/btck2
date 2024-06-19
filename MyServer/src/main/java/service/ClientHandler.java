@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import model.History;
 import model.ModelFriend;
 import model.ModelMessage;
-import model.ModelSendMessage;
+import model.ModelSend;
 import model.ModelUser;
 import model.RequestFriend;
 
@@ -73,7 +73,7 @@ public class ClientHandler implements Runnable {
                 
                 List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");
                 List<ModelFriend> friends = new FriendDAO().getFriends(userID);
-                ModelSendMessage msgu = new ModelSendMessage(requests, friends);
+                ModelSend msgu = new ModelSend(requests, friends);
                 writerOj3.writeObject(msgu);
                 new Handler(socket, userID, jTextArea, "login");
             } else {
@@ -97,7 +97,7 @@ public class ClientHandler implements Runnable {
                 
                 List<RequestFriend> requests = new UserDAO().getRequestUsers(userID, "");
                 List<ModelFriend> friends = new FriendDAO().getFriends(userID);
-                ModelSendMessage msgu = new ModelSendMessage(requests, friends);
+                ModelSend msgu = new ModelSend(requests, friends);
                 writerOj3.writeObject(msgu);
                 PublicEvent.getInstance().getEventt().setData();
                 new Handler(socket, userID, jTextArea, "register");

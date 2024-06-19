@@ -10,7 +10,7 @@ import java.util.Base64;
 import java.util.List;
 import javax.swing.ImageIcon;
 import model.ModelFriend;
-import model.ModelSendMessage;
+import model.ModelSend;
 import service.Client;
 
 public class ItemFriend extends javax.swing.JPanel {
@@ -54,9 +54,9 @@ public class ItemFriend extends javax.swing.JPanel {
     }
 
     private void setData() {
-        List<ModelSendMessage> list = Client.getInstance().getHistory();
+        List<ModelSend> list = Client.getInstance().getHistory();
         int id = Client.getInstance().getUser().getUserID();
-        for (ModelSendMessage l : list) {
+        for (ModelSend l : list) {
             if (friend.getFriendId()== l.getTo() || id == l.getTo()) {
                 if (friend.getFriendId()== l.getFrom()) {
                     lastMsg.setText(l.getUser().getUserName() + ": " + l.getText());
@@ -97,7 +97,7 @@ public class ItemFriend extends javax.swing.JPanel {
         });
     }
 
-    public void setLastText(ModelSendMessage data) {
+    public void setLastText(ModelSend data) {
 
         int id = Client.getInstance().getUser().getUserID();
 

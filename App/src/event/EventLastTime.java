@@ -1,11 +1,11 @@
 package event;
 
-import model.ModelSendMessage;
+import model.ModelSend;
 
 /**
  *
  * @author anhth
  */
 public interface EventLastTime {
-    public void setLastTime(ModelSendMessage msg);
+    public void setLastTime(ModelSend msg);
 }

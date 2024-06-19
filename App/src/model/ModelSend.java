@@ -2,11 +2,14 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import utilites.TypeMessage;
 import utilites.UserAction;
 
 
-public class ModelSendMessage  implements Serializable{
-
+public class ModelSend  implements Serializable{
+    
+    
     private int id;
     private int fromId;
     private ModelUser user;
@@ -14,28 +17,31 @@ public class ModelSendMessage  implements Serializable{
     private LocalDateTime time;
     private int toId;
     private UserAction action;
+    private TypeMessage TypeMessage;
     private List<RequestFriend> requests;
     private List<ModelFriend> friends;
 
-    public ModelSendMessage(ModelUser user, String text, LocalDateTime time, int to,UserAction action) {
+
+    public ModelSend(ModelUser user, String text, LocalDateTime time, int to,TypeMessage typeMessage, UserAction action) {
         this.user = user;
         this.text = text;
         this.time = time;
         this.toId = to;
+        this.TypeMessage = typeMessage;
         this.action = action;
     }
 
-    public ModelSendMessage(ModelUser user, UserAction action) {
+    public ModelSend(ModelUser user, UserAction action) {
         this.user = user;
         this.action = action;
     }
-    
-    public ModelSendMessage(List<RequestFriend> requests, List<ModelFriend> friends) {
+
+    public ModelSend(List<RequestFriend> requests, List<ModelFriend> friends) {
         this.requests = requests;
         this.friends = friends;
     }
 
-    public ModelSendMessage() {
+    public ModelSend() {
     }
 
     public ModelUser getUser() {
@@ -108,5 +114,13 @@ public class ModelSendMessage  implements Serializable{
 
     public void setFriends(List<ModelFriend> friends) {
         this.friends = friends;
+    }
+
+    public TypeMessage getTypeMessage() {
+        return TypeMessage;
+    }
+
+    public void setTypeMessage(TypeMessage TypeMessage) {
+        this.TypeMessage = TypeMessage;
     }
 }

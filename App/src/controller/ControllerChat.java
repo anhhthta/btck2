@@ -4,11 +4,16 @@ import event.EventChat;
 import event.PublicEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.util.List;
-import model.ModelSendMessage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.ModelSend;
 import service.Client;
 import swing.JIMSendTextPane;
+import utilites.TypeMessage;
 import utilites.UserAction;
 import view.components.chatArea.Body;
 import view.components.chatArea.Bottom;
@@ -24,13 +29,14 @@ public class ControllerChat implements ActionListener, EventChat {
         this.header = header;
         this.body = body;
         this.bottom = bottom;
+        addEventTxt();
     }
 
     public void setHistory() {
         if (header.getFriend().getFriendId()== -1) {
-            List<ModelSendMessage> list = Client.getInstance().getHistory();
+            List<ModelSend> list = Client.getInstance().getHistory();
             int id = Client.getInstance().getUser().getUserID();
-            for (ModelSendMessage l : list) {
+            for (ModelSend l : list) {
                 if (l.getTo() == -1) {
                     if (l.getUser().getUserID() == id) {
                         body.addRightItem(l);
@@ -41,10 +47,10 @@ public class ControllerChat implements ActionListener, EventChat {
 
             }
         } else {
-            List<ModelSendMessage> list = Client.getInstance().getHistory();
+            List<ModelSend> list = Client.getInstance().getHistory();
             int id = Client.getInstance().getUser().getUserID();
 
-            for (ModelSendMessage l : list) {
+            for (ModelSend l : list) {
                 if ((header.getFriend().getFriendId() == l.getTo() && l.getUser().getUserID() == id)
                         || (id == l.getTo() && header.getFriend().getFriendId()== l.getUser().getUserID())) {
 
@@ -67,11 +73,11 @@ public class ControllerChat implements ActionListener, EventChat {
     }
 
     @Override
-    public void sendMessage(ModelSendMessage ata) {
+    public void sendMessage(ModelSend ata) {
         JIMSendTextPane boxtxt = bottom.getTextBox();
         String text = boxtxt.getText();
         if (!text.trim().equals("")) {
-            ModelSendMessage data = new ModelSendMessage(Client.getInstance().getUser(), text, LocalDateTime.now(), header.getFriend().getFriendId(), UserAction.SEND_RECEIVE);
+            ModelSend data = new ModelSend(Client.getInstance().getUser(), text, LocalDateTime.now(), header.getFriend().getFriendId(),TypeMessage.TEXT, UserAction.SEND_RECEIVE);
             PublicEvent.getInstance().getEventToServer().send(data);
             Client.getInstance().getHistory().add(data);
             PublicEvent.getInstance().getEventLastTime().setLastTime(data);
@@ -85,7 +91,16 @@ public class ControllerChat implements ActionListener, EventChat {
     }
 
     @Override
-    public void ReceiveMessage(ModelSendMessage data) {
+    public void sendEMOJI(String i) {
+        ModelSend data = new ModelSend(Client.getInstance().getUser(), i, LocalDateTime.now(), header.getFriend().getFriendId(),TypeMessage.EMOJI, UserAction.SEND_RECEIVE);
+        PublicEvent.getInstance().getEventToServer().send(data);
+        Client.getInstance().getHistory().add(data);
+        PublicEvent.getInstance().getEventLastTime().setLastTime(data);
+        body.addRightItem(data);
+    }
+
+    @Override
+    public void ReceiveMessage(ModelSend data) {
         if (header.getFriend()!= null) {
             if (header.getFriend().getFriendId() == -1) {
                 if (data.getTo() == -1) {
@@ -99,6 +114,18 @@ public class ControllerChat implements ActionListener, EventChat {
                 }
             }
         }
-
+    }
+    
+    private void addEventTxt() {
+        bottom.getTextBox().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                bottom.refresh();
+                
+                if(e.getKeyChar()==10&&e.isControlDown()){
+                    sendMessage(null);
+                }
+            }
+        });
     }
 }
