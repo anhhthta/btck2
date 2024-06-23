@@ -15,6 +15,7 @@ public class Content extends javax.swing.JLayeredPane {
         infoUser.setVisible(false);
         chat.setVisible(false);
         menuAll.setVisible(false);
+        infoOtherUser.setVisible(false);
     }
     
     private void initEvent() {
@@ -27,6 +28,7 @@ public class Content extends javax.swing.JLayeredPane {
         menu.setVisible(false);
         infoUser.isShow(false);
         menuAll.setVisible(false);
+        infoOtherUser.setVisible(false);
     }
     
     public void updateUser(ModelFriend user) {
@@ -38,6 +40,7 @@ public class Content extends javax.swing.JLayeredPane {
         chat.setVisible(false);
         infoUser.isShow(false);
         menuAll.setVisible(false);
+        infoOtherUser.setVisible(false);
     }
     
     public void openInfo() {
@@ -45,10 +48,21 @@ public class Content extends javax.swing.JLayeredPane {
         menu.setVisible(false);
         chat.setVisible(false);
         menuAll.setVisible(false);
+        infoOtherUser.setVisible(false);
     }
     
     public void openMenuAll() {
         menuAll.setVisible(true);
+        infoUser.isShow(false);
+        menu.setVisible(false);
+        chat.setVisible(false);
+        infoOtherUser.setVisible(false);
+    }
+    
+    public void openInfoOtherUser(ModelFriend friend) {
+        infoOtherUser.setData(friend);
+        infoOtherUser.setVisible(true);
+        menuAll.setVisible(false);
         infoUser.isShow(false);
         menu.setVisible(false);
         chat.setVisible(false);
@@ -102,17 +116,20 @@ public class Content extends javax.swing.JLayeredPane {
         chat = new view.components.Chat();
         infoUser = new view.components.InfoUser();
         menuAll = new view.components.MenuAll();
+        infoOtherUser = new view.components.InfoOtherUser();
 
         setLayout(new java.awt.CardLayout());
         add(menu, "card2");
         add(chat, "card3");
         add(infoUser, "card4");
         add(menuAll, "card5");
+        add(infoOtherUser, "card6");
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private view.components.Chat chat;
+    private view.components.InfoOtherUser infoOtherUser;
     private view.components.InfoUser infoUser;
     private view.components.Menu menu;
     private view.components.MenuAll menuAll;

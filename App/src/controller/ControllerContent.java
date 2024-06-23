@@ -42,6 +42,11 @@ public class ControllerContent implements ActionListener, EventContent{
     }
 
     @Override
+    public void changeContent(ModelFriend user) {
+        content.openInfoOtherUser(user);
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if(command.equals("back") || command.equals("getChats")) {

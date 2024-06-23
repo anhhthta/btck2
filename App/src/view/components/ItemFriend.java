@@ -37,13 +37,7 @@ public class ItemFriend extends javax.swing.JPanel {
                     refreshAvatar();
                     image.flush();
                     
-//                    Thread.sleep(400);
-//                    refreshAvatar();
-//                    Thread.sleep(600);
-//                    refreshAvatar();
-//                    Thread.sleep(850);
-//                    refreshAvatar();
-//                    
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -174,6 +168,11 @@ public class ItemFriend extends javax.swing.JPanel {
         avatar1.setBorderColor(new java.awt.Color(204, 204, 255));
         avatar1.setBorderSize(1);
         avatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/avatar2-50.png"))); // NOI18N
+        avatar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                avatar1MouseClicked(evt);
+            }
+        });
 
         lb.setBackground(new java.awt.Color(51, 51, 51));
         lb.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -229,6 +228,12 @@ public class ItemFriend extends javax.swing.JPanel {
             .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void avatar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_avatar1MouseClicked
+        if(friend.getFriendId() > 0) {
+            PublicEvent.getInstance().getEventContent().changeContent(friend);
+        }
+    }//GEN-LAST:event_avatar1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

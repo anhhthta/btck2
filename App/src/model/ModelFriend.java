@@ -3,6 +3,7 @@ package model;
 
 import java.awt.Image;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class ModelFriend implements Serializable{
     private int userID;
@@ -11,6 +12,20 @@ public class ModelFriend implements Serializable{
     private String friendImage;
     private Image friendImg;
     private String status;
+    
+    private LocalDate date;
+    private String gender;
+    
+    public ModelFriend(int userID, int friendId, String friendName, String friendImage, String status, LocalDate date, String gender) {
+        this.userID = userID;
+        this.friendId = friendId;
+        this.friendName = friendName;
+        this.friendImage = friendImage;
+        this.status = status;
+        
+        this.date = date;
+        this.gender = gender;
+    }
 
     public ModelFriend(int userID, int friendId, String friendName, String friendImage, String status) {
         this.userID = userID;
@@ -72,6 +87,22 @@ public class ModelFriend implements Serializable{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
     
     

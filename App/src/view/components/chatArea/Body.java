@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JScrollBar;
 import model.ModelSend;
@@ -146,8 +148,19 @@ public class Body extends javax.swing.JPanel {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 Adjustable adjustable = e.getAdjustable();
-                adjustable.setValue(adjustable.getMaximum());
-                verticalBar.removeAdjustmentListener(this);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(10);
+                        adjustable.setValue(adjustable.getMaximum());
+                        verticalBar.removeAdjustmentListener(this);
+                        body.repaint();
+                        body.revalidate();
+                        refresh();
+
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Body.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }).start();
             }
         };
         verticalBar.addAdjustmentListener(downScroller);

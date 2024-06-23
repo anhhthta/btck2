@@ -5,10 +5,12 @@ import controller.Encrypt;
 import controller.FIlesHandle;
 import event.EventNotificate;
 import event.PublicEvent;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import net.miginfocom.swing.MigLayout;
 import service.Client;
@@ -30,6 +32,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void init() throws IOException {
+        setTitle("Login - Register");
+        setIconImage(new ImageIcon(getClass().getResource("/icon/chat_logo.png")).getImage());
         PublicEvent.getInstance().addEventEncrypt(new Encrypt());
         PublicEvent.getInstance().addFileEvent(new FIlesHandle());
         

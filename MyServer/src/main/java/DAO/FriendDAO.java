@@ -1,5 +1,6 @@
 package DAO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
@@ -33,12 +34,12 @@ public class FriendDAO {
         Transaction tr = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tr = session.beginTransaction();
-            String hql = "select f.id, f.friendId, u.name, u.image " +
+            String hql = "select f.id, f.friendId, u.name, u.image, u.gender, u.date " +
                         "from friends f " +
                         "join users u on u.id = f.friendId " +
                         "where f.id = :id and f.status = :st " +
                         "union " +
-                        "select f.friendId, f.id, u.name, u.image " +
+                        "select f.friendId, f.id, u.name, u.image, u.gender, u.date " +
                         "from friends f " +
                         "join users u on u.id = f.id " +
                         "where f.friendId = :id and f.status = :st ";
@@ -56,9 +57,15 @@ public class FriendDAO {
                             Integer.parseInt(rs[1]+""), 
                             rs[2]+"",
                             rs[3]+"", 
-                            "accepted"
+                            "accepted",
+                            LocalDate.parse(rs[5]+""),
+                            rs[4]+""
+                            
                     ));
+                    System.out.println();
                 }
+                
+                
             }
             
             tr.commit();

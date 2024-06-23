@@ -42,12 +42,16 @@ public class MainSystem extends javax.swing.JFrame {
     }
 
     private void init() {
+        setIconImage(new ImageIcon(getClass().getResource("/icon/btn-message-28.png")).getImage());
+        Logo.setIcon(new ImageIcon(getClass().getResource("/icon/logo_chat-25.png")));
+        Title.setText("Chat App");
+
         btnClose.setHover(new Color(255, 51, 51));
         btnMinimize.setHover(new Color(72, 72, 72));
         ComponentResizer com = new ComponentResizer();
         com.registerComponent(this);
-        com.setMinimumSize(new Dimension(340, 539));
-        com.setMaximumSize(new Dimension(340, 539));
+        com.setMinimumSize(new Dimension(340, 600));
+        com.setMaximumSize(new Dimension(340, 600));
         com.setSnapSize(new Dimension(10, 10));
         ModelUser user = Client.getInstance().getUser();
 
@@ -171,6 +175,8 @@ public class MainSystem extends javax.swing.JFrame {
         title = new javax.swing.JPanel();
         btnMinimize = new swing.Button();
         btnClose = new swing.Button();
+        Logo = new javax.swing.JLabel();
+        Title = new javax.swing.JLabel();
         body = new javax.swing.JLayeredPane();
         content = new view.components.Content();
         h = new javax.swing.JPanel();
@@ -216,12 +222,19 @@ public class MainSystem extends javax.swing.JFrame {
             }
         });
 
+        Title.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        Title.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout titleLayout = new javax.swing.GroupLayout(title);
         title.setLayout(titleLayout);
         titleLayout.setHorizontalGroup(
             titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titleLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(Logo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,9 +242,11 @@ public class MainSystem extends javax.swing.JFrame {
         titleLayout.setVerticalGroup(
             titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titleLayout.createSequentialGroup()
-                .addGroup(titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(titleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(Logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMinimize, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -335,7 +350,7 @@ public class MainSystem extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(h, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -390,6 +405,8 @@ public class MainSystem extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo;
+    private javax.swing.JLabel Title;
     private javax.swing.JPanel background;
     private javax.swing.JLayeredPane body;
     private javax.swing.JPanel border;

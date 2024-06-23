@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Image;
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,6 +24,23 @@ public class ModelFriend implements Serializable{
     @Transient
     private Image friendImg;
     private String status;
+    
+    @Transient
+    private LocalDate date;
+    @Transient
+    private String gender;
+    
+    public ModelFriend(int userID, int friendId, String friendName, String friendImage, String status, LocalDate date, String gender) {
+        this.userID = userID;
+        this.friendId = friendId;
+        this.friendName = friendName;
+        this.friendImage = friendImage;
+        this.status = status;
+        
+        this.date = date;
+        this.gender = gender;
+    }
+
 
     public ModelFriend(int userID, int friendId, String friendName, String friendImage, String status) {
         this.userID = userID;
@@ -84,6 +102,22 @@ public class ModelFriend implements Serializable{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
     
     

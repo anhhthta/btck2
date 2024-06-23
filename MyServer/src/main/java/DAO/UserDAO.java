@@ -160,7 +160,7 @@ public class UserDAO {
             tr = session.beginTransaction();
             String hql = "select " +
                         "coalesce(f.id, fr.id, -10) requesterId, coalesce(fr.id, f.friendId, -10) ownId, "+
-                        "u.id userId, u.name, u.image, coalesce(fr.status, f.status, 'no') status from users u " +
+                        "u.id userId, u.name, u.image, coalesce(fr.status, f.status, 'no') status, u.gender, u.date from users u " +
                         "left join friends f on f.id = u.id and f.friendId = :id " +
                         "left join friends fr on fr.friendId = u.id and fr.id = :id " +
                         "where u.id != :id and u.name like :se";
@@ -180,7 +180,9 @@ public class UserDAO {
                                 Integer.parseInt(rs[2]+""), 
                                 rs[3]+"",
                                 rs[4]+"", 
-                                rs[5]+""
+                                rs[5]+"",
+                                LocalDate.parse(rs[7]+""),
+                                rs[6]+""
                         )));
                 }
             }
